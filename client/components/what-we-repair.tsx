@@ -4,18 +4,31 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
+import type { IconSvgElement } from "@hugeicons/react";
 import {
   LaptopIcon,
   Computer,
   Tick02Icon,
   ArrowRight02Icon,
 } from "@hugeicons/core-free-icons";
+
+interface Device {
+  icon: IconSvgElement;
+  title: string;
+  description: string;
+  issues: string[];
+  accent: string;
+}
+
+const WHATSAPP_URL =
+  "https://wa.me/573000000000?text=Hi,%20I%20need%20a%20repair";
 
 const DEVICES = [
   {
@@ -48,85 +61,101 @@ const DEVICES = [
     ],
     accent: "from-violet-500/10 to-purple-500/5",
   },
-];
+] satisfies Device[];
+
+function DeviceCard({ device }: { device: Device }) {
+  return (
+    <li>
+      <Card className={`h-full bg-linear-to-br ${device.accent}`}>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3">
+            <div
+              className="h-11 w-11 rounded-xl border border-border bg-background flex items-center justify-center"
+              aria-hidden
+            >
+              <HugeiconsIcon icon={device.icon} size={22} />
+            </div>
+
+            <p className="text-lg font-semibold">{device.title}</p>
+          </CardTitle>
+
+          <CardDescription>
+            <p className="text-sm font-normal text-muted-foreground">
+              {device.description}
+            </p>
+          </CardDescription>
+        </CardHeader>
+
+        <Separator aria-hidden />
+
+        <CardContent className="flex-1">
+          <ul
+            className="grid md:grid-cols-2 gap-2"
+            aria-label={`${device.title} repair issues`}
+          >
+            {device.issues.map((issue) => (
+              <li key={issue} className="flex items-center gap-2 text-sm">
+                <HugeiconsIcon
+                  icon={Tick02Icon}
+                  size={15}
+                  strokeWidth={3}
+                  className="text-emerald-500 shrink-0"
+                  aria-hidden
+                />
+                {issue}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+
+        <CardFooter className="justify-center">
+          <Button asChild>
+            <Link
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Request a ${device.title} repair on WhatsApp`}
+            >
+              Request this repair
+              <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </li>
+  );
+}
 
 export function WhatWeRepair() {
   return (
-    <section id="what-we-repair" className="py-22 bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col gap-4 max-w-2xl mb-12">
-          <Badge>What we repair</Badge>
+    <section
+      id="what-we-repair"
+      className="bg-muted/30 mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 space-y-4"
+      aria-labelledby="what-we-repair-heading"
+    >
+      <div className="flex flex-col gap-4">
+        <Badge>What we repair</Badge>
 
-          <h2 className="text-4xl font-bold tracking-tight">
-            Every device,
-            <br />
-            every problem.
-          </h2>
+        <h2
+          id="what-we-repair-heading"
+          className="text-4xl font-bold tracking-tight"
+        >
+          Every device,
+          <br />
+          every problem.
+        </h2>
 
-          <p className="text-muted-foreground text-lg">
-            From a cracked screen to a full motherboard replacement — we handle
-            it all with precision and care.
-          </p>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          {DEVICES.map((device) => (
-            <Card
-              key={device.title}
-              className={`bg-linear-to-br ${device.accent}`}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="h-11 w-11 rounded-xl border border-border bg-background flex items-center justify-center">
-                    <HugeiconsIcon icon={device.icon} size={22} />
-                  </div>
-
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-lg font-semibold">
-                      {device.title}
-                    </span>
-
-                    <span className="text-sm font-normal text-muted-foreground">
-                      {device.description}
-                    </span>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-
-              <Separator />
-
-              <CardContent className="pt-5">
-                <ul className="grid grid-cols-2 gap-2">
-                  {device.issues.map((issue) => (
-                    <li key={issue} className="flex items-center gap-2 text-sm">
-                      <HugeiconsIcon
-                        icon={Tick02Icon}
-                        size={15}
-                        strokeWidth={3}
-                        className="text-emerald-500 shrink-0"
-                      />
-                      {issue}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-
-              <CardFooter className="justify-center">
-                <Button asChild>
-                  <Link
-                    href="https://wa.me/573000000000?text=Hi,%20I%20need%20a%20repair"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Request this repair
-                    <HugeiconsIcon icon={ArrowRight02Icon} />
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        <p className="max-w-lg text-muted-foreground text-lg text-justify lg:text-left">
+          From a cracked screen to a full motherboard replacement — we handle it
+          all with precision and care.
+        </p>
       </div>
+
+      <ul className="grid gap-6 sm:grid-cols-2">
+        {DEVICES.map((device) => (
+          <DeviceCard key={device.title} device={device} />
+        ))}
+      </ul>
     </section>
   );
 }

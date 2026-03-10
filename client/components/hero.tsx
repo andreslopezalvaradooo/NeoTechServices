@@ -72,7 +72,7 @@ const ORDERS = [
   },
 ] satisfies Order[];
 
-const WORKSHOP_CAPACITY = 72;
+const CAPACITY = 72;
 
 const STATS = [
   { value: "500+", label: "Clients served" },
@@ -164,10 +164,10 @@ function DashboardCard() {
       <CardFooter className="flex-col gap-1.5">
         <div className="w-full flex justify-between text-[10px] text-muted-foreground">
           <span>Workshop capacity</span>
-          <span>{WORKSHOP_CAPACITY}%</span>
+          <span>{CAPACITY}%</span>
         </div>
 
-        <Progress value={WORKSHOP_CAPACITY} className="h-1.5" />
+        <Progress value={CAPACITY} className="h-1.5" />
       </CardFooter>
     </Card>
   );
@@ -200,7 +200,6 @@ export function Hero() {
     >
       {/* Info + Dashboard */}
       <div className="w-full grid md:grid-cols-2 gap-4 justify-center">
-        {/* Left: Info */}
         <div className="flex flex-col justify-between gap-4">
           <Badge>
             <span
@@ -257,7 +256,6 @@ export function Hero() {
             </Button>
           </div>
 
-          {/* Stats */}
           <ul className="flex gap-1 lg:gap-2" aria-label="Key statistics">
             {STATS.map((stat, i) => (
               <li
@@ -282,9 +280,9 @@ export function Hero() {
           </ul>
         </div>
 
-        {/* Right: Dashboard */}
-        <div className="w-full pb-4 pl-4 grid justify-center">
-          <div className="w-full relative max-w-md">
+        {/* Dashboard */}
+        <div className="w-full pb-4 pl-4 flex justify-center items-center">
+          <div className="relative w-full max-w-md">
             <DashboardCard />
             <FloatingNotification />
           </div>
