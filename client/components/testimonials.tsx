@@ -4,6 +4,13 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { StarIcon } from "@hugeicons/core-free-icons";
 
+interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  rating: number;
+}
+
 const TESTIMONIALS = [
   {
     name: "Laura Martínez",
@@ -33,11 +40,15 @@ const TESTIMONIALS = [
       "They developed the web app for my business and I was very satisfied. They met deadlines and the result exceeded my expectations.",
     rating: 4,
   },
-];
+] satisfies Testimonial[];
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5">
+    <div
+      className="flex gap-0.5"
+      role="img"
+      aria-label={`${rating} out of 5 stars`}
+    >
       {Array.from({ length: 5 }).map((_, i) => (
         <HugeiconsIcon
           key={i}
@@ -45,60 +56,72 @@ function StarRating({ rating }: { rating: number }) {
           size={15}
           fill={i < rating ? "#fbbf24" : "transparent"}
           color={i < rating ? "#fbbf24" : "currentColor"}
+          aria-hidden
         />
       ))}
     </div>
   );
 }
 
+function TestimonialCard({ t }: { t: Testimonial }) {
+  const initials = t.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+
+  return (
+    <li>
+      <Card className="h-full border-border bg-muted/20 hover:bg-muted/40 transition-colors">
+        <CardHeader>
+          <StarRating rating={t.rating} />
+        </CardHeader>
+
+        <CardContent className="flex-1 flex items-center text-sm text-muted-foreground leading-relaxed">
+          <blockquote>&ldquo;{t.content}&rdquo;</blockquote>
+        </CardContent>
+
+        <CardFooter className="flex items-center gap-3">
+          <Avatar className="h-9 w-9 border border-border" aria-hidden>
+            <AvatarFallback className="text-sm font-bold bg-muted">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+
+          <div>
+            <p className="text-sm font-semibold">{t.name}</p>
+            <p className="text-xs text-muted-foreground">{t.role}</p>
+          </div>
+        </CardFooter>
+      </Card>
+    </li>
+  );
+}
+
 export function Testimonials() {
   return (
-    <section id="testimonials" className="py-22 bg-background">
-      <div className="flex flex-col gap-6 mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="space-y-4 max-w-xl">
-          <Badge>Testimonials</Badge>
+    <section
+      id="testimonials"
+      className="bg-background mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 space-y-4"
+      aria-labelledby="testimonials-heading"
+    >
+      <div className="space-y-4">
+        <Badge>Testimonials</Badge>
 
-          <h2 className="text-4xl font-bold tracking-tight">
-            What our clients
-            <br />
-            are saying.
-          </h2>
-        </div>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {TESTIMONIALS.map((t) => (
-            <Card
-              key={t.name}
-              className="border-border bg-muted/20 hover:bg-muted/40 transition-colors"
-            >
-              <CardHeader>
-                <StarRating rating={t.rating} />
-              </CardHeader>
-
-              <CardContent className="flex-1 flex items-center space-y-4">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  &ldquo;{t.content}&rdquo;
-                </p>
-              </CardContent>
-
-              <CardFooter>
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-9 w-9 border border-border">
-                    <AvatarFallback className="text-sm font-bold bg-muted">
-                      {t.name[0]}
-                    </AvatarFallback>
-                  </Avatar>
-
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
-                  </div>
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        <h2
+          id="testimonials-heading"
+          className="text-4xl font-bold tracking-tight"
+        >
+          What our clients
+          <br />
+          are saying.
+        </h2>
       </div>
+
+      <ul className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {TESTIMONIALS.map((t) => (
+          <TestimonialCard key={t.name} t={t} />
+        ))}
+      </ul>
     </section>
   );
 }

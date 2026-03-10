@@ -41,56 +41,59 @@ const FAQS = [
     answer:
       "Yes, we offer business plans with monthly maintenance, priority support, and special pricing for device fleets. Contact us for a personalized quote.",
   },
-];
+] satisfies { question: string; answer: string }[];
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-22 bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 grid gap-16 lg:grid-cols-2">
-        <div className="space-y-4">
-          <Badge>FAQ</Badge>
+    <section
+      id="faq"
+      className="bg-muted/30 mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 flex flex-col md:flex-row gap-8"
+      aria-labelledby="faq-heading"
+    >
+      <div className="space-y-4">
+        <Badge>FAQ</Badge>
 
-          <h2 className="text-4xl font-bold tracking-tight">
-            Frequently asked
-            <br />
-            questions.
-          </h2>
+        <h2 id="faq-heading" className="text-4xl font-bold tracking-tight">
+          Frequently asked
+          <br />
+          questions.
+        </h2>
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            Have questions? Here we answer the most common ones. If you can't
-            find your answer, reach out to us directly.
-          </p>
+        <p className="max-w-lg text-muted-foreground text-lg leading-relaxed text-justify lg:text-left">
+          Have questions? Here we answer the most common ones. If you can't find
+          your answer, reach out to us directly.
+        </p>
 
-          <Button asChild>
-            <Link
-              href="https://wa.me/573000000000"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <HugeiconsIcon icon={WhatsappIcon} strokeWidth={2} />
-              Ask on WhatsApp
-            </Link>
-          </Button>
-        </div>
-
-        <Accordion type="single" collapsible className="space-y-1">
-          {FAQS.map((faq, i) => (
-            <AccordionItem
-              key={i}
-              value={`faq-${i}`}
-              className="border border-border rounded-xl px-5 bg-background"
-            >
-              <AccordionTrigger className="text-sm font-medium hover:no-underline text-left">
-                {faq.question}
-              </AccordionTrigger>
-
-              <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <Button asChild>
+          <Link
+            href="https://wa.me/573000000000"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ask a question on WhatsApp"
+          >
+            <HugeiconsIcon icon={WhatsappIcon} strokeWidth={2} aria-hidden />
+            Ask on WhatsApp
+          </Link>
+        </Button>
       </div>
+
+      <Accordion type="single" collapsible className="space-y-1">
+        {FAQS.map((faq) => (
+          <AccordionItem
+            key={faq.question}
+            value={faq.question}
+            className="border border-border rounded-xl px-5 bg-background"
+          >
+            <AccordionTrigger className="text-sm font-medium hover:no-underline text-left">
+              {faq.question}
+            </AccordionTrigger>
+
+            <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </section>
   );
 }

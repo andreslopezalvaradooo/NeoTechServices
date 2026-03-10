@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   BubbleChatIcon,
   LaborIcon,
@@ -12,6 +12,13 @@ import {
   TwentyFourHoursClockIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import type { IconSvgElement } from "@hugeicons/react";
+
+interface Feature {
+  icon: IconSvgElement;
+  title: string;
+  description: string;
+}
 
 const FEATURES = [
   {
@@ -50,55 +57,64 @@ const FEATURES = [
     description:
       "Active follow-up after every service to ensure your full satisfaction.",
   },
-];
+] satisfies Feature[];
+
+function FeatureCard({ feature }: { feature: Feature }) {
+  return (
+    <li>
+      <Card className="h-full bg-muted/20 hover:bg-muted/40 transition-colors">
+        <CardHeader>
+          <HugeiconsIcon icon={feature.icon} aria-hidden />
+
+          <CardTitle className="font-semibold text-sm">
+            {feature.title}
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            {feature.description}
+          </p>
+        </CardContent>
+      </Card>
+    </li>
+  );
+}
 
 export function Features() {
   return (
-    <section id="features" className="py-22 bg-background">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 grid gap-8 lg:grid-cols-2 items-center">
-        <div className="space-y-6">
-          <Badge>Why us?</Badge>
+    <section
+      id="features"
+      className="bg-background mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 space-y-4"
+      aria-labelledby="features-heading"
+    >
+      <div className="space-y-4">
+        <Badge>Why us?</Badge>
 
-          <h2 className="text-4xl font-bold tracking-tight">
-            More than a repair.
-            <br />A relationship built on trust.
-          </h2>
+        <h2 id="features-heading" className="text-4xl font-bold tracking-tight">
+          More than a repair.
+          <br />A relationship built on trust.
+        </h2>
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            We have been solving technology problems in Bogotá for over 8 years.
-            We are not just technicians — we are your long-term technology
-            partner.
-          </p>
+        <p className="max-w-lg text-muted-foreground text-lg leading-relaxed text-justify md:text-left">
+          We have been solving technology problems in Bogotá for over 8 years.
+          We are not just technicians — we are your long-term technology
+          partner.
+        </p>
 
-          <Button asChild>
-            <Link href="#contact">
-              Talk to a technician
-              <HugeiconsIcon icon={ArrowRight02Icon} />
-            </Link>
-          </Button>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          {FEATURES.map((feature) => (
-            <Card
-              key={feature.title}
-              className="bg-muted/20 hover:bg-muted/40 transition-colors"
-            >
-              <CardHeader>
-                <HugeiconsIcon icon={feature.icon} />
-
-                <h3 className="font-semibold text-sm">{feature.title}</h3>
-              </CardHeader>
-
-              <CardContent>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Button asChild>
+          <Link href="#contact">
+            Talk to a technician
+            <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
+          </Link>
+        </Button>
       </div>
+
+      <ul className="grid gap-4 grid-cols-2 md:grid-cols-3">
+        {FEATURES.map((feature) => (
+          <FeatureCard key={feature.title} feature={feature} />
+        ))}
+      </ul>
     </section>
   );
 }
