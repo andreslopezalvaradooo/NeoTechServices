@@ -1,0 +1,1 @@
+UPDATE _prisma_migrations SET checksum = (SELECT md5('-- migration recovered')) WHERE migration_name = '20260313150232_add_ticket_number_and_code';

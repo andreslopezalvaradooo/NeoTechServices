@@ -1,0 +1,1 @@
+DELETE FROM _prisma_migrations WHERE migration_name = '20260313154719_fix_ticketcode_default';

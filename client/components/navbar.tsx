@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -19,22 +21,45 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Menu03Icon } from "@hugeicons/core-free-icons";
+import { Menu03Icon, VariableIcon } from "@hugeicons/core-free-icons";
 import { cn } from "@/src/lib/utils";
+import { usePathname } from "next/navigation";
+import { signOut, useSession } from "@/src/lib/auth-client";
+import { Spinner } from "@/components/ui/spinner";
 
 interface NavLink {
   label: string;
   href: string;
 }
 
-const LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
-] satisfies NavLink[];
+const LINKS_BY_PATH: Record<string, NavLink[]> = {
+  "/": [
+    { label: "Services", href: "#services" },
+    { label: "Features", href: "#features" },
+    { label: "Testimonials", href: "#testimonials" },
+    { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "#contact" },
+  ],
+  "/repair": [
+    { label: "Request", href: "#request" },
+    { label: "What we repair", href: "#what-we-repair" },
+    { label: "Process", href: "#process" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Warranty", href: "#warranty" },
+    { label: "FAQ", href: "#faq" },
+  ],
+};
+
+const DEFAULT_LINKS: NavLink[] = [
+  { label: "Home", href: "/" },
+  { label: "Repair", href: "/repair" },
+  { label: "Store", href: "/store" },
+];
+
+function useNavLinks(): NavLink[] {
+  const pathname = usePathname();
+  return LINKS_BY_PATH[pathname] ?? DEFAULT_LINKS;
+}
 
 function Logo() {
   return (
@@ -51,6 +76,8 @@ function Logo() {
 }
 
 function MobileNav() {
+  const links = useNavLinks();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -76,7 +103,7 @@ function MobileNav() {
           className="h-full flex flex-col gap-4 justify-center items-center"
           aria-label="Mobile navigation"
         >
-          {LINKS.map((link) => (
+          {links.map((link) => (
             <SheetClose key={link.label} asChild>
               <Link href={link.href} className={navigationMenuTriggerStyle()}>
                 {link.label}
@@ -107,16 +134,17 @@ function MobileNav() {
 }
 
 function DesktopNav() {
+  const links = useNavLinks();
+  const { data: session, isPending } = useSession();
+
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="h-16 mx-auto max-w-6xl px-6 lg:px-8 flex items-center justify-between">
-        {/* Logo */}
         <Logo />
 
-        {/* Links */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="gap-1">
-            {LINKS.map((link) => (
+            {links.map((link) => (
               <NavigationMenuItem key={link.label}>
                 <NavigationMenuLink
                   asChild
@@ -137,14 +165,23 @@ function DesktopNav() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* CTA */}
         <div className="hidden md:flex items-center gap-2">
-          <Link
-            href="/sign-in"
-            className={buttonVariants({ variant: "ghost" })}
-          >
-            Sign In
-          </Link>
+          {isPending ? (
+            <div className={buttonVariants({ variant: "ghost" })}>
+              <Spinner />
+            </div>
+          ) : session?.user ? (
+            <Button variant="ghost" onClick={() => signOut()}>
+              Sign Out
+            </Button>
+          ) : (
+            <Link
+              href="/sign-in"
+              className={buttonVariants({ variant: "ghost" })}
+            >
+              Sign In
+            </Link>
+          )}
 
           <Link
             href="/store"
@@ -154,7 +191,6 @@ function DesktopNav() {
           </Link>
         </div>
 
-        {/* Mobile trigger */}
         <div className="md:hidden">
           <MobileNav />
         </div>

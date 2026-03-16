@@ -10,7 +10,9 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { WhatsappIcon } from "@hugeicons/core-free-icons";
 
-const REPAIR_FAQS = [
+const WHATSAPP_URL = "https://wa.me/573000000000";
+
+const FAQS = [
   {
     question: "Do I need an appointment to bring in my device?",
     answer:
@@ -51,60 +53,57 @@ const REPAIR_FAQS = [
     answer:
       "Yes. For software issues, configurations, and performance problems, we can connect remotely (with your permission) and resolve them without you needing to visit us.",
   },
-];
+] satisfies { question: string; answer: string }[];
 
 export function RepairFAQ() {
   return (
-    <section id="faq" className="py-22 bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid gap-16 lg:grid-cols-2">
-          {/* Copy */}
-          <div className="flex flex-col gap-4">
-            <Badge>FAQ</Badge>
+    <section
+      id="faq"
+      className="bg-muted/30 mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 grid gap-16 md:grid-cols-2"
+      aria-labelledby="faq-heading"
+    >
+      <div className="flex flex-col gap-4">
+        <Badge>FAQ</Badge>
+        <h2 id="faq-heading" className="text-4xl font-bold tracking-tight">
+          Frequently asked
+          <br />
+          questions.
+        </h2>
+        <p className="max-w-lg text-muted-foreground text-lg leading-relaxed text-justify lg:text-left">
+          Everything you need to know about our repair service. Still have
+          questions? Reach out and we'll answer right away.
+        </p>
 
-            <h2 className="text-4xl font-bold tracking-tight">
-              Frequently asked
-              <br />
-              questions.
-            </h2>
-
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              Everything you need to know about our repair service. Still have
-              questions? Reach out and we'll answer right away.
-            </p>
-
-            <Button asChild>
-              <Link
-                href="https://wa.me/573000000000"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <HugeiconsIcon icon={WhatsappIcon} strokeWidth={2} />
-                Ask on WhatsApp
-              </Link>
-            </Button>
-          </div>
-
-          {/* Accordion */}
-          <Accordion type="single" collapsible className="space-y-1">
-            {REPAIR_FAQS.map((faq, i) => (
-              <AccordionItem
-                key={i}
-                value={`faq-${i}`}
-                className="border border-border rounded-xl px-5 bg-background"
-              >
-                <AccordionTrigger className="text-sm font-medium py-3 hover:no-underline text-left">
-                  {faq.question}
-                </AccordionTrigger>
-
-                <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+        <Button asChild className="w-fit">
+          <Link
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ask a question on WhatsApp"
+          >
+            <HugeiconsIcon icon={WhatsappIcon} strokeWidth={2} aria-hidden />
+            Ask on WhatsApp
+          </Link>
+        </Button>
       </div>
+
+      <Accordion type="single" collapsible className="space-y-1">
+        {FAQS.map((faq) => (
+          <AccordionItem
+            key={faq.question}
+            value={faq.question}
+            className="border border-border rounded-xl px-5 bg-background"
+          >
+            <AccordionTrigger className="text-sm font-medium py-3 hover:no-underline text-left">
+              {faq.question}
+            </AccordionTrigger>
+
+            <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </section>
   );
 }

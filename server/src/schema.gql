@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Repair model"""
+type Repair {
+  id: ID!
+  ticketNumber: Int!
+  ticketCode: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  phone: String!
+  email: String!
+  type: String!
+  brand: String!
+  model: String!
+  issue: String!
+  problem: String!
+  userId: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  health: String!
+  trackRepair(input: TrackRepairInput!): Repair!
+  findRepairsByEmail(input: FindRepairsByEmailInput!): [Repair!]!
+  myRepairs: [Repair!]!
+}
+
+input TrackRepairInput {
+  ticketCode: String!
+}
+
+input FindRepairsByEmailInput {
+  email: String!
+}
+
+type Mutation {
+  createRepair(input: CreateRepairInput!): Repair!
+}
+
+input CreateRepairInput {
+  name: String!
+  phone: String!
+  email: String!
+  type: String!
+  brand: String!
+  model: String!
+  issue: String!
+  problem: String!
+}

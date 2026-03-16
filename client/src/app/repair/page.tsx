@@ -10,12 +10,12 @@ export default function RepairPage() {
   return (
     <div>
       <RepairHero />
+      <RepairForm />
       <WhatWeRepair />
       <RepairProcess />
       <RepairPricing />
       <RepairWarranty />
       <RepairFAQ />
-      <RepairForm />
     </div>
   );
 }

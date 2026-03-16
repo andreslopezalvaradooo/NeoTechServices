@@ -71,7 +71,7 @@ export function SigninForm({ className, ...props }: SigninFormProps) {
                 <h1 className="text-2xl font-bold">Welcome back</h1>
 
                 <p className="text-muted-foreground text-balance">
-                  Login to your Acme Inc account
+                  Login to your NeoTech Services account
                 </p>
               </div>
 
@@ -183,12 +183,7 @@ export function SigninForm({ className, ...props }: SigninFormProps) {
           </form>
 
           <div className="bg-muted relative hidden md:block">
-            <Image width={450} height={450} src="/NTS-logo.svg" alt="logo" />
-            {/* <img
-              src="/NTS-logo.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            /> */}
+            <Image fill src="/NTS-logo.svg" alt="NTS logo" />
           </div>
         </CardContent>
       </Card>

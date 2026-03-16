@@ -144,7 +144,6 @@ export function RepairHero() {
       className="mx-auto max-w-6xl p-4 lg:p-8 flex flex-col md:flex-row gap-4"
       aria-labelledby="repair-hero-heading"
     >
-      {/* Info */}
       <div className="w-full flex flex-col gap-4">
         <Badge>
           <span
@@ -209,7 +208,6 @@ export function RepairHero() {
         </ul>
       </div>
 
-      {/* Dashboard */}
       <div className="w-full pb-4 pl-4 flex justify-center items-center">
         <div className="relative w-full max-w-md">
           <DashboardCard />

@@ -230,12 +230,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
           </form>
 
           <div className="bg-muted relative hidden md:block">
-            <Image width={450} height={450} src="/NTS-logo.svg" alt="logo" />
-            {/* <img
-              src="/NTS-logo.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            /> */}
+            <Image fill src="/NTS-logo.svg" alt="NTS logo" />
           </div>
         </CardContent>
       </Card>
