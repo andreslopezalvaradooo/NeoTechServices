@@ -21,11 +21,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Menu03Icon, VariableIcon } from "@hugeicons/core-free-icons";
+import { Menu03Icon } from "@hugeicons/core-free-icons";
 import { cn } from "@/src/lib/utils";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "@/src/lib/auth-client";
+import { useSession } from "@/src/lib/auth-client";
 import { Spinner } from "@/components/ui/spinner";
+import { DropdownMenuAvatar } from "./menu-avatar";
 
 interface NavLink {
   label: string;
@@ -170,18 +171,14 @@ function DesktopNav() {
             <div className={buttonVariants({ variant: "ghost" })}>
               <Spinner />
             </div>
-          ) : session?.user ? (
-            <Button variant="ghost" onClick={() => signOut()}>
-              Sign Out
-            </Button>
-          ) : (
+          ) : !session?.user ? (
             <Link
               href="/sign-in"
               className={buttonVariants({ variant: "ghost" })}
             >
               Sign In
             </Link>
-          )}
+          ) : null}
 
           <Link
             href="/store"
@@ -190,6 +187,8 @@ function DesktopNav() {
             View Catalog
           </Link>
         </div>
+
+        {!isPending && session?.user && <DropdownMenuAvatar />}
 
         <div className="md:hidden">
           <MobileNav />

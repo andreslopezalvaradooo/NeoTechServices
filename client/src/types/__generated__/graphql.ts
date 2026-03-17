@@ -101,3 +101,8 @@ export type FindRepairsByEmailQueryVariables = Exact<{
 
 
 export type FindRepairsByEmailQuery = { findRepairsByEmail: Array<{ __typename: 'Repair', ticketCode: string, createdAt: string, name: string, phone: string, email: string, type: string, brand: string, model: string, issue: string, problem: string }> };
+
+export type MyRepairsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyRepairsQuery = { myRepairs: Array<{ __typename: 'Repair', ticketCode: string, createdAt: string, name: string, phone: string, email: string, type: string, brand: string, model: string, issue: string, problem: string }> };

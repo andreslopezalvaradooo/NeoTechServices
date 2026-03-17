@@ -44,8 +44,6 @@ type FindValues = z.infer<typeof findSchema>;
 type TrackedRepair = NonNullable<TrackRepairQuery["trackRepair"]>;
 type FoundRepairs = NonNullable<FindRepairsByEmailQuery["findRepairsByEmail"]>;
 
-// ─── TrackForm ────────────────────────────────────────────────────────────────
-
 function TrackForm({ onResult }: { onResult: (r: TrackedRepair) => void }) {
   const [trackRepair, { loading, error }] = useLazyQuery(TRACK_REPAIR);
 
@@ -268,7 +266,7 @@ export default function FindRepair() {
 
   return (
     <section
-      className="bg-green-600 mx-auto max-w-6xl px-4 lg:px-8 pt-20 pb-4 lg:pb-8 space-y-4"
+      className="mx-auto max-w-6xl px-4 lg:px-8 pt-20 pb-4 lg:pb-8 space-y-4"
       aria-labelledby="find-repair-heading"
     >
       <div className="flex flex-col md:flex-row gap-4">

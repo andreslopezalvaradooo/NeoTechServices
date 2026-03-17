@@ -15,6 +15,7 @@ function makeClient() {
       // Optional: Next.js-specific fetch options
       // Note: This doesn't work with `export const dynamic = "force-static"`
     },
+    credentials: "include",
   });
 
   return new ApolloClient({
