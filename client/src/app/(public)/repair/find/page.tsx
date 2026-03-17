@@ -10,10 +10,6 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  FIND_REPAIRS_BY_EMAIL,
-  TRACK_REPAIR,
-} from "@/src/lib/mutations/repair";
 import { useLazyQuery } from "@apollo/client/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -26,6 +22,7 @@ import type {
   TrackRepairQuery,
   FindRepairsByEmailQuery,
 } from "@/src/types/__generated__/graphql";
+import { FIND_REPAIRS_BY_EMAIL, TRACK_REPAIR } from "@/src/lib/queries/repair";
 
 const trackSchema = z.object({
   ticketCode: z
