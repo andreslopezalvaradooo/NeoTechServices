@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 
-type TrackedRepair = NonNullable<TrackRepairQuery["repairByTicketCode"]>;
+type TrackedRepair = NonNullable<TrackRepairQuery["trackRepair"]>;
 
 const trackSchema = z.object({
   ticketCode: z

@@ -1,5 +1,4 @@
 import { betterAuth } from "better-auth";
-// import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import prisma from "./prisma";
 

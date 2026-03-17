@@ -118,7 +118,7 @@ export default function MyRepairs() {
           </CardContent>
         </Card>
       ) : (
-        <ul className="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4">
+        <ul className="grid sm:grid-cols-2  lg:grid-cols-3 gap-4">
           {repairs.map((r) => (
             <li key={r.ticketCode}>
               <RepairCard repair={r} />
