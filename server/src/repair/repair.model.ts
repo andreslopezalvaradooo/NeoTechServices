@@ -1,5 +1,13 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import type { Repair as PrismaRepair } from '../generated/prisma/client.js';
+import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  RepairStatus,
+  type Repair as PrismaRepair,
+} from '../generated/prisma/client.js';
+
+registerEnumType(RepairStatus, {
+  name: 'RepairStatus',
+  description: 'Current status of a repair ticket',
+});
 
 @ObjectType({ description: 'Repair model' })
 export class Repair implements Pick<
@@ -16,6 +24,7 @@ export class Repair implements Pick<
   | 'model'
   | 'issue'
   | 'problem'
+  | 'status'
   | 'userId'
 > {
   @Field(() => ID)
@@ -25,7 +34,7 @@ export class Repair implements Pick<
   ticketNumber: number;
 
   @Field(() => String)
-  ticketCode: string; // campo normal, lo resuelve el resolver
+  ticketCode: string;
 
   @Field()
   createdAt: Date;
@@ -56,6 +65,9 @@ export class Repair implements Pick<
 
   @Field()
   problem: string;
+
+  @Field(() => RepairStatus)
+  status: RepairStatus;
 
   @Field(() => String, { nullable: true })
   userId: string | null;

@@ -1,6 +1,6 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import "./globals.css";
 import { ApolloWrapper } from "../lib/apollo-wrapper";
 import { TooltipProvider } from "@/components/ui/tooltip";
 

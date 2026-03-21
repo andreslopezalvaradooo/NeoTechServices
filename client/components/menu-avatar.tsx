@@ -20,10 +20,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 export function DropdownMenuAvatar() {
-  const { data: session, isPending } = useSession();
+  const { data: session, isPending, error } = useSession();
   const user = session?.user;
-
-  console.log(user);
 
   return (
     <DropdownMenu>

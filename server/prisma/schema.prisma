@@ -65,8 +65,8 @@ model verification {
 }
 
 model Repair {
-  id           String   @id @default(cuid())
-  ticketNumber Int      @unique @default(autoincrement())
+  id           String       @id @default(cuid())
+  ticketNumber Int          @unique @default(autoincrement())
   name         String
   phone        String
   email        String
@@ -75,8 +75,35 @@ model Repair {
   model        String
   issue        String
   problem      String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  status       RepairStatus @default(pending)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   userId       String?
-  user         user?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events       RepairEvent[]
+}
+
+enum RepairStatus {
+  pending
+  in_progress
+  waiting_parts
+  completed
+}
+
+model RepairEvent {
+  id        String      @id @default(cuid())
+  type      ActivityType
+  repairId  String
+  repair    Repair      @relation(fields: [repairId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  @@index([repairId])
+}
+
+enum ActivityType {
+  assigned
+  completed
+  waiting
+  approval
+  created
 }

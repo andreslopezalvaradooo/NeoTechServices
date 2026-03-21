@@ -9,7 +9,6 @@ import {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    // Use an absolute URL for SSR
     uri: "http://localhost:4000/graphql",
     fetchOptions: {
       // Optional: Next.js-specific fetch options

@@ -1,6 +1,6 @@
 import MyRepairs from "@/components/my-repairs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PreloadQuery } from "@/src/lib/apollo-server-client";
+import { PreloadQuery } from "@/src/lib/apollo-client";
 import { MY_REPAIRS } from "@/src/lib/queries/repair";
 import { Suspense } from "react";
 

@@ -2,9 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import { CreateRepairInput } from './dto/create-repair.input.js';
 import { Repair } from './repair.model.js';
-import { Repair as PrismaRepair } from '../generated/prisma/client.js';
+import {
+  ActivityType,
+  Repair as PrismaRepair,
+} from '../generated/prisma/client.js';
 import { TrackRepairInput } from './dto/track-repair.input.js';
 import { FindRepairsByEmailInput } from './dto/find-repairs-by-email.input.js';
+import { ActivityFeedItem } from './dto/activity-feed-item.js';
+import { RepairStats } from './repair-stats.js';
 
 @Injectable()
 export class RepairService {
@@ -66,5 +71,95 @@ export class RepairService {
     });
 
     return repairs.map((repair) => this.toRepairModel(repair));
+  }
+
+  private buildMessage(type: ActivityType, ticketCode: string): string {
+    const messages: Record<ActivityType, string> = {
+      assigned: `Technician assigned to ${ticketCode}`,
+      completed: `${ticketCode} marked as completed`,
+      waiting: `${ticketCode} waiting on spare part`,
+      approval: `Approval needed for ${ticketCode}`,
+      created: `New repair ${ticketCode} submitted`,
+    };
+    return messages[type] ?? `Update on ${ticketCode}`;
+  }
+
+  async getActivityFeed(
+    userId: string,
+    limit = 4,
+  ): Promise<ActivityFeedItem[]> {
+    const events = await this.prisma.repairEvent.findMany({
+      where: { repair: { userId } },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      include: { repair: { select: { ticketNumber: true } } },
+    });
+
+    return events.map((e) => ({
+      id: e.id,
+      type: e.type,
+      message: this.buildMessage(
+        e.type,
+        `REP-${String(e.repair.ticketNumber).padStart(6, '0')}`,
+      ),
+      timestamp: e.createdAt.toISOString(),
+    }));
+  }
+
+  async getRepairStats(userId: string): Promise<RepairStats> {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    const [active, pending, completedThisMonth, completedLastMonth] =
+      await Promise.all([
+        this.prisma.repair.count({ where: { userId, status: 'in_progress' } }),
+        this.prisma.repair.count({ where: { userId, status: 'pending' } }),
+        this.prisma.repair.count({
+          where: {
+            userId,
+            status: 'completed',
+            updatedAt: { gte: startOfMonth },
+          },
+        }),
+        this.prisma.repair.count({
+          where: {
+            userId,
+            status: 'completed',
+            updatedAt: { gte: startOfLastMonth, lt: startOfMonth },
+          },
+        }),
+      ]);
+
+    const completedRepairs = await this.prisma.repair.findMany({
+      where: { userId, status: 'completed' },
+      select: { createdAt: true, updatedAt: true },
+    });
+
+    const avgDays =
+      completedRepairs.length > 0
+        ? completedRepairs.reduce((acc, r) => {
+            const days =
+              (r.updatedAt.getTime() - r.createdAt.getTime()) / 86_400_000;
+            return acc + days;
+          }, 0) / completedRepairs.length
+        : 0;
+
+    const completedDelta =
+      completedLastMonth > 0
+        ? Math.round(
+            ((completedThisMonth - completedLastMonth) / completedLastMonth) *
+              100,
+          )
+        : 0;
+
+    return {
+      active,
+      activeDelta: 0, // puedes calcular comparando con la semana pasada si lo necesitas
+      pending,
+      completed: completedThisMonth,
+      completedDelta,
+      avgDays: Math.round(avgDays * 10) / 10,
+    };
   }
 }

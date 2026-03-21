@@ -1,1 +1,0 @@
-DELETE FROM _prisma_migrations WHERE migration_name = '20260313150232_add_ticket_number_and_code';

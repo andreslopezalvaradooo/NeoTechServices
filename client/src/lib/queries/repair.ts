@@ -1,12 +1,19 @@
 import {
   FindRepairsByEmailQuery,
   FindRepairsByEmailQueryVariables,
+  GetActivityFeedQuery,
+  GetActivityFeedQueryVariables,
+  GetRecentRepairsQuery,
+  GetRecentRepairsQueryVariables,
+  GetRepairStatsQuery,
+  GetRepairStatsQueryVariables,
   MyRepairsQuery,
   MyRepairsQueryVariables,
   TrackRepairQuery,
   TrackRepairQueryVariables,
 } from "@/src/types/__generated__/graphql";
 import { gql, TypedDocumentNode } from "@apollo/client";
+import { REPAIR_BASE_FIELDS } from "../fragments/repair";
 
 export const TRACK_REPAIR: TypedDocumentNode<
   TrackRepairQuery,
@@ -52,18 +59,61 @@ export const MY_REPAIRS: TypedDocumentNode<
   MyRepairsQuery,
   MyRepairsQueryVariables
 > = gql`
+  ${REPAIR_BASE_FIELDS}
   query MyRepairs {
     myRepairs {
-      ticketCode
+      ...RepairBaseFields
       createdAt
       name
       phone
       email
       type
-      brand
-      model
       issue
       problem
+    }
+  }
+`;
+
+export const GET_RECENT_REPAIRS: TypedDocumentNode<
+  GetRecentRepairsQuery,
+  GetRecentRepairsQueryVariables
+> = gql`
+  ${REPAIR_BASE_FIELDS}
+  query GetRecentRepairs {
+    myRepairs {
+      ...RepairBaseFields
+      updatedAt
+      id
+    }
+  }
+`;
+
+export const GET_ACTIVITY_FEED: TypedDocumentNode<
+  GetActivityFeedQuery,
+  GetActivityFeedQueryVariables
+> = gql`
+  query GetActivityFeed($limit: Int) {
+    getActivityFeed(limit: $limit) {
+      id
+      type
+      message
+      timestamp
+    }
+  }
+`;
+
+export const GET_REPAIR_STATS: TypedDocumentNode<
+  GetRepairStatsQuery,
+  GetRepairStatsQueryVariables
+> = gql`
+  query GetRepairStats {
+    getRepairStats {
+      active
+      activeDelta
+      pending
+      completed
+      completedDelta
+      avgDays
     }
   }
 `;

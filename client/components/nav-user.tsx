@@ -19,10 +19,6 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UnfoldMoreIcon,
-  SparklesIcon,
-  CheckmarkBadgeIcon,
-  CreditCardIcon,
-  NotificationIcon,
   LogoutIcon,
   ProfileIcon,
 } from "@hugeicons/core-free-icons";

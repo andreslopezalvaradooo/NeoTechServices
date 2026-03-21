@@ -77,6 +77,7 @@ function TrackForm({ onResult }: { onResult: (r: TrackedRepair) => void }) {
                 <FieldLabel htmlFor="ticketCode">
                   Track by ticket code
                 </FieldLabel>
+                
                 <ButtonGroup>
                   <Input
                     {...field}
@@ -94,6 +95,7 @@ function TrackForm({ onResult }: { onResult: (r: TrackedRepair) => void }) {
               </Field>
             )}
           />
+
           {errors.root && (
             <p className="text-sm text-destructive">{errors.root.message}</p>
           )}

@@ -3,56 +3,26 @@
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  LayoutBottomIcon,
-  AudioWave01Icon,
-  CommandIcon,
-  ComputerTerminalIcon,
-  RoboticIcon,
-  BookOpen02Icon,
-  Settings05Icon,
-  CropIcon,
-  PieChartIcon,
-  MapsIcon,
-  RepairIcon,
-} from "@hugeicons/core-free-icons";
+import { Settings05Icon, RepairIcon } from "@hugeicons/core-free-icons";
 import Image from "next/image";
+import Link from "next/link";
 
-// This is sample data.
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
     avatar: "",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: <HugeiconsIcon icon={LayoutBottomIcon} strokeWidth={2} />,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: <HugeiconsIcon icon={AudioWave01Icon} strokeWidth={2} />,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: <HugeiconsIcon icon={CommandIcon} strokeWidth={2} />,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
       title: "Repairs",
@@ -77,35 +47,21 @@ const data = {
       items: [
         {
           title: "Profile",
-          url: "#",
+          url: "/dashboard/profile",
         },
       ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <HugeiconsIcon icon={CropIcon} strokeWidth={2} />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <HugeiconsIcon icon={PieChartIcon} strokeWidth={2} />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <HugeiconsIcon icon={MapsIcon} strokeWidth={2} />,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { open } = useSidebar();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div
+        <Link
+          href="/dashboard"
           aria-label="NeoTech Services — Dashboard"
           className="flex items-center gap-2 font-bold text-xl text-primary tracking-tight"
         >
@@ -113,12 +69,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             width={30}
             height={30}
             src="/NTS-logo.svg"
-            alt=""
+            alt={open ? "" : "NTS logo"}
             aria-hidden
           />
-          NeoTech
-          <span className="text-muted-foreground font-normal">Services</span>
-        </div>
+          {open && (
+            <>
+              NeoTech
+              <span className="text-muted-foreground font-normal">
+                Services
+              </span>
+            </>
+          )}
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>

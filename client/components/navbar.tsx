@@ -136,7 +136,7 @@ function MobileNav() {
 
 function DesktopNav() {
   const links = useNavLinks();
-  const { data: session, isPending } = useSession();
+  const { data: session, isPending, error } = useSession();
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 shadow-sm">

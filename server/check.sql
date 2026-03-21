@@ -1,1 +1,0 @@
-SELECT column_name, column_default, is_generated FROM information_schema.columns WHERE table_name = 'Repair' ORDER BY ordinal_position;

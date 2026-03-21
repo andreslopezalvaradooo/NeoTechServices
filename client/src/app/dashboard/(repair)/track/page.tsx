@@ -206,8 +206,7 @@ export default function FindRepair() {
           </h2>
 
           <p className="max-w-md text-muted-foreground text-lg leading-relaxed">
-            Enter your ticket code or email address to find the status of your
-            repair.
+            Enter your ticket code to find the status of your repair.
           </p>
         </div>
 
