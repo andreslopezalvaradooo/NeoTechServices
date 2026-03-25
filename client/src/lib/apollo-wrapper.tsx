@@ -9,7 +9,7 @@ import {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "http://localhost:4000/graphql",
+    uri: process.env.NEXT_PUBLIC_API_URL,
     fetchOptions: {
       // Optional: Next.js-specific fetch options
       // Note: This doesn't work with `export const dynamic = "force-static"`
