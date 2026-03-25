@@ -63,7 +63,7 @@ type Query {
   health: String!
   trackRepair(input: TrackRepairInput!): Repair!
   findRepairsByEmail(input: FindRepairsByEmailInput!): [Repair!]!
-  myRepairs: [Repair!]!
+  myRepairs(limit: Int): [Repair!]!
   getActivityFeed(limit: Int = 4): [ActivityFeedItem!]!
   getRepairStats: RepairStats!
 }
@@ -78,12 +78,22 @@ input FindRepairsByEmailInput {
 
 type Mutation {
   createRepair(input: CreateRepairInput!): Repair!
+  newRepair(input: NewRepairInput!): Repair!
 }
 
 input CreateRepairInput {
   name: String!
   phone: String!
   email: String!
+  type: String!
+  brand: String!
+  model: String!
+  issue: String!
+  problem: String!
+}
+
+input NewRepairInput {
+  phone: String!
   type: String!
   brand: String!
   model: String!

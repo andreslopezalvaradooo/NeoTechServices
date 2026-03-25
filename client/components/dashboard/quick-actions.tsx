@@ -5,8 +5,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { RepairIcon, Location01Icon, Home } from "@hugeicons/core-free-icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useSidebar } from "./ui/sidebar";
 import { cn } from "@/src/lib/utils";
+import { useSidebar } from "../ui/sidebar";
 
 const actions = [
   {
@@ -16,7 +16,7 @@ const actions = [
   },
   {
     label: "New repair",
-    href: "/dashboard/repairs/new",
+    href: "/dashboard/new",
     icon: RepairIcon,
   },
   {

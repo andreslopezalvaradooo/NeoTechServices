@@ -80,7 +80,7 @@ export const GET_RECENT_REPAIRS: TypedDocumentNode<
 > = gql`
   ${REPAIR_BASE_FIELDS}
   query GetRecentRepairs {
-    myRepairs {
+    myRepairs(limit: 6) {
       ...RepairBaseFields
       updatedAt
       id

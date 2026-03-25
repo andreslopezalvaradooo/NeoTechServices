@@ -50,11 +50,26 @@ export type FindRepairsByEmailInput = {
 export type Mutation = {
   __typename: 'Mutation';
   createRepair: Repair;
+  newRepair: Repair;
 };
 
 
 export type MutationCreateRepairArgs = {
   input: CreateRepairInput;
+};
+
+
+export type MutationNewRepairArgs = {
+  input: NewRepairInput;
+};
+
+export type NewRepairInput = {
+  brand: Scalars['String']['input'];
+  issue: Scalars['String']['input'];
+  model: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
+  problem: Scalars['String']['input'];
+  type: Scalars['String']['input'];
 };
 
 export type Query = {
@@ -132,6 +147,13 @@ export type CreateRepairMutationVariables = Exact<{
 
 
 export type CreateRepairMutation = { createRepair: { __typename: 'Repair', ticketCode: string, createdAt: string, name: string, phone: string, email: string, type: string, brand: string, model: string, issue: string, problem: string } };
+
+export type NewRepairMutationVariables = Exact<{
+  input: NewRepairInput;
+}>;
+
+
+export type NewRepairMutation = { newRepair: { __typename: 'Repair', ticketCode: string, createdAt: string, name: string, phone: string, email: string, type: string, brand: string, model: string, issue: string, problem: string } };
 
 export type TrackRepairQueryVariables = Exact<{
   input: TrackRepairInput;

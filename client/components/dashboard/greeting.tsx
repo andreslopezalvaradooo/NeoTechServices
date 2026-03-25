@@ -3,7 +3,7 @@
 import { useSession } from "@/src/lib/auth-client";
 import { WavingHand02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
 
 const getGreeting = (hour: number): string => {
   if (hour < 12) return "Good morning";

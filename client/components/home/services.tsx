@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   DeveloperIcon,

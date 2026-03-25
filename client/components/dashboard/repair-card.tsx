@@ -1,17 +1,13 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { MY_REPAIRS } from "@/src/lib/queries/repair";
-import type { MyRepairsQuery } from "@/src/types/__generated__/graphql";
-import { useSuspenseQuery } from "@apollo/client/react";
+import type { TrackRepairQuery } from "@/src/types/__generated__/graphql";
 
-type MyRepair = NonNullable<MyRepairsQuery["myRepairs"]>[number];
+type TrackedRepair = NonNullable<TrackRepairQuery["trackRepair"]>;
 
-function RepairCard({ repair }: { repair: MyRepair }) {
+export function RepairCard({ repair }: { repair: TrackedRepair }) {
   return (
-    <Card>
+    <Card className="max-w-sm mx-auto">
       <CardContent className="flex flex-col gap-4 pt-4">
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -25,7 +21,7 @@ function RepairCard({ repair }: { repair: MyRepair }) {
 
         <Separator />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wider">
               Contact
@@ -62,7 +58,7 @@ function RepairCard({ repair }: { repair: MyRepair }) {
           <p className="text-xs text-muted-foreground uppercase tracking-wider">
             Problem
           </p>
-
+          
           <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
             <dt className="text-muted-foreground">Issue</dt>
             <dd className="font-medium capitalize">{repair.issue}</dd>
@@ -82,50 +78,5 @@ function RepairCard({ repair }: { repair: MyRepair }) {
         </p>
       </CardContent>
     </Card>
-  );
-}
-
-export default function MyRepairs() {
-  const { data } = useSuspenseQuery(MY_REPAIRS);
-  const repairs = data?.myRepairs ?? [];
-
-  return (
-    <section
-      className="p-4 md:p-8 space-y-4"
-      aria-labelledby="my-repairs-heading"
-    >
-      <div className="flex flex-col gap-2">
-        <h2
-          id="my-repairs-heading"
-          className="text-4xl font-bold tracking-tight"
-        >
-          My
-          <br />
-          <span className="text-muted-foreground">repairs.</span>
-        </h2>
-
-        <p className="max-w-md text-muted-foreground text-lg leading-relaxed">
-          All your repair requests in one place.
-        </p>
-      </div>
-
-      {repairs.length === 0 ? (
-        <Card>
-          <CardContent className="grid place-items-center min-h-40">
-            <p className="text-sm text-muted-foreground">
-              You have no repairs yet.
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <ul className="grid sm:grid-cols-2 gap-4">
-          {repairs.map((r) => (
-            <li key={r.ticketCode}>
-              <RepairCard repair={r} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
   );
 }

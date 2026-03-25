@@ -18,6 +18,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
+import { useSession } from "@/src/lib/auth-client";
 
 export function NavMain({
   items,
@@ -33,9 +34,11 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const { data: session } = useSession();
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>{session?.user.name}</SidebarGroupLabel>
 
       <SidebarMenu>
         {items.map((item) => (

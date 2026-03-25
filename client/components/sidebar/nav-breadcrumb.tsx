@@ -12,20 +12,9 @@ import {
 import { Fragment } from "react";
 import Link from "next/link";
 
-const LABELS: Record<string, string> = {
-  dashboard: "Dashboard",
-  repairs: "Reparaciones",
-  clients: "Clientes",
-  inventory: "Inventario",
-  settings: "Configuración",
-  new: "Nuevo",
-  edit: "Editar",
-};
-
 function getLabel(segment: string): string {
   const isId = /^[0-9a-f-]{8,}$/i.test(segment) || /^\d+$/.test(segment);
-  if (isId) return "Detalle";
-  return LABELS[segment] ?? segment.charAt(0).toUpperCase() + segment.slice(1);
+  return isId ? "Detail" : segment.charAt(0).toUpperCase() + segment.slice(1);
 }
 
 export function NavBreadcrumb() {

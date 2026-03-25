@@ -9,6 +9,7 @@ import { CurrentUser } from '../auth/current-user.decorator.js';
 import { GqlAuthGuard } from '../auth/gql-auth.guard.js';
 import { ActivityFeedItem } from './dto/activity-feed-item.js';
 import { RepairStats } from './repair-stats.js';
+import { NewRepairInput } from './dto/new-repair.input.js';
 
 @Resolver(() => Repair)
 export class RepairResolver {
@@ -17,6 +18,15 @@ export class RepairResolver {
   @Mutation(() => Repair)
   async createRepair(@Args('input') input: CreateRepairInput): Promise<Repair> {
     return this.repair.createRepair(input);
+  }
+
+  @Mutation(() => Repair)
+  @UseGuards(GqlAuthGuard)
+  async newRepair(
+    @CurrentUser() user: { id: string },
+    @Args('input') input: NewRepairInput,
+  ): Promise<Repair> {
+    return this.repair.newRepair(user.id, input);
   }
 
   @Query(() => Repair)
@@ -33,8 +43,11 @@ export class RepairResolver {
 
   @Query(() => [Repair])
   @UseGuards(GqlAuthGuard)
-  async myRepairs(@CurrentUser() user: { id: string }): Promise<Repair[]> {
-    return this.repair.findByUserId(user.id);
+  async myRepairs(
+    @CurrentUser() user: { id: string },
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+  ): Promise<Repair[]> {
+    return this.repair.findByUserId(user.id, limit);
   }
 
   @Query(() => [ActivityFeedItem])

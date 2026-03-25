@@ -48,7 +48,7 @@ export function RecentRepairs() {
       <CardHeader className="flex items-center justify-between">
         <CardTitle className="text-sm font-medium">Recent repairs</CardTitle>
 
-        <Button asChild size="sm">
+        <Button asChild size="sm" variant="secondary">
           <Link href="/dashboard/repairs">
             View all
             <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} />
@@ -60,10 +60,10 @@ export function RecentRepairs() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead>Ticket Code</TableHead>
               <TableHead>Device</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Updated</TableHead>
+              <TableHead className="text-right">Updated</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -72,19 +72,13 @@ export function RecentRepairs() {
               const status = statusConfig[repair.status];
 
               return (
-                <TableRow
-                  key={repair.id}
-                  className="cursor-pointer hover:bg-muted/50"
-                >
+                <TableRow key={repair.id}>
                   <TableCell className="text-xs text-muted-foreground">
                     {repair.ticketCode}
                   </TableCell>
 
-                  <TableCell className="font-medium text-sm">
-                    <Link
-                      href={`/dashboard/repairs/${repair.id}`}
-                      className="hover:underline underline-offset-4"
-                    >
+                  <TableCell className="font-medium text-sm hover:text-muted-foreground">
+                    <Link href={`/dashboard/repairs/${repair.id}`}>
                       {repair.brand} {repair.model}
                     </Link>
                   </TableCell>

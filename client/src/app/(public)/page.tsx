@@ -1,9 +1,9 @@
-import { Hero } from "@/components/hero";
-import { Services } from "@/components/services";
-import { Features } from "@/components/features";
-import { Testimonials } from "@/components/testimonials";
-import { FAQ } from "@/components/faq";
-import { CTA } from "@/components/cta";
+import { Hero } from "@/components/home/hero";
+import { Services } from "@/components/home/services";
+import { Features } from "@/components/home/features";
+import { Testimonials } from "@/components/home/testimonials";
+import { FAQ } from "@/components/home/faq";
+import { CTA } from "@/components/home/cta";
 
 export default function HomePage() {
   return (

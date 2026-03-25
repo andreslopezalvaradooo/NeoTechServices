@@ -1,10 +1,6 @@
 import Link from "next/link";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
-import { Progress } from "./ui/progress";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Progress } from "../ui/progress";
 import {
   AppleIcon,
   ArrowRight02Icon,
@@ -14,7 +10,10 @@ import {
   NewTwitterIcon,
   YoutubeIcon,
 } from "@hugeicons/core-free-icons";
-import type { IconSvgElement } from "@hugeicons/react";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import { Separator } from "../ui/separator";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 
 interface DashboardStat {
   label: string;

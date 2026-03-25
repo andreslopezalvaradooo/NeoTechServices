@@ -1,6 +1,8 @@
 import {
   CreateRepairMutation,
   CreateRepairMutationVariables,
+  NewRepairMutation,
+  NewRepairMutationVariables,
 } from "@/src/types/__generated__/graphql";
 import { gql, TypedDocumentNode } from "@apollo/client";
 
@@ -10,6 +12,26 @@ export const CREATE_REPAIR: TypedDocumentNode<
 > = gql`
   mutation CreateRepair($input: CreateRepairInput!) {
     createRepair(input: $input) {
+      ticketCode
+      createdAt
+      name
+      phone
+      email
+      type
+      brand
+      model
+      issue
+      problem
+    }
+  }
+`;
+
+export const NEW_REPAIR: TypedDocumentNode<
+  NewRepairMutation,
+  NewRepairMutationVariables
+> = gql`
+  mutation NewRepair($input: NewRepairInput!) {
+    newRepair(input: $input) {
       ticketCode
       createdAt
       name

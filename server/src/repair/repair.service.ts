@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import { CreateRepairInput } from './dto/create-repair.input.js';
 import { Repair } from './repair.model.js';
@@ -10,6 +14,7 @@ import { TrackRepairInput } from './dto/track-repair.input.js';
 import { FindRepairsByEmailInput } from './dto/find-repairs-by-email.input.js';
 import { ActivityFeedItem } from './dto/activity-feed-item.js';
 import { RepairStats } from './repair-stats.js';
+import { NewRepairInput } from './dto/new-repair.input.js';
 
 @Injectable()
 export class RepairService {
@@ -23,6 +28,25 @@ export class RepairService {
 
     const repair = await this.prisma.repair.create({
       data: { ...input, userId: user?.id ?? null },
+    });
+
+    return this.toRepairModel(repair);
+  }
+
+  async newRepair(userId: string, input: NewRepairInput): Promise<Repair> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true },
+    });
+
+    if (!user?.name) {
+      throw new BadRequestException(
+        'Your account has no name set. Please update your profile first.',
+      );
+    }
+
+    const repair = await this.prisma.repair.create({
+      data: { ...input, userId, name: user?.name, email: user?.email },
     });
 
     return this.toRepairModel(repair);
@@ -64,10 +88,11 @@ export class RepairService {
     return repairs.map((repair) => this.toRepairModel(repair));
   }
 
-  async findByUserId(userId: string): Promise<Repair[]> {
+  async findByUserId(userId: string, limit?: number): Promise<Repair[]> {
     const repairs = await this.prisma.repair.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
+      take: limit,
     });
 
     return repairs.map((repair) => this.toRepairModel(repair));

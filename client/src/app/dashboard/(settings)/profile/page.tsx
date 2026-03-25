@@ -143,7 +143,7 @@ export default function ProfilePage() {
   const isImageBlob = currentImage.startsWith("blob:");
 
   return (
-    <Card className="my-4 md:my-8 relative mx-auto w-full max-w-sm pt-0">
+    <Card className="relative w-full mx-auto max-w-sm my-4 md:my-8 pt-0">
       <Input
         ref={fileInputRef}
         id="picture"

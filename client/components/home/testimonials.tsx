@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Badge } from "./ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Badge } from "../ui/badge";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { StarIcon } from "@hugeicons/core-free-icons";
 
 interface Testimonial {
