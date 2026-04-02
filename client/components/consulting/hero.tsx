@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight, Sparkles, Zap } from "@hugeicons/core-free-icons";
 import Link from "next/link";
+import { Separator } from "../ui/separator";
 
 interface Stat {
   value: string;
@@ -53,12 +54,12 @@ function GlowBlobs() {
     <>
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-40 -top-40 h-[600px] w-[600px] rounded-full bg-primary/10 blur-[120px]"
+        className="pointer-events-none absolute right-0 top-0 h-2/3 w-2/3 rounded-full bg-primary/10 blur-[120px]"
       />
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[120px]"
+        className="pointer-events-none absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-blue-500/10 blur-[120px]"
       />
     </>
   );
@@ -67,11 +68,11 @@ function GlowBlobs() {
 function Underline() {
   return (
     <svg
-      aria-hidden="true"
-      className="absolute -bottom-2 left-0 w-full text-primary"
-      viewBox="0 0 300 12"
+      className="absolute -bottom-1 left-0 w-full"
+      viewBox="0 0 300 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
     >
       <path
         d="M2 9C50 3 100 1 150 3C200 5 250 7 298 3"
@@ -85,11 +86,20 @@ function Underline() {
 
 function Stats() {
   return (
-    <ul className="flex sm:flex-wrap md:flex-nowrap gap-8 border-t border-border/50">
-      {STATS.map(({ value, label }) => (
-        <li key={label} className="flex flex-col gap-1">
-          <span className="text-3xl font-bold">{value}</span>
-          <span className="text-sm text-muted-foreground">{label}</span>
+    <ul className="flex gap-1 lg:gap-2" aria-label="Key statistics">
+      {STATS.map((stat, i) => (
+        <li key={stat.label} className="flex gap-1 lg:gap-2 justify-center">
+          <div className="flex flex-col items-center">
+            <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
+
+            <p className="text-xs text-muted-foreground text-center">
+              {stat.label}
+            </p>
+          </div>
+
+          {i < STATS.length - 1 && (
+            <Separator orientation="vertical" aria-hidden />
+          )}
         </li>
       ))}
     </ul>
@@ -173,64 +183,67 @@ function Availability() {
 
 export function Hero() {
   return (
-    <section className="relative min-h-[calc(100dvh-64px)] overflow-hidden">
-      <GlowBlobs />
+    <section
+      className="relative min-h-[calc(100dvh-64px)] p-4 sm:p-8"
+      aria-labelledby="hero-heading"
+    >
       <GridOverlay />
+      <GlowBlobs />
 
-      <div className="relative mx-auto max-w-6xl p-6 sm:p-8 grid gap-8 md:grid-cols-2 md:items-center">
-          <div className="flex flex-col gap-8 md:gap-6 lg:gap-8">
-            <Badge className="gap-2 border-primary/30 bg-primary/5 text-sm text-primary">
-              <HugeiconsIcon icon={Sparkles} aria-hidden="true" />
-              Tech Consulting Services
-            </Badge>
+      <div className="relative mx-auto max-w-5xl grid gap-4 md:grid-cols-2">
+        <div className="space-y-4">
+          <Badge className="bg-primary/5 border-primary/30 text-primary">
+            <HugeiconsIcon icon={Sparkles} aria-hidden="true" />
+            Tech Consulting Services
+          </Badge>
 
-            <div className="flex flex-col gap-4">
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
-                Transform your
-                <span className="relative ml-3 text-primary">
-                  technology
-                  <Underline />
-                </span>
-                <br />
-                strategy
-              </h1>
+          <h1
+            id="hero-heading"
+            className="text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]"
+          >
+            Transform your{" "}
+            <span className="relative text-primary">
+              technology
+              <Underline />
+            </span>
+            <br />
+            strategy
+          </h1>
 
-              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-left text-justify">
-                We help startups, SMBs, and enterprises make the right
-                technology decisions — from architecture and digital
-                transformation to IT strategy and product development.
-              </p>
-            </div>
+          <p className="text-lg text-muted-foreground text-justify sm:text-left leading-tight">
+            We help startups, SMBs, and enterprises make the right technology
+            decisions — from architecture and digital transformation to IT
+            strategy and product development.
+          </p>
 
-            <div className="flex flex-wrap gap-4">
-              <Button className="group" asChild>
-                <Link href="#consulting-form">
-                  Book a free consultation
-                  <HugeiconsIcon
-                    icon={ArrowRight}
-                    strokeWidth={2}
-                    aria-hidden="true"
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                </Link>
-              </Button>
+          <div className="space-x-1">
+            <Button asChild>
+              <Link href="#consulting-form" className="group">
+                Book a free consultation
+                <HugeiconsIcon
+                  aria-hidden
+                  icon={ArrowRight}
+                  strokeWidth={2}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </Button>
 
-              <Button variant="outline" asChild>
-                <Link href="#consulting-services">Explore services</Link>
-              </Button>
-            </div>
-
-            <Stats />
+            <Button variant="outline" asChild>
+              <Link href="#consulting-services">Explore services</Link>
+            </Button>
           </div>
 
-          <div
-            aria-hidden="true"
-            className="relative h-96 max-w-md hidden md:block"
-          >
+          <Stats />
+        </div>
+
+        <div className="flex justify-center items-center">
+          <div className="relative w-full h-96 max-w-md" aria-hidden>
             <DigitalTransformation />
             <CurrentSprint />
             <Availability />
           </div>
+        </div>
       </div>
     </section>
   );

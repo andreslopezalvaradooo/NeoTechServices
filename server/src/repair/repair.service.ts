@@ -3,17 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma.service.js';
+import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateRepairInput } from './dto/create-repair.input.js';
-import { Repair } from './repair.model.js';
+import { Repair } from './models/repair.model.js';
 import {
   ActivityType,
   Repair as PrismaRepair,
 } from '../generated/prisma/client.js';
 import { TrackRepairInput } from './dto/track-repair.input.js';
 import { FindRepairsByEmailInput } from './dto/find-repairs-by-email.input.js';
-import { ActivityFeedItem } from './dto/activity-feed-item.js';
-import { RepairStats } from './repair-stats.js';
+import { RepairActivity } from './models/repair-activity.model.js';
+import { RepairStat } from './models/repair-stat.model.js';
 import { NewRepairInput } from './dto/new-repair.input.js';
 
 @Injectable()
@@ -112,7 +112,7 @@ export class RepairService {
   async getActivityFeed(
     userId: string,
     limit = 4,
-  ): Promise<ActivityFeedItem[]> {
+  ): Promise<RepairActivity[]> {
     const events = await this.prisma.repairEvent.findMany({
       where: { repair: { userId } },
       orderBy: { createdAt: 'desc' },
@@ -131,7 +131,7 @@ export class RepairService {
     }));
   }
 
-  async getRepairStats(userId: string): Promise<RepairStats> {
+  async getRepairStats(userId: string): Promise<RepairStat> {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);

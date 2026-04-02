@@ -14,6 +14,7 @@ import {
   ArrowRight02Icon,
   CheckmarkCircle02Icon,
 } from "@hugeicons/core-free-icons";
+import { GridOverlay } from "../grid-overlay";
 
 interface Stat {
   value: string;
@@ -58,6 +59,63 @@ const ROWS = [
     color: "bg-violet-500",
   },
 ] satisfies Row[];
+
+function GlowBlobs() {
+  return (
+    <>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-0 h-2/3 w-2/3 rounded-full bg-primary/10 blur-[120px]"
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-blue-500/10 blur-[120px]"
+      />
+    </>
+  );
+}
+
+function Underline() {
+  return (
+    <svg
+      className="absolute -bottom-1 left-0 w-full"
+      viewBox="0 0 300 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M2 9C50 3 100 1 150 3C200 5 250 7 298 3"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function Stats() {
+  return (
+    <ul className="flex gap-1 lg:gap-2" aria-label="Key statistics">
+      {STATS.map((stat, i) => (
+        <li key={stat.label} className="flex gap-1 lg:gap-2 justify-center">
+          <div className="flex flex-col items-center">
+            <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
+
+            <p className="text-xs text-muted-foreground text-center">
+              {stat.label}
+            </p>
+          </div>
+
+          {i < STATS.length - 1 && (
+            <Separator orientation="vertical" aria-hidden />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 function DashboardCard() {
   return (
@@ -138,80 +196,74 @@ function FloatingNotification() {
   );
 }
 
-export function RepairHero() {
+export function Hero() {
   return (
     <section
-      className="mx-auto max-w-6xl p-4 lg:p-8 flex flex-col md:flex-row gap-4"
-      aria-labelledby="repair-hero-heading"
+      className="relative min-h-[calc(100dvh-64px)]"
+      aria-labelledby="hero-heading"
     >
-      <div className="w-full flex flex-col gap-4">
-        <Badge>
-          <span
-            className="h-1.5 w-1.5 rounded-full bg-background animate-pulse"
-            aria-hidden
-          />
-          Repair Service · Bogotá
-        </Badge>
+      <GridOverlay />
+      <GlowBlobs />
 
-        <div className="w-full flex flex-col gap-4">
+      <div className="relative mx-auto max-w-5xl p-4 sm:p-8 grid gap-4 md:grid-cols-2">
+        <div className="space-y-4 md:space-y-3 lg:space-y-4">
+          <Badge className="bg-primary/5 border-primary/30 text-primary">
+            <span
+              className="h-1.5 w-1.5 bg-primary rounded-full animate-pulse"
+              aria-hidden
+            />
+            Repair Service · Bogotá
+          </Badge>
+
           <h1
-            id="repair-hero-heading"
-            className="text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.08]"
+            id="hero-heading"
+            className="text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]"
           >
             Laptop & PC
             <br />
-            <span className="text-muted-foreground">repair experts.</span>
+            <span className="relative text-primary">
+              repair experts.
+              <Underline />
+            </span>
           </h1>
 
-          <p className="max-w-md text-lg text-muted-foreground text-justify md:text-left leading-relaxed">
+          <p className="text-lg text-muted-foreground text-justify sm:text-left leading-tight">
             We diagnose and repair all laptop and desktop PC brands. Fast
             turnaround, genuine parts, and a 3-month warranty on every job.
           </p>
+
+          <div className="space-x-1">
+            <Button asChild>
+              <Link
+                href={WHATSAPP_URL}
+                className="group"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Request a repair on WhatsApp"
+              >
+                Request a repair
+                <HugeiconsIcon
+                  aria-hidden
+                  icon={ArrowRight02Icon}
+                  strokeWidth={2}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </Button>
+
+            <Button variant="outline" asChild>
+              <Link href="#process">See how it works</Link>
+            </Button>
+          </div>
+
+          <Stats />
         </div>
 
-        <div className="space-x-1">
-          <Button asChild>
-            <Link
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Request a repair on WhatsApp"
-            >
-              Request a repair
-              <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
-            </Link>
-          </Button>
-
-          <Button variant="secondary" asChild>
-            <Link href="#process">See how it works</Link>
-          </Button>
-        </div>
-
-        <ul className="flex gap-1 lg:gap-2" aria-label="Key statistics">
-          {STATS.map((stat, i) => (
-            <li key={stat.label} className="flex gap-1 lg:gap-2 justify-center">
-              <div className="flex flex-col items-center">
-                <p className="text-2xl font-bold tracking-tight">
-                  {stat.value}
-                </p>
-
-                <p className="text-xs text-muted-foreground text-center">
-                  {stat.label}
-                </p>
-              </div>
-
-              {i < STATS.length - 1 && (
-                <Separator orientation="vertical" aria-hidden />
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="w-full pb-4 pl-4 flex justify-center items-center">
-        <div className="relative w-full max-w-md">
-          <DashboardCard />
-          <FloatingNotification />
+        <div className="pb-4 pl-4 flex justify-center items-center">
+          <div className="relative w-full max-w-md">
+            <DashboardCard />
+            <FloatingNotification />
+          </div>
         </div>
       </div>
     </section>

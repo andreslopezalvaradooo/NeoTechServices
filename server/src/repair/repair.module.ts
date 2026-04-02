@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RepairResolver } from './repair.resolver.js';
 import { RepairService } from './repair.service.js';
-import { PrismaService } from '../prisma.service.js';
-import { GqlAuthGuard } from '../auth/gql-auth.guard.js';
+import { AuthModule } from '../auth/auth.module.js';
 
 @Module({
-  providers: [RepairResolver, RepairService, PrismaService, GqlAuthGuard],
+  imports:[AuthModule],
+  providers: [RepairService, RepairResolver],
 })
 export class RepairModule {}

@@ -25,6 +25,7 @@ interface Step {
   title: string;
   description: string;
   duration: string;
+  accent: string;
   color: string;
 }
 
@@ -39,7 +40,8 @@ const STEPS = [
     description:
       "Bring in your device and we'll run a full diagnostic at no cost. We identify the root cause and assess the damage.",
     duration: "Same day",
-    color: "from-blue-500/10 to-cyan-500/5",
+    accent: "from-[oklch(0.87_0.12_207)]/15 to-[oklch(0.87_0.12_207)]/5",
+    color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
   },
   {
     step: "02",
@@ -48,7 +50,8 @@ const STEPS = [
     description:
       "We provide a detailed, transparent quote with no hidden fees. You decide whether to proceed — no pressure.",
     duration: "Within 1 hour",
-    color: "from-violet-500/10 to-purple-500/5",
+    accent: "from-primary/15 to-primary/5",
+    color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   },
   {
     step: "03",
@@ -57,7 +60,8 @@ const STEPS = [
     description:
       "Once approved, our certified technicians get to work using genuine or OEM-certified parts.",
     duration: "24–72 business hours",
-    color: "from-amber-500/10 to-orange-500/5",
+    accent: "from-[oklch(0.8_0.13_212)]/15 to-[oklch(0.8_0.13_212)]/5",
+    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   {
     step: "04",
@@ -66,23 +70,26 @@ const STEPS = [
     description:
       "We test everything before handing it back. Your device leaves our workshop fully functional and under warranty.",
     duration: "On time, every time",
-    color: "from-emerald-500/10 to-teal-500/5",
+    accent: "from-[oklch(0.52_0.09_223)]/20 to-[oklch(0.52_0.09_223)]/5",
+    color: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
 ] satisfies Step[];
 
 function StepCard({ step }: { step: Step }) {
   return (
     <li>
-      <Card className={`h-full flex flex-col bg-linear-to-br ${step.color}`}>
+      <Card
+        className={`h-full md:py-2 lg:py-4 md:gap-2 lg:gap-4 bg-linear-to-br ${step.accent}`}
+      >
         <CardHeader className="flex justify-between items-center">
           <div
-            className="h-11 w-11 rounded-xl border border-border bg-background flex items-center justify-center"
             aria-hidden
+            className={`h-10 w-10 flex items-center justify-center rounded-xl ${step.color}`}
           >
-            <HugeiconsIcon icon={step.icon} size={22} aria-hidden />
+            <HugeiconsIcon icon={step.icon} aria-hidden />
           </div>
 
-          <CardTitle className="text-base">{step.title}</CardTitle>
+          <CardTitle>{step.title}</CardTitle>
 
           <span
             className="text-4xl font-bold text-muted-foreground/20 select-none"
@@ -92,14 +99,14 @@ function StepCard({ step }: { step: Step }) {
           </span>
         </CardHeader>
 
-        <CardContent className="flex-1 text-sm text-muted-foreground leading-relaxed">
+        <CardContent className="flex-1 text-muted-foreground text-justify leading-relaxed">
           {step.description}
         </CardContent>
 
-        <CardFooter>
+        <CardFooter className={`md:py-2 lg:p-4 bg-linear-to-br ${step.accent}`}>
           <Badge
             variant="outline"
-            className="text-[10px] font-normal text-muted-foreground"
+            className="text-[10px] text-muted-foreground"
           >
             <HugeiconsIcon icon={Clock} strokeWidth={2} aria-hidden />{" "}
             {step.duration}
@@ -110,56 +117,68 @@ function StepCard({ step }: { step: Step }) {
   );
 }
 
-export function RepairProcess() {
+export function Process() {
   return (
     <section
       id="process"
-      className="bg-background mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 flex flex-col gap-6"
+      className="min-h-dvh pt-16"
       aria-labelledby="process-heading"
     >
-      <div className="flex flex-col gap-4">
-        <Badge>How it works</Badge>
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
+        <div className="space-y-4">
+          <Badge className="bg-primary/5 border-primary/30 text-primary">
+            How it works
+          </Badge>
 
-        <h2 id="process-heading" className="text-4xl font-bold tracking-tight">
-          Simple process,
-          <br />
-          reliable results.
-        </h2>
+          <h2
+            id="process-heading"
+            className="text-4xl font-bold tracking-tight"
+          >
+            <span className="text-primary">Simple</span> process,{" "}
+            <br className="md:hidden lg:block" />
+            reliable results.
+          </h2>
 
-        <p className="max-w-lg text-muted-foreground text-lg text-justify lg:text-left">
-          From drop-off to pick-up, we keep you informed at every step. No
-          surprises, no delays.
-        </p>
-      </div>
+          <p className="text-muted-foreground text-lg text-justify lg:text-left">
+            From drop-off to pick-up, we keep you informed at every step. No
+            surprises, no delays.
+          </p>
+        </div>
 
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {STEPS.map((step) => (
-          <StepCard key={step.title} step={step} />
-        ))}
-      </ul>
+        <ul className="grid gap-4 md:gap-2 lg:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map((step) => (
+            <StepCard key={step.title} step={step} />
+          ))}
+        </ul>
 
-      {/* Bottom CTA */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <p className="text-muted-foreground text-sm">
-          Ready to get started? Bring your device or reach out first.
-        </p>
+        <div className="flex flex-col items-center gap-4 text-center">
+          <p className="text-muted-foreground text-sm">
+            Ready to get started? Bring your device or reach out first.
+          </p>
 
-        <div className="flex flex-wrap justify-center gap-3">
-          <Button asChild>
-            <Link
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Start my repair on WhatsApp"
-            >
-              Start my repair
-              <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Button asChild>
+              <Link
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Start my repair on WhatsApp"
+                className="group"
+              >
+                Start my repair
+                <HugeiconsIcon
+                  aria-hidden
+                  icon={ArrowRight02Icon}
+                  strokeWidth={2}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </Button>
 
-          <Button variant="secondary" asChild>
-            <Link href="#prices">View pricing</Link>
-          </Button>
+            <Button variant="outline" asChild>
+              <Link href="#prices">View pricing</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

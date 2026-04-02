@@ -5,14 +5,17 @@ import { For } from "@/components/consulting/for";
 import { Process } from "@/components/consulting/process";
 import { CaseStudies } from "@/components/consulting/case-studies";
 import { Pricing } from "@/components/consulting/pricing";
+import { TechStack } from "@/components/consulting/tech-stack";
+import { Faq } from "@/components/consulting/faq";
+import { Form } from "@/components/consulting/form";
 
 export const metadata: Metadata = {
-  title: "Tech Consulting | Transform Your Technology Strategy",
+  title: "Tech Consulting",
   description:
     "Expert technology consulting for startups, SMBs, and enterprises. Software architecture, digital transformation, tech audits, and IT strategy.",
 };
 
-export default function ConsultingPage() {
+export default function Consulting() {
   return (
     <div>
       <Hero />
@@ -21,11 +24,9 @@ export default function ConsultingPage() {
       <Process />
       <CaseStudies />
       <Pricing />
-      {/* 
-      <ConsultingPricing />
-      <ConsultingTechStack />
-      <ConsultingFAQ />
-      <ConsultingForm /> */}
+      <TechStack />
+      <Faq />
+      <Form />
     </div>
   );
 }

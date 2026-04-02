@@ -1,5 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ActivityType } from '../../generated/prisma/client.js';
+import {
+  ActivityType,
+  type RepairEvent as PrismaRepairEvent,
+} from '../../generated/prisma/client.js';
 import { registerEnumType } from '@nestjs/graphql';
 
 registerEnumType(ActivityType, {
@@ -8,7 +11,7 @@ registerEnumType(ActivityType, {
 });
 
 @ObjectType()
-export class ActivityFeedItem {
+export class RepairActivity implements Pick<PrismaRepairEvent, 'id' | 'type'> {
   @Field()
   id: string;
 

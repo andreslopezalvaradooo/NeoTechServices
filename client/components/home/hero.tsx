@@ -14,6 +14,7 @@ import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { GridOverlay } from "../grid-overlay";
 
 interface DashboardStat {
   label: string;
@@ -88,6 +89,63 @@ const TECH_LOGOS = [
   { name: "Instagram", icon: InstagramIcon },
 ] satisfies TechLogo[];
 
+function GlowBlobs() {
+  return (
+    <>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-0 h-2/3 w-2/3 rounded-full bg-primary/10 blur-[120px]"
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-blue-500/10 blur-[120px]"
+      />
+    </>
+  );
+}
+
+function Underline() {
+  return (
+    <svg
+      className="absolute -bottom-1 left-0 w-full"
+      viewBox="0 0 300 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M0 6 Q75 0 150 5 Q225 10 300 4"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function Stats() {
+  return (
+    <ul className="flex gap-1 lg:gap-2" aria-label="Key statistics">
+      {STATS.map((stat, i) => (
+        <li key={stat.label} className="flex gap-1 lg:gap-2 justify-center">
+          <div className="flex flex-col items-center">
+            <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
+
+            <p className="text-xs text-muted-foreground text-center">
+              {stat.label}
+            </p>
+          </div>
+
+          {i < STATS.length - 1 && (
+            <Separator orientation="vertical" aria-hidden />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function DashboardCard() {
   return (
     <Card className="w-full shadow-2xl">
@@ -102,9 +160,8 @@ function DashboardCard() {
 
       <Separator aria-hidden />
 
-      <CardContent className="p-3 md:p-5 space-y-4">
-        {/* Stat cards */}
-        <ul className="grid grid-cols-3 gap-1 md:gap-3">
+      <CardContent className="space-y-4">
+        <ul className="grid grid-cols-3 gap-1 md:gap-2">
           {DASHBOARD_STATS.map((stat) => (
             <li
               key={stat.label}
@@ -123,17 +180,16 @@ function DashboardCard() {
           ))}
         </ul>
 
-        {/* Recent orders */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
             Recent orders
           </p>
 
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {ORDERS.map((order) => (
               <li
                 key={order.id}
-                className="flex items-center justify-between rounded-lg border border-border bg-muted/10 px-3 py-2"
+                className="flex items-center justify-between rounded-lg border border-border bg-muted/10 px-2 py-1"
               >
                 <div className="flex items-center gap-2">
                   <span
@@ -194,116 +250,87 @@ function FloatingNotification() {
 export function Hero() {
   return (
     <section
-      className="mx-auto max-w-6xl p-4 lg:p-8 space-y-4"
+      className="relative min-h-[calc(100dvh-64px)]"
       aria-labelledby="hero-heading"
     >
-      {/* Info + Dashboard */}
-      <div className="w-full grid md:grid-cols-2 gap-4 justify-center">
-        <div className="flex flex-col justify-between gap-4">
-          <Badge>
-            <span
-              className="h-1.5 w-1.5 rounded-full bg-background animate-pulse"
-              aria-hidden
-            />
-            Tech service in Bogotá · Est. 2016
-          </Badge>
+      <GridOverlay />
+      <GlowBlobs />
 
-          <div className="w-full flex flex-col gap-4">
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-4 md:space-y-3 lg:space-y-4">
+            <Badge className="bg-primary/5 border-primary/30 text-primary">
+              <span
+                className="h-1.5 w-1.5 bg-primary rounded-full animate-pulse"
+                aria-hidden
+              />
+              Tech service in Bogotá · Est. 2016
+            </Badge>
+
             <h1
               id="hero-heading"
-              className="text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.08]"
+              className="text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]"
             >
               Your technology, <br />
-              <span className="relative">
+              <span className="relative text-primary">
                 in the best
-                <svg
-                  className="absolute -bottom-1 left-0 w-full"
-                  viewBox="0 0 300 8"
-                  fill="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M0 6 Q75 0 150 5 Q225 10 300 4"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    className="opacity-20"
-                  />
-                </svg>
+                <Underline />
               </span>
               <br />
               hands.
             </h1>
 
-            <p className="max-w-md text-lg text-muted-foreground text-justify md:text-left leading-relaxed">
+            <p className="text-lg text-muted-foreground text-justify sm:text-left leading-tight">
               We repair laptops and PCs, advise businesses, develop web apps,
               and sell electronics with warranty. All with transparency and
               dedication to service.
             </p>
+
+            <div className="space-x-1">
+              <Button asChild>
+                <Link href="/store" className="group">
+                  View catalog
+                  <HugeiconsIcon
+                    aria-hidden
+                    icon={ArrowRight02Icon}
+                    strokeWidth={2}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              </Button>
+
+              <Button variant="outline" asChild>
+                <Link href="#services">Our services</Link>
+              </Button>
+            </div>
+
+            <Stats />
           </div>
 
-          <div className="space-x-1">
-            <Button asChild>
-              <Link href="/store">
-                View catalog
-                <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
-              </Link>
-            </Button>
-
-            <Button variant="secondary" asChild>
-              <Link href="#services">Our services</Link>
-            </Button>
+          <div className="pb-4 pl-4 flex justify-center items-center">
+            <div className="relative w-full max-w-md">
+              <DashboardCard />
+              <FloatingNotification />
+            </div>
           </div>
+        </div>
 
-          <ul className="flex gap-1 lg:gap-2" aria-label="Key statistics">
-            {STATS.map((stat, i) => (
-              <li
-                key={stat.label}
-                className="flex gap-1 lg:gap-2 justify-center"
-              >
-                <div className="flex flex-col items-center">
-                  <p className="text-2xl font-bold tracking-tight">
-                    {stat.value}
-                  </p>
+        <div className="space-y-4">
+          <h3 className="text-xs text-muted-foreground text-center uppercase tracking-widest">
+            Brands we work with
+          </h3>
 
-                  <p className="text-xs text-muted-foreground text-center">
-                    {stat.label}
-                  </p>
-                </div>
-
-                {i < STATS.length - 1 && (
-                  <Separator orientation="vertical" aria-hidden />
-                )}
+          <ul
+            className="flex items-center justify-center gap-4 md:gap-8"
+            aria-label="Partner brands"
+          >
+            {TECH_LOGOS.map((logo) => (
+              <li key={logo.name} aria-label={logo.name}>
+                <HugeiconsIcon icon={logo.icon} strokeWidth={2} aria-hidden />
               </li>
             ))}
           </ul>
         </div>
-
-        {/* Dashboard */}
-        <div className="w-full pb-4 pl-4 flex justify-center items-center">
-          <div className="relative w-full max-w-md">
-            <DashboardCard />
-            <FloatingNotification />
-          </div>
-        </div>
-      </div>
-
-      {/* Brand logos */}
-      <div className="space-y-4">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground text-center">
-          Brands we work with
-        </p>
-
-        <ul
-          className="flex items-center justify-center gap-8"
-          aria-label="Partner brands"
-        >
-          {TECH_LOGOS.map((logo) => (
-            <li key={logo.name} aria-label={logo.name}>
-              <HugeiconsIcon icon={logo.icon} aria-hidden />
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

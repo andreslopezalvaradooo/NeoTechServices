@@ -77,7 +77,7 @@ function TrackForm({ onResult }: { onResult: (r: TrackedRepair) => void }) {
                 <FieldLabel htmlFor="ticketCode">
                   Track by ticket code
                 </FieldLabel>
-                
+
                 <ButtonGroup>
                   <Input
                     {...field}
@@ -264,71 +264,65 @@ export default function FindRepair() {
   const hasResults = trackedRepair || (foundRepairs && foundRepairs.length > 0);
 
   return (
-    <section
-      className="mx-auto max-w-6xl px-4 lg:px-8 pt-20 pb-4 lg:pb-8 space-y-4"
-      aria-labelledby="find-repair-heading"
-    >
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="w-full flex flex-col gap-3">
-          <h2
-            id="find-repair-heading"
-            className="text-4xl font-bold tracking-tight"
-          >
-            Track
-            <br />
-            <span className="text-muted-foreground">your repair.</span>
-          </h2>
+    <section className="min-h-dvh" aria-labelledby="find-heading">
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="w-full space-y-4">
+            <h1 id="find-heading" className="text-4xl font-bold tracking-tight">
+              Track
+              <br />
+              <span className="text-primary">your repair.</span>
+            </h1>
 
-          <p className="max-w-md text-muted-foreground text-lg leading-relaxed">
-            Enter your ticket code or email address to find the status of your
-            repair.
-          </p>
+            <p className="max-w-md text-muted-foreground text-lg leading-relaxed">
+              Enter your ticket code or email address to find the status of your
+              repair.
+            </p>
+          </div>
+
+          <Card className="w-full">
+            <CardContent className="flex flex-col sm:flex-row md:flex-col gap-4 sm:gap-6 md:gap-4">
+              <div className="w-full flex flex-col gap-1">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  By ticket code
+                </p>
+
+                <TrackForm onResult={handleTrack} />
+              </div>
+
+              <Separator className="sm:hidden md:block" />
+
+              <div className="w-full flex flex-col gap-1">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  By email
+                </p>
+
+                <FindForm onResult={handleFind} />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <Card className="w-full">
-          <CardContent className="flex flex-col sm:flex-row md:flex-col gap-6 pt-6">
-            <div className="w-full flex flex-col gap-1">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                By ticket code
-              </p>
-
-              <TrackForm onResult={handleTrack} />
-            </div>
-
-            <Separator className="sm:hidden" />
-
-            <div className="w-full flex flex-col gap-1">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                By email
-              </p>
-
-              <FindForm onResult={handleFind} />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {!hasResults && (
-        <Card>
-          <CardContent>
-            <p className="text-center text-sm text-muted-foreground">
+        {!hasResults && (
+          <Card>
+            <CardContent className="h-36 sm:h-60 md:h-72 flex items-center justify-center text-muted-foreground">
               There are not results
-            </p>
-          </CardContent>
-        </Card>
-      )}
+            </CardContent>
+          </Card>
+        )}
 
-      {trackedRepair && <RepairCard repair={trackedRepair} />}
+        {trackedRepair && <RepairCard repair={trackedRepair} />}
 
-      {foundRepairs && foundRepairs.length > 0 && (
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {foundRepairs.map((r) => (
-            <li key={r.ticketCode}>
-              <RepairCard repair={r} />
-            </li>
-          ))}
-        </ul>
-      )}
+        {foundRepairs && foundRepairs.length > 0 && (
+          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {foundRepairs.map((r) => (
+              <li key={r.ticketCode}>
+                <RepairCard repair={r} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </section>
   );
 }

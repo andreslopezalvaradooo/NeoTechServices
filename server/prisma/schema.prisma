@@ -51,6 +51,7 @@ model user {
   account       account[]
   session       session[]
   repairs       Repair[]
+  consultings   Consulting[]
 }
 
 model verification {
@@ -90,6 +91,12 @@ enum RepairStatus {
   completed
 }
 
+enum ConsultingStatus {
+  pending
+  in_progress
+  completed
+}
+
 model RepairEvent {
   id        String      @id @default(cuid())
   type      ActivityType
@@ -100,10 +107,38 @@ model RepairEvent {
   @@index([repairId])
 }
 
+model ConsultingEvent {
+  id        String      @id @default(cuid())
+  type      ActivityType
+  consultingId  String
+  consulting    Consulting      @relation(fields: [consultingId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  @@index([consultingId])
+}
+
 enum ActivityType {
   assigned
   completed
   waiting
   approval
   created
+}
+
+model Consulting{
+  id           String       @id @default(cuid())
+  ticketNumber Int          @unique @default(autoincrement())
+  name         String
+  company      String?
+  phone        String
+  email        String
+  service      String
+  size         String
+  challenge    String
+  status       ConsultingStatus @default(pending)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  userId       String?
+  user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events       ConsultingEvent[]
 }

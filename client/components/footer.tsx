@@ -39,7 +39,7 @@ function Nav({ title, items }: { title: string; items: NavItem[] }) {
     <nav aria-label={title}>
       <p className="text-sm font-semibold mb-4">{title}</p>
 
-      <ul className="space-y-2">
+      <ul className="space-y-1">
         {items.map((item) => (
           <li key={item.label}>
             <Link
@@ -59,66 +59,68 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background mx-auto max-w-6xl py-8 lg:py-12 px-4 lg:px-8 border-t border-border space-y-8">
-      <div className="grid gap-8 grid-cols-2 md:grid-cols-4">
-        {/* Brand */}
-        <div className="space-y-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 font-bold text-md text-primary tracking-tight"
-            aria-label="NeoTech Services — Home"
-          >
-            <Image
-              width={25}
-              height={25}
-              src="/NTS-logo.svg"
-              alt=""
-              aria-hidden
-            />
-            NeoTech
-            <span className="text-muted-foreground font-normal">Services</span>
-          </Link>
+    <footer className="bg-linear-to-br from-[oklch(0.87_0.12_207)]/15 to-[oklch(0.87_0.12_207)]/5 border-t border-border">
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
+        <div className="grid gap-4 sm:gap-8 grid-cols-2 md:grid-cols-4">
+          <div className="space-y-2 sm:space-y-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 font-bold text-md text-primary tracking-tight"
+              aria-label="NeoTech Services — Home"
+            >
+              <Image
+                width={25}
+                height={25}
+                src="/NTS-logo.svg"
+                alt=""
+                aria-hidden
+              />
+              NeoTech
+              <span className="text-muted-foreground font-normal">
+                Services
+              </span>
+            </Link>
 
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-            Your technology ally in Bogotá. Repair, consulting, development, and
-            electronics with warranty since 2016.
-          </p>
+            <p className="max-w-3xs text-sm text-muted-foreground leading-relaxed">
+              Your technology ally in Bogotá. Repair, consulting, development,
+              and electronics with warranty since 2016.
+            </p>
 
-          <Link
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Contact us on WhatsApp"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <HugeiconsIcon
-              icon={WhatsappIcon}
-              strokeWidth={2}
-              size={18}
-              className="text-emerald-500"
-              aria-hidden
-            />
-            +57 300 000 0000
-          </Link>
+            <Link
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contact us on WhatsApp"
+              className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <HugeiconsIcon
+                icon={WhatsappIcon}
+                strokeWidth={2}
+                size={18}
+                className="text-emerald-500"
+                aria-hidden
+              />
+              +57 300 000 0000
+            </Link>
+          </div>
+
+          <Nav title="Services" items={SERVICES} />
+          <Nav title="Company" items={COMPANY} />
+          <Nav title="Legal" items={LEGAL} />
         </div>
 
-        {/* Nav groups */}
-        <Nav title="Services" items={SERVICES} />
-        <Nav title="Company" items={COMPANY} />
-        <Nav title="Legal" items={LEGAL} />
-      </div>
+        <Separator aria-hidden />
 
-      <Separator aria-hidden />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground text-center">
+            © {currentYear} NeoTechServices. All rights reserved. · Bogotá,
+            Colombia.
+          </p>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-muted-foreground text-center">
-          © {currentYear} NeoTechServices. All rights reserved. · Bogotá,
-          Colombia.
-        </p>
-
-        <p className="text-xs text-muted-foreground">
-          Made with ❤️ in Colombia
-        </p>
+          <p className="text-xs text-muted-foreground">
+            Made with ❤️ in Colombia
+          </p>
+        </div>
       </div>
     </footer>
   );

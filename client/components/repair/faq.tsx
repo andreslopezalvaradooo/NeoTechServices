@@ -55,55 +55,61 @@ const FAQS = [
   },
 ] satisfies { question: string; answer: string }[];
 
-export function RepairFAQ() {
+export function Faq() {
   return (
     <section
       id="faq"
-      className="bg-muted/30 mx-auto max-w-6xl pt-20 lg:pt-24 pb-4 lg:pb-8 px-4 lg:px-8 grid gap-16 md:grid-cols-2"
+      className="bg-muted/30 min-h-dvh py-16"
       aria-labelledby="faq-heading"
     >
-      <div className="flex flex-col gap-4">
-        <Badge>FAQ</Badge>
-        <h2 id="faq-heading" className="text-4xl font-bold tracking-tight">
-          Frequently asked
-          <br />
-          questions.
-        </h2>
-        <p className="max-w-lg text-muted-foreground text-lg leading-relaxed text-justify lg:text-left">
-          Everything you need to know about our repair service. Still have
-          questions? Reach out and we'll answer right away.
-        </p>
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 md:flex md:gap-4 space-y-4">
+        <div className="w-full space-y-4 md:space-y-8">
+          <Badge className="border-primary/30 bg-primary/5 text-primary">
+            FAQ
+          </Badge>
 
-        <Button asChild className="w-fit">
-          <Link
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Ask a question on WhatsApp"
-          >
-            <HugeiconsIcon icon={WhatsappIcon} strokeWidth={2} aria-hidden />
-            Ask on WhatsApp
-          </Link>
-        </Button>
+          <h2 id="faq-heading" className="text-4xl font-bold tracking-tight">
+            Frequently asked
+            <br />
+            <span className="text-primary">questions.</span>
+          </h2>
+
+          <p className="max-w-lg text-muted-foreground text-lg leading-relaxed text-justify lg:text-left">
+            Everything you need to know about our repair service. Still have
+            questions? Reach out and we'll answer right away.
+          </p>
+
+          <Button asChild>
+            <Link
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ask a question on WhatsApp"
+            >
+              <HugeiconsIcon icon={WhatsappIcon} strokeWidth={2} aria-hidden />
+              Ask on WhatsApp
+            </Link>
+          </Button>
+        </div>
+
+        <Accordion collapsible type="single" className="space-y-1 md:space-y-4">
+          {FAQS.map((faq) => (
+            <AccordionItem
+              key={faq.question}
+              value={faq.question}
+              className="border rounded-xl px-5"
+            >
+              <AccordionTrigger className="hover:no-underline">
+                {faq.question}
+              </AccordionTrigger>
+
+              <AccordionContent className="text-muted-foreground leading-relaxed">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
-
-      <Accordion type="single" collapsible className="space-y-1">
-        {FAQS.map((faq) => (
-          <AccordionItem
-            key={faq.question}
-            value={faq.question}
-            className="border border-border rounded-xl px-5 bg-background"
-          >
-            <AccordionTrigger className="text-sm font-medium py-3 hover:no-underline text-left">
-              {faq.question}
-            </AccordionTrigger>
-
-            <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
-              {faq.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
     </section>
   );
 }

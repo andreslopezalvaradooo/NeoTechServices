@@ -26,7 +26,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-"""Current status of a repair ticket"""
+"""Current status of a repair"""
 enum RepairStatus {
   pending
   in_progress
@@ -34,7 +34,7 @@ enum RepairStatus {
   completed
 }
 
-type ActivityFeedItem {
+type RepairActivity {
   id: String!
   type: ActivityType!
   message: String!
@@ -50,7 +50,8 @@ enum ActivityType {
   created
 }
 
-type RepairStats {
+"""Repair stats model"""
+type RepairStat {
   active: Float!
   activeDelta: Float!
   pending: Float!
@@ -59,13 +60,38 @@ type RepairStats {
   avgDays: Float!
 }
 
+"""Consulting model"""
+type Consulting {
+  id: ID!
+  ticketNumber: Int!
+  ticketCode: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  company: String
+  phone: String!
+  email: String!
+  service: String!
+  size: String!
+  challenge: String!
+  status: ConsultingStatus!
+  userId: String
+}
+
+"""Current status of a consulting"""
+enum ConsultingStatus {
+  pending
+  in_progress
+  completed
+}
+
 type Query {
   health: String!
   trackRepair(input: TrackRepairInput!): Repair!
   findRepairsByEmail(input: FindRepairsByEmailInput!): [Repair!]!
   myRepairs(limit: Int): [Repair!]!
-  getActivityFeed(limit: Int = 4): [ActivityFeedItem!]!
-  getRepairStats: RepairStats!
+  getActivityFeed(limit: Int = 4): [RepairActivity!]!
+  getRepairStats: RepairStat!
 }
 
 input TrackRepairInput {
@@ -79,6 +105,7 @@ input FindRepairsByEmailInput {
 type Mutation {
   createRepair(input: CreateRepairInput!): Repair!
   newRepair(input: NewRepairInput!): Repair!
+  createConsulting(input: CreateConsultingInput!): Consulting!
 }
 
 input CreateRepairInput {
@@ -99,4 +126,14 @@ input NewRepairInput {
   model: String!
   issue: String!
   problem: String!
+}
+
+input CreateConsultingInput {
+  name: String!
+  company: String
+  phone: String!
+  email: String!
+  service: String!
+  size: String!
+  challenge: String!
 }

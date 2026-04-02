@@ -42,12 +42,19 @@ const LINKS_BY_PATH: Record<string, NavLink[]> = {
     { label: "Contact", href: "#contact" },
   ],
   "/repair": [
-    { label: "Request", href: "#request" },
     { label: "What we repair", href: "#what-we-repair" },
     { label: "Process", href: "#process" },
     { label: "Pricing", href: "#pricing" },
     { label: "Warranty", href: "#warranty" },
     { label: "FAQ", href: "#faq" },
+    { label: "Request", href: "#request" },
+  ],
+  "/consulting": [
+    { label: "Services", href: "#services" },
+    { label: "Process", href: "#process" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "FAQ", href: "#faq" },
+    { label: "Request", href: "#request" },
   ],
 };
 
@@ -140,11 +147,11 @@ function DesktopNav() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 shadow-sm">
-      <div className="h-16 mx-auto max-w-6xl px-6 lg:px-8 flex items-center justify-between">
+      <div className="h-16 mx-auto max-w-5xl px-4 lg:px-8 flex items-center justify-between">
         <Logo />
 
-        <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="gap-1">
+        <NavigationMenu className="hidden lg:flex">
+          <NavigationMenuList>
             {links.map((link) => (
               <NavigationMenuItem key={link.label}>
                 <NavigationMenuLink
@@ -166,7 +173,7 @@ function DesktopNav() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           {isPending ? (
             <div className={buttonVariants({ variant: "ghost" })}>
               <Spinner />
@@ -190,7 +197,7 @@ function DesktopNav() {
 
         {!isPending && session?.user && <DropdownMenuAvatar />}
 
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <MobileNav />
         </div>
       </div>

@@ -15,14 +15,6 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
 };
 
-export type ActivityFeedItem = {
-  __typename: 'ActivityFeedItem';
-  id: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  timestamp: Scalars['String']['output'];
-  type: ActivityType;
-};
-
 /** Type of activity event on a repair */
 export enum ActivityType {
   Approval = 'approval',
@@ -31,6 +23,42 @@ export enum ActivityType {
   Created = 'created',
   Waiting = 'waiting'
 }
+
+/** Consulting model */
+export type Consulting = {
+  __typename: 'Consulting';
+  challenge: Scalars['String']['output'];
+  company: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
+  service: Scalars['String']['output'];
+  size: Scalars['String']['output'];
+  status: ConsultingStatus;
+  ticketCode: Scalars['String']['output'];
+  ticketNumber: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Maybe<Scalars['String']['output']>;
+};
+
+/** Current status of a consulting */
+export enum ConsultingStatus {
+  Completed = 'completed',
+  InProgress = 'in_progress',
+  Pending = 'pending'
+}
+
+export type CreateConsultingInput = {
+  challenge: Scalars['String']['input'];
+  company?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
+  service: Scalars['String']['input'];
+  size: Scalars['String']['input'];
+};
 
 export type CreateRepairInput = {
   brand: Scalars['String']['input'];
@@ -49,8 +77,14 @@ export type FindRepairsByEmailInput = {
 
 export type Mutation = {
   __typename: 'Mutation';
+  createConsulting: Consulting;
   createRepair: Repair;
   newRepair: Repair;
+};
+
+
+export type MutationCreateConsultingArgs = {
+  input: CreateConsultingInput;
 };
 
 
@@ -75,8 +109,8 @@ export type NewRepairInput = {
 export type Query = {
   __typename: 'Query';
   findRepairsByEmail: Array<Repair>;
-  getActivityFeed: Array<ActivityFeedItem>;
-  getRepairStats: RepairStats;
+  getActivityFeed: Array<RepairActivity>;
+  getRepairStats: RepairStat;
   health: Scalars['String']['output'];
   myRepairs: Array<Repair>;
   trackRepair: Repair;
@@ -89,6 +123,11 @@ export type QueryFindRepairsByEmailArgs = {
 
 
 export type QueryGetActivityFeedArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryMyRepairsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -117,8 +156,17 @@ export type Repair = {
   userId: Maybe<Scalars['String']['output']>;
 };
 
-export type RepairStats = {
-  __typename: 'RepairStats';
+export type RepairActivity = {
+  __typename: 'RepairActivity';
+  id: Scalars['String']['output'];
+  message: Scalars['String']['output'];
+  timestamp: Scalars['String']['output'];
+  type: ActivityType;
+};
+
+/** Repair stats model */
+export type RepairStat = {
+  __typename: 'RepairStat';
   active: Scalars['Float']['output'];
   activeDelta: Scalars['Float']['output'];
   avgDays: Scalars['Float']['output'];
@@ -127,7 +175,7 @@ export type RepairStats = {
   pending: Scalars['Float']['output'];
 };
 
-/** Current status of a repair ticket */
+/** Current status of a repair */
 export enum RepairStatus {
   Completed = 'completed',
   InProgress = 'in_progress',
@@ -140,6 +188,13 @@ export type TrackRepairInput = {
 };
 
 export type RepairBaseFieldsFragment = { __typename: 'Repair', ticketCode: string, status: RepairStatus, brand: string, model: string };
+
+export type CreateConsultingMutationVariables = Exact<{
+  input: CreateConsultingInput;
+}>;
+
+
+export type CreateConsultingMutation = { createConsulting: { __typename: 'Consulting', ticketCode: string, createdAt: string, name: string, company: string | null, phone: string, email: string, service: string, size: string, challenge: string } };
 
 export type CreateRepairMutationVariables = Exact<{
   input: CreateRepairInput;
@@ -184,9 +239,9 @@ export type GetActivityFeedQueryVariables = Exact<{
 }>;
 
 
-export type GetActivityFeedQuery = { getActivityFeed: Array<{ __typename: 'ActivityFeedItem', id: string, type: ActivityType, message: string, timestamp: string }> };
+export type GetActivityFeedQuery = { getActivityFeed: Array<{ __typename: 'RepairActivity', id: string, type: ActivityType, message: string, timestamp: string }> };
 
 export type GetRepairStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRepairStatsQuery = { getRepairStats: { __typename: 'RepairStats', active: number, activeDelta: number, pending: number, completed: number, completedDelta: number, avgDays: number } };
+export type GetRepairStatsQuery = { getRepairStats: { __typename: 'RepairStat', active: number, activeDelta: number, pending: number, completed: number, completedDelta: number, avgDays: number } };

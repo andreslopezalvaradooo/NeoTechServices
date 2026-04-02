@@ -1,21 +1,27 @@
-import { RepairFAQ } from "@/components/repair/faq";
-import { RepairForm } from "@/components/repair/form";
-import { RepairHero } from "@/components/repair/hero";
-import { RepairPricing } from "@/components/repair/pricing";
-import { RepairProcess } from "@/components/repair/process";
-import { RepairWarranty } from "@/components/repair/warranty";
+import { Faq } from "@/components/repair/faq";
+import { Form } from "@/components/repair/form";
+import { Hero } from "@/components/repair/hero";
+import { Pricing } from "@/components/repair/pricing";
+import { Process } from "@/components/repair/process";
+import { Warranty } from "@/components/repair/warranty";
 import { WhatWeRepair } from "@/components/repair/what-we-repair";
+import { Metadata } from "next";
 
-export default function RepairPage() {
+export const metadata: Metadata = {
+  title: "Laptop & PC Repair",
+  description: "",
+};
+
+export default function Repair() {
   return (
     <div>
-      <RepairHero />
-      <RepairForm />
+      <Hero />
       <WhatWeRepair />
-      <RepairProcess />
-      <RepairPricing />
-      <RepairWarranty />
-      <RepairFAQ />
+      <Process />
+      <Pricing />
+      <Warranty />
+      <Faq />
+      <Form />
     </div>
   );
 }

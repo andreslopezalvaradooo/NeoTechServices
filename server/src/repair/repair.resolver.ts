@@ -1,5 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Repair } from './repair.model.js';
+import { Repair } from './models/repair.model.js';
 import { RepairService } from './repair.service.js';
 import { CreateRepairInput } from './dto/create-repair.input.js';
 import { TrackRepairInput } from './dto/track-repair.input.js';
@@ -7,8 +7,8 @@ import { FindRepairsByEmailInput } from './dto/find-repairs-by-email.input.js';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator.js';
 import { GqlAuthGuard } from '../auth/gql-auth.guard.js';
-import { ActivityFeedItem } from './dto/activity-feed-item.js';
-import { RepairStats } from './repair-stats.js';
+import { RepairActivity } from './models/repair-activity.model.js';
+import { RepairStat } from './models/repair-stat.model.js';
 import { NewRepairInput } from './dto/new-repair.input.js';
 
 @Resolver(() => Repair)
@@ -50,21 +50,21 @@ export class RepairResolver {
     return this.repair.findByUserId(user.id, limit);
   }
 
-  @Query(() => [ActivityFeedItem])
+  @Query(() => [RepairActivity])
   @UseGuards(GqlAuthGuard)
   async getActivityFeed(
     @CurrentUser() user: { id: string },
     @Args('limit', { type: () => Int, nullable: true, defaultValue: 4 })
     limit: number,
-  ): Promise<ActivityFeedItem[]> {
+  ): Promise<RepairActivity[]> {
     return this.repair.getActivityFeed(user.id, limit);
   }
 
-  @Query(() => RepairStats)
+  @Query(() => RepairStat)
   @UseGuards(GqlAuthGuard)
   async getRepairStats(
     @CurrentUser() user: { id: string },
-  ): Promise<RepairStats> {
+  ): Promise<RepairStat> {
     return this.repair.getRepairStats(user.id);
   }
 }

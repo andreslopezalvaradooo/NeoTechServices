@@ -7,6 +7,8 @@ import { AppResolver } from './app.resolver.js';
 import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { RepairModule } from './repair/repair.module.js';
+import { PrismaModule } from './prisma/prisma.module.js';
+import { ConsultingModule } from './consulting/consulting.module.js';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { RepairModule } from './repair/repair.module.js';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: ({ req }) => ({ req }),
     }),
+    PrismaModule,
     RepairModule,
+    ConsultingModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

@@ -2,11 +2,11 @@ import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import {
   RepairStatus,
   type Repair as PrismaRepair,
-} from '../generated/prisma/client.js';
+} from '../../generated/prisma/client.js';
 
 registerEnumType(RepairStatus, {
   name: 'RepairStatus',
-  description: 'Current status of a repair ticket',
+  description: 'Current status of a repair',
 });
 
 @ObjectType({ description: 'Repair model' })

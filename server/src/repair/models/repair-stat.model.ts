@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
-export class RepairStats {
+@ObjectType({ description: 'Repair stats model' })
+export class RepairStat {
   @Field()
   active: number;
 
