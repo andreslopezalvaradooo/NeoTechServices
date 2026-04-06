@@ -33,6 +33,7 @@ import {
   Search01Icon,
   Shield01Icon,
   Telephone,
+  Tools,
   User,
 } from "@hugeicons/core-free-icons";
 import { cn } from "@/src/lib/utils";
@@ -152,108 +153,120 @@ function CreatedRepair({
   onReset: () => void;
 }) {
   return (
-    <Card className="p-2 gap-2 mb-4">
-      <CardTitle className="flex items-center justify-between">
-        <span className="text-xs text-muted-foreground uppercase tracking-wider">
-          Ticket
-        </span>
+    <Card className="p-1 gap-2 md:gap-1 bg-linear-to-br from-[oklch(0.52_0.09_223)]/20 to-[oklch(0.52_0.09_223)]/5">
+      <CardHeader className="px-2 [.border-b]:pb-0 border-b border-primary">
+        <CardTitle className="flex items-center justify-between">
+          <span className="text-primary uppercase tracking-wider">Ticket</span>
 
-        <Badge>{repair.ticketCode}</Badge>
-      </CardTitle>
+          <Badge>{repair.ticketCode}</Badge>
+        </CardTitle>
+      </CardHeader>
 
-      <Separator />
-
-      <CardContent className="p-0 flex flex-col gap-2 md:gap-1">
-        <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 sm:flex-row md:flex-col lg:flex-row">
-          <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs lg:text-sm">
-            <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-              <HugeiconsIcon icon={User} size={15} aria-hidden="true" />
-              Name
+      <CardContent className="px-2">
+        <div>
+          <div>
+            <span className="text-xs text-primary font-medium uppercase tracking-wider">
+              Contact
             </span>
 
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {repair.name}
-            </p>
+            <div>
+              <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+                <HugeiconsIcon icon={User} size={15} aria-hidden />
+                Name
+              </span>
+
+              <p className="pl-5 font-medium capitalize dark:bg-input/30">
+                {repair.name}
+              </p>
+            </div>
+
+            <div>
+              <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+                <HugeiconsIcon icon={Telephone} size={15} aria-hidden="true" />
+                Phone
+              </span>
+
+              <p className="pl-5 font-medium dark:bg-input/30">
+                {repair.phone}
+              </p>
+            </div>
+
+            <div>
+              <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+                <HugeiconsIcon icon={Mail} size={15} aria-hidden="true" />
+                Email
+              </span>
+
+              <p className="pl-5 font-medium dark:bg-input/30">
+                {repair.email}
+              </p>
+            </div>
           </div>
 
-          <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs lg:text-sm">
-            <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-              <HugeiconsIcon icon={Telephone} size={15} aria-hidden="true" />
-              Phone
+          <Separator className="bg-primary lg:hidden" />
+
+          <div>
+            <span className="text-xs text-primary font-medium uppercase tracking-wider">
+              Device
             </span>
 
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {repair.phone}
-            </p>
+            <div className="flex">
+              <div className="w-full">
+                <span className="pl-5 leading-snug text-muted-foreground">
+                  Type
+                </span>
+
+                <p className="pl-5 font-medium dark:bg-input/30">
+                  {repair.type}
+                </p>
+              </div>
+
+              <div className="w-full">
+                <span className="pl-5 leading-snug text-muted-foreground">
+                  Brand
+                </span>
+
+                <p className="pl-5 font-medium capitalize dark:bg-input/30">
+                  {repair.brand}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <span className="pl-5 leading-snug text-muted-foreground">
+                Model
+              </span>
+
+              <p className="pl-5 font-medium dark:bg-input/30">
+                {repair.model}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs lg:text-sm">
-          <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-            <HugeiconsIcon icon={Mail} size={15} aria-hidden="true" />
-            Email
+        <Separator className="bg-primary" />
+
+        <div>
+          <span className="text-xs text-primary font-medium uppercase tracking-wider">
+            Problem
           </span>
 
-          <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-            {repair.email}
-          </p>
-        </div>
-
-        <Separator className="md:hidden lg:block" />
-
-        <div className="flex gap-2">
-          <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs lg:text-sm">
-            <span className="w-full pl-5 leading-snug text-muted-foreground">
-              Type
-            </span>
-
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {repair.type}
-            </p>
-          </div>
-
-          <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs lg:text-sm">
-            <span className="w-full pl-5 leading-snug text-muted-foreground">
-              Brand
-            </span>
-
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {repair.brand}
-            </p>
-          </div>
-        </div>
-
-        <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs lg:text-sm">
-          <span className="w-full pl-5 leading-snug text-muted-foreground">
-            Model
-          </span>
-
-          <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-            {repair.model}
-          </p>
-        </div>
-
-        <Separator className="md:hidden lg:block" />
-
-        <div className="flex flex-col gap-2 md:gap-1 md:text-xs lg:text-sm">
           <div className="flex gap-2">
             <span className="pl-5 leading-snug text-muted-foreground">
               Issue
             </span>
 
-            <p className="font-medium wrap-break-word dark:bg-input/30">
-              {repair.issue}
-            </p>
+            <p className="font-medium dark:bg-input/30">{repair.issue}</p>
           </div>
 
           <span className="w-full pl-5 leading-snug text-muted-foreground">
-            Problem
+            Description
           </span>
 
-          <p className="pl-5 font-medium leading-relaxed">{repair.problem}</p>
+          <p className="pl-5 font-medium">{repair.problem}</p>
         </div>
 
-        <Separator />
+        <Separator className="bg-primary" />
 
         <p className="text-xs text-muted-foreground text-right">
           {new Date(repair.createdAt).toLocaleDateString("en-US", {
@@ -264,7 +277,7 @@ function CreatedRepair({
         </p>
       </CardContent>
 
-      <CardFooter className="bg-transparent md:p-2 justify-center">
+      <CardFooter className="px-2 md:py-1 border-primary justify-center">
         <Button onClick={onReset}>Submit another request</Button>
       </CardFooter>
     </Card>
@@ -279,22 +292,23 @@ function FormFields() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 sm:flex-row md:flex-col lg:flex-row">
+      <span className="md:hidden text-xs text-muted-foreground font-medium uppercase tracking-wider">
+        Contact
+      </span>
+
+      <div className="space-y-2 md:space-y-1">
         <Controller
           name="name"
           control={control}
           render={({ field, fieldState }) => (
-            <Field
-              data-invalid={fieldState.invalid}
-              className="md:gap-1 lg:gap-2"
-            >
-              <div className="flex flex-col gap-1">
-                <FieldLabel htmlFor="name" className="md:text-xs lg:text-sm">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
+                <FieldLabel htmlFor="name">
                   <HugeiconsIcon
                     icon={User}
                     size={15}
                     className="text-muted-foreground"
-                    aria-hidden="true"
+                    aria-hidden
                   />
                   Name
                 </FieldLabel>
@@ -305,7 +319,7 @@ function FormFields() {
                     id="name"
                     placeholder="John Doe"
                     aria-invalid={fieldState.invalid}
-                    className="md:h-6 lg:h-8 md:placeholder:text-xs lg:placeholder:text-sm"
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -319,17 +333,14 @@ function FormFields() {
           name="phone"
           control={control}
           render={({ field, fieldState }) => (
-            <Field
-              data-invalid={fieldState.invalid}
-              className="md:gap-1 lg:gap-2"
-            >
-              <div className="flex flex-col gap-1">
-                <FieldLabel htmlFor="phone" className="md:text-xs lg:text-sm">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
+                <FieldLabel htmlFor="phone">
                   <HugeiconsIcon
                     icon={Telephone}
                     size={15}
                     className="text-muted-foreground"
-                    aria-hidden="true"
+                    aria-hidden
                   />
                   Phone
                 </FieldLabel>
@@ -341,7 +352,7 @@ function FormFields() {
                     type="tel"
                     placeholder="3000000000"
                     aria-invalid={fieldState.invalid}
-                    className="md:h-6 lg:h-8 md:placeholder:text-xs lg:placeholder:text-sm"
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -356,17 +367,14 @@ function FormFields() {
         name="email"
         control={control}
         render={({ field, fieldState }) => (
-          <Field
-            data-invalid={fieldState.invalid}
-            className="md:gap-1 lg:gap-2"
-          >
-            <div className="flex flex-col gap-1">
-              <FieldLabel htmlFor="email" className="md:text-xs lg:text-sm">
+          <Field data-invalid={fieldState.invalid} className="gap-1">
+            <div className="space-y-1">
+              <FieldLabel htmlFor="email">
                 <HugeiconsIcon
                   icon={Mail}
                   size={15}
                   className="text-muted-foreground"
-                  aria-hidden="true"
+                  aria-hidden
                 />
                 Email
               </FieldLabel>
@@ -378,7 +386,7 @@ function FormFields() {
                   type="email"
                   placeholder="john@example.com"
                   aria-invalid={fieldState.invalid}
-                  className="md:h-6 lg:h-8 md:placeholder:text-xs lg:placeholder:text-sm"
+                  className="h-6 text-sm"
                 />
               </div>
             </div>
@@ -390,16 +398,17 @@ function FormFields() {
 
       <FieldSeparator className="md:hidden lg:block" />
 
-      <div className="flex flex-col gap-2 md:gap-1 lg:gap-2 sm:flex-row md:flex-col lg:flex-row">
+      <span className="md:hidden text-xs text-muted-foreground font-medium uppercase tracking-wider">
+        Device
+      </span>
+
+      <div className="space-y-2 md:space-y-1">
         <Controller
           name="type"
           control={control}
           render={({ field, fieldState }) => (
-            <Field
-              data-invalid={fieldState.invalid}
-              className="md:gap-1 lg:gap-2"
-            >
-              <FieldLabel htmlFor="type" className="pl-6 md:text-xs lg:text-sm">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <FieldLabel htmlFor="type" className="pl-6">
                 Device type
               </FieldLabel>
 
@@ -408,15 +417,15 @@ function FormFields() {
                   <SelectTrigger
                     id="type"
                     aria-invalid={fieldState.invalid}
-                    className="w-full md:data-[size=default]:h-6 lg:data-[size=default]:h-8 md:text-xs lg:text-sm"
+                    className="w-full data-[size=default]:h-6"
                   >
                     <SelectValue placeholder="Select a type" />
                   </SelectTrigger>
 
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="laptop">Laptop</SelectItem>
-                      <SelectItem value="desktop">Desktop PC</SelectItem>
+                      <SelectItem value="Laptop">Laptop</SelectItem>
+                      <SelectItem value="Desktop PC">Desktop PC</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -431,15 +440,9 @@ function FormFields() {
           name="brand"
           control={control}
           render={({ field, fieldState }) => (
-            <Field
-              data-invalid={fieldState.invalid}
-              className="md:gap-1 lg:gap-2"
-            >
-              <div className="flex flex-col gap-1">
-                <FieldLabel
-                  htmlFor="brand"
-                  className="pl-6 md:text-xs lg:text-sm"
-                >
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
+                <FieldLabel htmlFor="brand" className="pl-6">
                   Brand
                 </FieldLabel>
 
@@ -449,7 +452,7 @@ function FormFields() {
                     id="brand"
                     placeholder="e.g. Apple, Dell, HP"
                     aria-invalid={fieldState.invalid}
-                    className="md:h-6 lg:h-8 md:placeholder:text-xs lg:placeholder:text-sm"
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -464,15 +467,9 @@ function FormFields() {
         name="model"
         control={control}
         render={({ field, fieldState }) => (
-          <Field
-            data-invalid={fieldState.invalid}
-            className="md:gap-1 lg:gap-2"
-          >
-            <div className="flex flex-col gap-1">
-              <FieldLabel
-                htmlFor="model"
-                className="pl-6 md:text-xs lg:text-sm"
-              >
+          <Field data-invalid={fieldState.invalid} className="gap-1">
+            <div className="space-y-1">
+              <FieldLabel htmlFor="model" className="pl-6">
                 Model
               </FieldLabel>
 
@@ -482,7 +479,7 @@ function FormFields() {
                   id="model"
                   placeholder='e.g. MacBook Pro 14", XPS 15'
                   aria-invalid={fieldState.invalid}
-                  className="md:h-6 lg:h-8 md:placeholder:text-xs lg:placeholder:text-sm"
+                  className="h-6 text-sm"
                 />
               </div>
             </div>
@@ -494,15 +491,16 @@ function FormFields() {
 
       <FieldSeparator className="md:hidden lg:block" />
 
+      <span className="md:hidden text-xs text-muted-foreground font-medium uppercase tracking-wider">
+        Problem
+      </span>
+
       <Controller
         name="issue"
         control={control}
         render={({ field, fieldState }) => (
-          <Field
-            data-invalid={fieldState.invalid}
-            className="md:gap-1 lg:gap-2"
-          >
-            <FieldLabel htmlFor="issue" className="pl-6 md:text-xs lg:text-sm">
+          <Field data-invalid={fieldState.invalid} className="gap-1">
+            <FieldLabel htmlFor="issue" className="pl-6">
               Type of issue
             </FieldLabel>
 
@@ -511,24 +509,26 @@ function FormFields() {
                 <SelectTrigger
                   id="issue"
                   aria-invalid={fieldState.invalid}
-                  className="w-full md:data-[size=default]:h-6 lg:data-[size=default]:h-8 md:text-xs lg:text-sm"
+                  className="w-full data-[size=default]:h-6"
                 >
                   <SelectValue placeholder="Select an issue" />
                 </SelectTrigger>
 
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="screen">Screen / display</SelectItem>
-                    <SelectItem value="keyboard">Keyboard</SelectItem>
-                    <SelectItem value="battery">Battery</SelectItem>
-                    <SelectItem value="liquid">Liquid damage</SelectItem>
-                    <SelectItem value="charging">Charging port</SelectItem>
-                    <SelectItem value="performance">
-                      Slow / overheating
+                    <SelectItem value="Screen / Display">
+                      Screen / Display
                     </SelectItem>
-                    <SelectItem value="os">OS / software</SelectItem>
-                    <SelectItem value="data">Data recovery</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="Keyboard">Keyboard</SelectItem>
+                    <SelectItem value="Battery">Battery</SelectItem>
+                    <SelectItem value="Liquid damage">Liquid damage</SelectItem>
+                    <SelectItem value="Charging port">Charging port</SelectItem>
+                    <SelectItem value="Slow / Overheating">
+                      Slow / Overheating
+                    </SelectItem>
+                    <SelectItem value="OS / Software">OS / Software</SelectItem>
+                    <SelectItem value="Data recovery">Data recovery</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -543,16 +543,13 @@ function FormFields() {
         name="problem"
         control={control}
         render={({ field, fieldState }) => (
-          <Field
-            data-invalid={fieldState.invalid}
-            className="md:gap-1 lg:gap-2"
-          >
-            <FieldLabel htmlFor="problem" className="md:text-xs lg:text-sm">
+          <Field data-invalid={fieldState.invalid} className="gap-1">
+            <FieldLabel htmlFor="problem">
               <HugeiconsIcon
                 icon={MessageSquare}
                 size={15}
                 className="text-muted-foreground"
-                aria-hidden="true"
+                aria-hidden
               />
               Describe the problem
             </FieldLabel>
@@ -561,7 +558,7 @@ function FormFields() {
               <Textarea
                 {...field}
                 id="problem"
-                className="md:placeholder:text-xs md:min-h-12 lg:min-h-16 resize-none"
+                className="text-sm min-h-12 resize-none"
                 placeholder="Tell us what's happening with your device..."
                 aria-invalid={fieldState.invalid}
               />
@@ -572,7 +569,7 @@ function FormFields() {
         )}
       />
 
-      <Field className="items-center md:gap-1 lg:gap-2">
+      <Field className="items-center gap-1">
         {errors.root && (
           <p className="rounded-md bg-destructive/10 px-4 py-2 text-sm text-destructive text-center focus:outline-none">
             {errors.root.message}
@@ -657,48 +654,61 @@ export function Form({ className, ...props }: RepairFormProps) {
           </Button>
         </div>
 
-        <Card className="w-full shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex flex-col items-center text-xl md:text-lg lg:text-xl font-semibold">
-              {repair ? (
-                <>
-                  <HugeiconsIcon
-                    icon={CheckmarkCircle02Icon}
-                    size={35}
-                    className="text-emerald-500"
-                    aria-hidden
-                  />
-                  Request received!
-                </>
-              ) : (
-                "Request a repair"
+        <div className="w-full grid place-items-center">
+          <Card className="w-full max-w-sm md:max-w-md pt-2 pb-2 has-data-[slot=card-footer]:pb-2 gap-2 md:gap-1 shadow-lg">
+            <CardHeader className="px-2">
+              <CardTitle className="flex md:gap-2 flex-col md:flex-row items-center md:justify-center text-xl font-semibold">
+                {repair ? (
+                  <>
+                    <HugeiconsIcon
+                      icon={CheckmarkCircle02Icon}
+                      size={35}
+                      className="text-emerald-500"
+                      aria-hidden
+                    />
+                    Request received!
+                  </>
+                ) : (
+                  <>
+                    <HugeiconsIcon
+                      icon={Tools}
+                      size={35}
+                      className="text-primary"
+                      aria-hidden
+                    />
+                    Request a repair
+                  </>
+                )}
+              </CardTitle>
+
+              {repair && (
+                <CardDescription className="text-center">
+                  We'll reach out within 1 hour to confirm your diagnostic
+                  appointment. Check your WhatsApp or email.
+                </CardDescription>
               )}
-            </CardTitle>
+            </CardHeader>
 
-            {repair && (
-              <CardDescription className="text-center md:text-xs lg:text-sm">
-                We'll reach out within 1 hour to confirm your diagnostic
-                appointment. Check your WhatsApp or email.
-              </CardDescription>
-            )}
-          </CardHeader>
-
-          <CardContent>
-            {repair ? (
-              <CreatedRepair repair={repair} onReset={() => setRepair(null)} />
-            ) : (
-              <FormProvider {...methods}>
-                <Card className="p-2">
-                  <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
-                    <FieldGroup className="gap-2 md:gap-1">
-                      <FormFields />
-                    </FieldGroup>
-                  </form>
-                </Card>
-              </FormProvider>
-            )}
-          </CardContent>
-        </Card>
+            <CardContent className="px-2 py-1">
+              {repair ? (
+                <CreatedRepair
+                  repair={repair}
+                  onReset={() => setRepair(null)}
+                />
+              ) : (
+                <FormProvider {...methods}>
+                  <Card className="p-1">
+                    <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+                      <FieldGroup className="gap-2 md:gap-1">
+                        <FormFields />
+                      </FieldGroup>
+                    </form>
+                  </Card>
+                </FormProvider>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </section>
   );

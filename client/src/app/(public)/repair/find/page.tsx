@@ -14,7 +14,13 @@ import { useLazyQuery } from "@apollo/client/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
@@ -23,6 +29,9 @@ import type {
   FindRepairsByEmailQuery,
 } from "@/src/types/__generated__/graphql";
 import { FIND_REPAIRS_BY_EMAIL, TRACK_REPAIR } from "@/src/lib/queries/repair";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Mail, Telephone, User } from "@hugeicons/core-free-icons";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const trackSchema = z.object({
   ticketCode: z
@@ -84,6 +93,7 @@ function TrackForm({ onResult }: { onResult: (r: TrackedRepair) => void }) {
                     id="ticketCode"
                     placeholder="REP-000001"
                     aria-invalid={fieldState.invalid}
+                    className="bg-linear-to-br from-primary/15 to-primary/5"
                   />
                   <Button type="submit" variant="outline" disabled={loading}>
                     {loading ? "Tracking..." : "Track"}
@@ -148,6 +158,7 @@ function FindForm({ onResult }: { onResult: (r: FoundRepairs) => void }) {
                     type="email"
                     placeholder="example@email.com"
                     aria-invalid={fieldState.invalid}
+                    className="bg-linear-to-br from-primary/15 to-primary/5"
                   />
                   <Button type="submit" variant="outline" disabled={loading}>
                     {loading ? "Finding..." : "Find"}
@@ -170,78 +181,150 @@ function FindForm({ onResult }: { onResult: (r: FoundRepairs) => void }) {
 
 function RepairCard({ repair }: { repair: TrackedRepair }) {
   return (
-    <Card className="max-w-sm mx-auto">
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider">
-            Ticket
-          </span>
+    <Card className="h-full mx-auto max-w-xs md:max-w-2xl p-3 sm:p-2 gap-2 md:gap-1 bg-linear-to-br from-[oklch(0.52_0.09_223)]/20 to-[oklch(0.52_0.09_223)]/5">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between">
+          <span className="text-primary uppercase tracking-wider">Ticket</span>
 
-          <Badge variant="secondary" className="font-mono">
-            {repair.ticketCode}
-          </Badge>
-        </div>
+          <Badge>{repair.ticketCode}</Badge>
+        </CardTitle>
+      </CardHeader>
 
-        <Separator />
+      <Separator className="bg-primary" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider">
+      <CardContent className="flex-1 p-0 space-y-2 md:space-y-1">
+        <div className="space-y-2 md:space-y-1 md:flex">
+          <div className="w-full space-y-2 md:space-y-1">
+            <p className="text-xs text-primary font-medium uppercase tracking-wider">
               Contact
             </p>
 
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
-              <dt className="text-muted-foreground">Name</dt>
-              <dd className="font-medium">{repair.name}</dd>
-              <dt className="text-muted-foreground">Phone</dt>
-              <dd className="font-medium">{repair.phone}</dd>
-              <dt className="text-muted-foreground">Email</dt>
-              <dd className="font-medium truncate">{repair.email}</dd>
-            </dl>
+            <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs">
+              <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
+                <HugeiconsIcon icon={User} size={15} aria-hidden />
+                Name
+              </span>
+
+              <p className="w-full pl-5 font-medium wrap-break-word capitalize dark:bg-input/30">
+                {repair.name}
+              </p>
+            </div>
+
+            <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs">
+              <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
+                <HugeiconsIcon icon={Telephone} size={15} aria-hidden="true" />
+                Phone
+              </span>
+
+              <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
+                {repair.phone}
+              </p>
+            </div>
+
+            <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs">
+              <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
+                <HugeiconsIcon icon={Mail} size={15} aria-hidden="true" />
+                Email
+              </span>
+
+              <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
+                {repair.email}
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider">
+          <Separator className="bg-primary md:hidden" />
+
+          <div className="w-full space-y-2 md:space-y-1">
+            <p className="text-xs text-primary font-medium uppercase tracking-wider">
               Device
             </p>
 
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
-              <dt className="text-muted-foreground">Type</dt>
-              <dd className="font-medium capitalize">{repair.type}</dd>
-              <dt className="text-muted-foreground">Brand</dt>
-              <dd className="font-medium">{repair.brand}</dd>
-              <dt className="text-muted-foreground">Model</dt>
-              <dd className="font-medium">{repair.model}</dd>
-            </dl>
+            <div className="flex gap-2 md:flex-col md:gap-1">
+              <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs">
+                <span className="w-full pl-5 leading-snug text-muted-foreground">
+                  Type
+                </span>
+
+                <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
+                  {repair.type}
+                </p>
+              </div>
+
+              <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs">
+                <span className="w-full pl-5 leading-snug text-muted-foreground">
+                  Brand
+                </span>
+
+                <p className="w-full pl-5 font-medium wrap-break-word capitalize dark:bg-input/30">
+                  {repair.brand}
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full min-w-0 flex flex-col gap-1 md:text-xs">
+              <span className="w-full pl-5 leading-snug text-muted-foreground">
+                Model
+              </span>
+
+              <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
+                {repair.model}
+              </p>
+            </div>
           </div>
         </div>
 
-        <Separator />
+        <Separator className="bg-primary" />
 
-        <div className="flex flex-col gap-2">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider">
+        <div className="space-y-2 md:space-y-1 md:text-xs">
+          <p className="text-xs text-primary font-medium uppercase tracking-wider">
             Problem
           </p>
 
-          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
-            <dt className="text-muted-foreground">Issue</dt>
-            <dd className="font-medium capitalize">{repair.issue}</dd>
-            <dt className="text-muted-foreground">Description</dt>
-            <dd className="font-medium leading-relaxed">{repair.problem}</dd>
-          </dl>
+          <div className="flex gap-2">
+            <span className="pl-5 leading-snug text-muted-foreground">
+              Issue
+            </span>
+
+            <p className="font-medium wrap-break-word dark:bg-input/30">
+              {repair.issue}
+            </p>
+          </div>
+
+          <span className="w-full pl-5 leading-snug text-muted-foreground">
+            Description
+          </span>
+
+          <p className="pl-5 font-medium leading-relaxed">{repair.problem}</p>
         </div>
-
-        <Separator />
-
-        <p className="text-xs text-muted-foreground text-right">
-          {new Date(repair.createdAt).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </p>
       </CardContent>
+
+      <CardFooter className="bg-transparent md:p-2 border-primary text-xs text-muted-foreground justify-end">
+        {new Date(repair.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </CardFooter>
     </Card>
+  );
+}
+
+function FoundRepairsResult({ repairs }: { repairs: FoundRepairs }) {
+  if (repairs.length === 1) return <RepairCard repair={repairs[0]} />;
+
+  return (
+    <div className="flex justify-center">
+      <ScrollArea className="md:h-90 md:p-1 md:pr-2.5 md:border rounded-xl">
+        <ul className="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
+          {repairs.map((repair) => (
+            <li key={repair.ticketCode}>
+              <RepairCard repair={repair} />
+            </li>
+          ))}
+        </ul>
+      </ScrollArea>
+    </div>
   );
 }
 
@@ -264,7 +347,10 @@ export default function FindRepair() {
   const hasResults = trackedRepair || (foundRepairs && foundRepairs.length > 0);
 
   return (
-    <section className="min-h-dvh" aria-labelledby="find-heading">
+    <section
+      className="min-h-[calc(100dvh-64px)]"
+      aria-labelledby="find-heading"
+    >
       <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="w-full space-y-4">
@@ -280,8 +366,8 @@ export default function FindRepair() {
             </p>
           </div>
 
-          <Card className="w-full">
-            <CardContent className="flex flex-col sm:flex-row md:flex-col gap-4 sm:gap-6 md:gap-4">
+          <Card className="w-full md:py-2 bg-linear-to-br from-primary/15 to-primary/5">
+            <CardContent className="md:px-2 flex flex-col sm:flex-row md:flex-col gap-4 sm:gap-6 md:gap-2">
               <div className="w-full flex flex-col gap-1">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">
                   By ticket code
@@ -290,7 +376,7 @@ export default function FindRepair() {
                 <TrackForm onResult={handleTrack} />
               </div>
 
-              <Separator className="sm:hidden md:block" />
+              <Separator className="bg-primary sm:hidden md:block" />
 
               <div className="w-full flex flex-col gap-1">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -314,13 +400,7 @@ export default function FindRepair() {
         {trackedRepair && <RepairCard repair={trackedRepair} />}
 
         {foundRepairs && foundRepairs.length > 0 && (
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {foundRepairs.map((r) => (
-              <li key={r.ticketCode}>
-                <RepairCard repair={r} />
-              </li>
-            ))}
-          </ul>
+          <FoundRepairsResult repairs={foundRepairs} />
         )}
       </div>
     </section>

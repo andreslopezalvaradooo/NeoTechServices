@@ -525,8 +525,8 @@ export function Form() {
 
   return (
     <section
-      id="form"
-      aria-labelledby="form-heading"
+      id="request"
+      aria-labelledby="request-heading"
       className="mx-auto max-w-6xl p-6 lg:p-8 grid gap-8 md:grid-cols-2 lg:items-start"
     >
       <div className="flex flex-col gap-6">
@@ -539,7 +539,7 @@ export function Form() {
           </Badge>
 
           <h2
-            id="form-heading"
+            id="request-heading"
             className="text-4xl font-bold tracking-tight text-foreground lg:text-5xl"
           >
             Start with a
