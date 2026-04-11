@@ -7,7 +7,7 @@ import { CaseStudies } from "@/components/consulting/case-studies";
 import { Pricing } from "@/components/consulting/pricing";
 import { TechStack } from "@/components/consulting/tech-stack";
 import { Faq } from "@/components/consulting/faq";
-import { Form } from "@/components/consulting/form";
+import { Request } from "@/components/consulting/request";
 
 export const metadata: Metadata = {
   title: "Tech Consulting",
@@ -26,7 +26,7 @@ export default function Consulting() {
       <Pricing />
       <TechStack />
       <Faq />
-      <Form />
+      <Request />
     </div>
   );
 }

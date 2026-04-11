@@ -76,14 +76,14 @@ function ServiceCard({ service }: ServiceCardProps) {
   return (
     <li>
       <Card
-        className={`group relative h-full md:pt-2 md:gap-2 lg:py-4 lg:gap-4 bg-linear-to-br ${accent} hover:-translate-y-1 hover:shadow-lg transition-all duration-300 overflow-hidden`}
+        className={`group relative h-full md:pt-2 lg:pt-4 md:gap-1 lg:gap-4 bg-linear-to-br ${accent} hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
       >
         <div
           aria-hidden
           className={`absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-primary group-hover:scale-x-100 transition-transform duration-300`}
         />
 
-        <CardHeader className="md:px-2 lg:px-4 flex gap-2 lg:flex-col items-center">
+        <CardHeader className="md:px-2 flex gap-2 items-center">
           <div
             aria-hidden
             className={`h-10 w-10 flex items-center justify-center rounded-xl ${color}`}
@@ -91,15 +91,15 @@ function ServiceCard({ service }: ServiceCardProps) {
             <HugeiconsIcon icon={icon} />
           </div>
 
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardTitle>{title}</CardTitle>
         </CardHeader>
 
-        <CardContent className="md:px-2 lg:px-4 flex-1 text-muted-foreground text-justify leading-relaxed">
+        <CardContent className="md:px-2 flex-1 text-muted-foreground text-justify leading-relaxed">
           {description}
         </CardContent>
 
         <CardFooter
-          className={`md:p-2 lg:p-4 bg-linear-to-br ${service.accent}`}
+          className={`md:px-2 md:py-1 lg:py-4 bg-linear-to-br ${service.accent}`}
         >
           <ul
             aria-label={`${title} technologies`}
@@ -109,7 +109,7 @@ function ServiceCard({ service }: ServiceCardProps) {
               <li key={tag} className="shrink-0">
                 <Badge
                   variant="outline"
-                  className="text-xs bg-background/60 text-muted-foreground font-normal"
+                  className="md:text-[10px] lg:text-xs bg-background/60 text-muted-foreground"
                 >
                   {tag}
                 </Badge>
@@ -127,7 +127,7 @@ export function Services() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="bg-muted/30 min-h-[calc(100dvh-64px)] pt-16"
+      className="bg-muted/30 min-h-dvh pt-16"
     >
       <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4 lg:space-y-3">
         <div className="space-y-4 md:space-y-1 lg:space-y-3">
@@ -137,10 +137,9 @@ export function Services() {
 
           <h2
             id="services-heading"
-            className="text-3xl sm:text-4xl font-bold tracking-tight"
+            className="text-4xl font-bold tracking-tight"
           >
-            Everything you need to
-            <br />
+            Everything you need to <br className="hidden sm:block" />
             <span className="text-primary">build &amp; scale.</span>
           </h2>
 
@@ -151,7 +150,7 @@ export function Services() {
             </p>
 
             <Button asChild>
-              <Link href="#consulting-form" className="group w-fit">
+              <Link href="#request" className="group w-fit">
                 Talk to an expert
                 <HugeiconsIcon
                   aria-hidden

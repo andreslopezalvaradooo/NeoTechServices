@@ -1,10 +1,8 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -26,7 +24,7 @@ interface Segment {
   description: string;
   benefits: readonly string[];
   accent: string;
-  iconColor: string;
+  color: string;
   featured?: boolean;
 }
 
@@ -42,8 +40,8 @@ const SEGMENTS: readonly Segment[] = [
       "Fundraising technical due diligence",
       "Team hiring and onboarding",
     ],
-    accent: "border-violet-500/30 bg-violet-500/5",
-    iconColor: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+    accent: "from-[oklch(0.87_0.12_207)]/15 to-[oklch(0.87_0.12_207)]/5",
+    color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
   },
   {
     icon: Store,
@@ -56,8 +54,8 @@ const SEGMENTS: readonly Segment[] = [
       "Security and compliance readiness",
       "Vendor evaluation and negotiation",
     ],
-    accent: "border-primary/30 bg-primary/5",
-    iconColor: "bg-primary/10 text-primary",
+    accent: "from-primary/15 to-primary/5",
+    color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
     featured: true,
   },
   {
@@ -71,8 +69,8 @@ const SEGMENTS: readonly Segment[] = [
       "Organizational tech alignment",
       "Custom training and workshops",
     ],
-    accent: "border-blue-500/30 bg-blue-500/5",
-    iconColor: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    accent: "from-[oklch(0.8_0.13_212)]/15 to-[oklch(0.8_0.13_212)]/5",
+    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   {
     icon: User,
@@ -85,8 +83,8 @@ const SEGMENTS: readonly Segment[] = [
       "Productivity and tooling setup",
       "Positioning and service offerings",
     ],
-    accent: "border-emerald-500/30 bg-emerald-500/5",
-    iconColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    accent: "from-[oklch(0.52_0.09_223)]/20 to-[oklch(0.52_0.09_223)]/5",
+    color: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
 ] as const;
 
@@ -95,98 +93,100 @@ interface SegmentCardProps {
 }
 
 function SegmentCard({ segment }: SegmentCardProps) {
-  const { icon, title, description, benefits, accent, iconColor, featured } =
+  const { icon, title, description, benefits, accent, color, featured } =
     segment;
 
   return (
     <li>
-      <Card
-        className={cn(
-          "relative flex h-full flex-col overflow-visible transition-all duration-300 hover:-translate-y-1 hover:shadow-md",
-          accent,
-          featured && "ring-2 ring-primary/20",
-        )}
-      >
-        <CardHeader className="relative gap-3">
-          {featured && (
-            <div
-              aria-label="Most popular plan"
-              className="absolute -top-7 left-1/2 -translate-x-1/2"
-            >
-              <Badge className="shadow-sm">Most Popular</Badge>
-            </div>
+      <Link href="#request">
+        <Card
+          className={cn(
+            "group relative h-full bg-linear-to-br md:py-2 lg:py-4 md:gap-2 lg:gap-4 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 overflow-visible",
+            accent,
+            featured && "ring-2 ring-primary/20",
           )}
-
+        >
           <div
-            aria-hidden="true"
-            className={cn(
-              "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
-              iconColor,
+            aria-hidden
+            className={`absolute inset-x-2 top-0 h-0.5 origin-left scale-x-0 bg-primary group-hover:scale-x-100 transition-transform duration-300`}
+          />
+
+          <CardHeader className="relative md:px-2 md:gap-2">
+            {featured && (
+              <div
+                aria-label="Most popular plan"
+                className="absolute -top-7 md:-top-5 lg:-top-7 left-1/2 -translate-x-1/2"
+              >
+                <Badge className="shadow-sm">Most Popular</Badge>
+              </div>
             )}
-          >
-            <HugeiconsIcon icon={icon} />
-          </div>
 
-          <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+            <div className="flex gap-2 lg:flex-col items-center">
+              <div
+                aria-hidden
+                className={`h-10 w-10 flex items-center justify-center rounded-xl ${color}`}
+              >
+                <HugeiconsIcon icon={icon} />
+              </div>
 
-          <CardDescription className="leading-relaxed text-justify sm:text-left">
-            {description}
-          </CardDescription>
-        </CardHeader>
+              <CardTitle>{title}</CardTitle>
+            </div>
 
-        <CardContent className="flex-1">
-          <ul className="flex flex-col gap-2" aria-label={`${title} benefits`}>
-            {benefits.map((benefit) => (
-              <li key={benefit} className="flex items-center gap-2">
-                <HugeiconsIcon
-                  icon={CheckCircle}
-                  aria-hidden="true"
-                  className="shrink-0 text-muted-foreground"
-                />
+            <CardDescription className="leading-relaxed md:leading-normal lg:leading-relaxed text-justify">
+              {description}
+            </CardDescription>
+          </CardHeader>
 
-                <span className="text-sm text-muted-foreground">{benefit}</span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-
-        <CardFooter className="justify-center">
-          <Button variant={featured ? "default" : "outline"} size="sm" asChild>
-            <Link href="#consulting-form">Get started</Link>
-          </Button>
-        </CardFooter>
-      </Card>
+          <CardContent className="flex-1">
+            <ul
+              className="space-y-2 md:space-y-0"
+              aria-label={`${title} benefits`}
+            >
+              {benefits.map((benefit) => (
+                <li
+                  key={benefit}
+                  className="flex items-center gap-1 text-muted-foreground"
+                >
+                  <HugeiconsIcon
+                    aria-hidden
+                    icon={CheckCircle}
+                    size={15}
+                    className="text-emerald-500"
+                  />
+                  {benefit}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </Link>
     </li>
   );
 }
 
 export function For() {
   return (
-    <section
-      id="for"
-      aria-labelledby="for-heading"
-      className="relative min-h-[calc(100dvh-64px)]"
-    >
-      <div className="relative mx-auto max-w-6xl space-y-8 p-6 sm:p-8">
-        <div className="flex flex-col gap-4">
-          <Badge className="border-primary/30 bg-primary/5 text-sm text-primary">
+    <section id="for" aria-labelledby="for-heading" className="min-h-dvh pt-16">
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4 lg:space-y-6">
+        <div className="space-y-4 md:space-y-1 lg:space-y-4">
+          <Badge className="border-primary/30 bg-primary/5 text-primary">
             Who We Work With
           </Badge>
 
           <h2
             id="for-heading"
-            className="text-4xl font-bold tracking-tight lg:text-5xl"
+            className="text-4xl md:text-3xl lg:text-4xl font-bold tracking-tight"
           >
-            Built for every stage
+            <span className="text-primary">Built</span> for every stage
           </h2>
 
-          <p className="max-w-xl text-lg leading-relaxed text-muted-foreground text-justify md:text-left">
+          <p className="max-w-xl text-lg md:text-base lg:text-lg leading-relaxed md:leading-normal lg:leading-relaxed text-muted-foreground text-justify md:text-left">
             Whether you&apos;re launching your first product or transforming a
             multinational, we adapt our approach to your specific context.
           </p>
         </div>
 
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-6 md:gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {SEGMENTS.map((segment) => (
             <SegmentCard key={segment.title} segment={segment} />
           ))}

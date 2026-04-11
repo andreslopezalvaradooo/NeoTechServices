@@ -28,6 +28,8 @@ interface Plan {
   cta: string;
   featured?: boolean;
   badge?: string;
+  accent: string;
+  color: string;
 }
 
 const PLANS: readonly Plan[] = [
@@ -47,6 +49,8 @@ const PLANS: readonly Plan[] = [
       { label: "Dedicated Slack channel", included: false },
     ],
     cta: "Get started",
+    accent: "from-[oklch(0.87_0.12_207)]/15 to-[oklch(0.87_0.12_207)]/5",
+    color: "text-blue-600 dark:text-blue-400",
   },
   {
     name: "Growth",
@@ -66,6 +70,8 @@ const PLANS: readonly Plan[] = [
       { label: "Fractional CTO support", included: false },
     ],
     cta: "Start free trial",
+    accent: "from-primary/15 to-primary/5",
+    color: "text-violet-600 dark:text-violet-400",
   },
   {
     name: "Enterprise",
@@ -83,6 +89,8 @@ const PLANS: readonly Plan[] = [
       { label: "SLA & priority response", included: true },
     ],
     cta: "Contact us",
+    accent: "from-[oklch(0.8_0.13_212)]/15 to-[oklch(0.8_0.13_212)]/5",
+    color: "text-emerald-600 dark:text-emerald-400",
   },
 ] as const;
 
@@ -92,20 +100,20 @@ interface FeatureItemProps {
 
 function FeatureItem({ feature }: FeatureItemProps) {
   return (
-    <li className="flex items-center gap-3">
+    <li className="flex items-center gap-3 md:gap-1">
       <HugeiconsIcon
-        aria-hidden="true"
+        aria-hidden
+        size={15}
         icon={feature.included ? CheckCircle : Minus}
-        className={cn(
-          "size-4 shrink-0",
-          feature.included ? "text-primary" : "text-muted-foreground/40",
-        )}
+        className={
+          feature.included ? "text-emerald-500" : "text-muted-foreground/40"
+        }
       />
+
       <span
-        className={cn(
-          "text-sm",
-          feature.included ? "text-foreground" : "text-muted-foreground/50",
-        )}
+        className={
+          feature.included ? "text-foreground" : "text-muted-foreground/50"
+        }
       >
         {feature.label}
       </span>
@@ -118,14 +126,24 @@ interface PlanCardProps {
 }
 
 function PlanCard({ plan }: PlanCardProps) {
-  const { name, description, price, period, features, cta, featured, badge } =
-    plan;
+  const {
+    name,
+    description,
+    price,
+    period,
+    features,
+    cta,
+    featured,
+    badge,
+    accent,
+    color,
+  } = plan;
 
   return (
-    <li className="w-full">
+    <li>
       <Card
         className={cn(
-          "relative flex flex-col overflow-visible",
+          `relative h-full bg-linear-to-br ${accent} md:gap-2 lg:gap-4 overflow-visible`,
           featured
             ? "border-primary shadow-xl shadow-primary/10"
             : "border-border/60",
@@ -140,27 +158,37 @@ function PlanCard({ plan }: PlanCardProps) {
           </div>
         )}
 
-        <CardHeader>
-          <CardTitle className="text-xl">{name}</CardTitle>
-          <CardDescription>{description}</CardDescription>
+        <CardHeader className="flex-1 md:px-2 lg:px-4">
+          <CardTitle className={color}>{name}</CardTitle>
+          <CardDescription className="text-justify">
+            {description}
+          </CardDescription>
 
-          <div className="flex items-end gap-2 pt-2">
-            <span className="text-5xl font-bold tracking-tight">{price}</span>
-            <span className="text-sm text-muted-foreground">/ {period}</span>
+          <div className="flex items-end gap-1">
+            <span className={`${color} text-3xl font-bold tracking-tight`}>
+              {price}
+            </span>
+
+            <span className="text-muted-foreground">/ {period}</span>
           </div>
         </CardHeader>
 
-        <CardContent className="flex-1">
-          <ul aria-label={`${name} plan features`} className="space-y-3">
+        <CardContent className="md:px-2 lg:px-4">
+          <ul
+            aria-label={`${name} plan features`}
+            className="space-y-3 md:space-y-1"
+          >
             {features.map((feature) => (
               <FeatureItem key={feature.label} feature={feature} />
             ))}
           </ul>
         </CardContent>
 
-        <CardFooter className="justify-center">
-          <Button variant={featured ? "default" : "outline"} size="lg" asChild>
-            <Link href="#form">{cta}</Link>
+        <CardFooter
+          className={`md:p-2 lg:p-4 bg-linear-to-br ${accent} justify-center`}
+        >
+          <Button variant={featured ? "default" : "outline"} asChild>
+            <Link href="#request">{cta}</Link>
           </Button>
         </CardFooter>
       </Card>
@@ -173,45 +201,44 @@ export function Pricing() {
     <section
       id="pricing"
       aria-labelledby="pricing-heading"
-      className="mx-auto max-w-6xl flex flex-col gap-8 p-6 lg:p-8"
+      className="bg-muted/30 min-h-dvh pt-16"
     >
-      <div className="flex flex-col gap-4">
-        <Badge
-          variant="outline"
-          className="border-primary/30 bg-primary/5 text-primary"
-        >
-          Pricing
-        </Badge>
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
+        <div className="space-y-4 md:space-y-2">
+          <Badge className="border-primary/30 bg-primary/5 text-primary">
+            Pricing
+          </Badge>
 
-        <h2
-          id="pricing-heading"
-          className="text-4xl font-bold tracking-tight lg:text-5xl"
-        >
-          Transparent pricing
-        </h2>
+          <h2
+            id="pricing-heading"
+            className="text-4xl font-bold tracking-tight"
+          >
+            <span className="text-primary">Transparent</span> pricing.
+          </h2>
 
-        <p className="max-w-2xl text-lg text-muted-foreground text-justify">
-          No hidden fees. No surprises. Choose the engagement model that fits
-          your stage and scale up as you grow.
+          <p className="max-w-2xl text-lg text-muted-foreground text-justify md:text-left">
+            No hidden fees. No surprises. Choose the engagement model that fits
+            your stage and scale up as you grow.
+          </p>
+        </div>
+
+        <ul className="grid gap-4 md:gap-2 sm:grid-cols-2 md:grid-cols-3">
+          {PLANS.map((plan) => (
+            <PlanCard key={plan.name} plan={plan} />
+          ))}
+        </ul>
+
+        <p className="text-center text-sm text-muted-foreground">
+          All plans include a free 30-minute discovery call. Not sure which plan
+          fits?{" "}
+          <Link
+            href="#request"
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Let&apos;s talk!.
+          </Link>
         </p>
       </div>
-
-      <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {PLANS.map((plan) => (
-          <PlanCard key={plan.name} plan={plan} />
-        ))}
-      </ul>
-
-      <p className="text-center text-sm text-muted-foreground">
-        All plans include a free 30-minute discovery call. Not sure which plan
-        fits?{" "}
-        <Link
-          href="#form"
-          className="font-medium text-primary underline-offset-4 hover:underline"
-        >
-          Let&apos;s talk.
-        </Link>
-      </p>
     </section>
   );
 }

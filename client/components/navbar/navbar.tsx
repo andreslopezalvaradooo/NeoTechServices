@@ -27,6 +27,7 @@ import { usePathname } from "next/navigation";
 import { useSession } from "@/src/lib/auth-client";
 import { Spinner } from "@/components/ui/spinner";
 import { DropdownMenuAvatar } from "./menu-avatar";
+import { ModeToggle } from "../theme/mode-toggle";
 
 interface NavLink {
   label: string;
@@ -39,7 +40,7 @@ const LINKS_BY_PATH: Record<string, NavLink[]> = {
     { label: "Features", href: "#features" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "FAQ", href: "#faq" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "#cta" },
   ],
   "/repair": [
     { label: "What we repair", href: "#what-we-repair" },
@@ -51,8 +52,19 @@ const LINKS_BY_PATH: Record<string, NavLink[]> = {
   ],
   "/consulting": [
     { label: "Services", href: "#services" },
+    { label: "For", href: "#for" },
+    { label: "Process", href: "#process" },
+    { label: "Case Studies", href: "#case-studies" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Tech Stack", href: "#tech-stack" },
+    { label: "FAQ", href: "#faq" },
+    { label: "Request", href: "#request" },
+  ],
+  "/development": [
+    { label: "What we build", href: "#what-we-build" },
     { label: "Process", href: "#process" },
     { label: "Pricing", href: "#pricing" },
+    { label: "Tech Stack", href: "#tech-stack" },
     { label: "FAQ", href: "#faq" },
     { label: "Request", href: "#request" },
   ],
@@ -74,7 +86,7 @@ function Logo() {
     <Link
       href="/"
       aria-label="NeoTech Services — Home"
-      className="flex items-center gap-2 font-bold text-xl text-primary tracking-tight"
+      className="w-fit flex items-center gap-2 font-bold text-xl text-primary tracking-tight"
     >
       <Image width={30} height={30} src="/NTS-logo.svg" alt="" aria-hidden />
       NeoTech
@@ -95,6 +107,10 @@ function MobileNav() {
       </SheetTrigger>
 
       <SheetContent>
+        <div className="absolute top-12 right-3">
+          <ModeToggle />
+        </div>
+
         <SheetHeader>
           <SheetTitle>
             <SheetClose asChild>
@@ -193,6 +209,8 @@ function DesktopNav() {
           >
             View Catalog
           </Link>
+
+          <ModeToggle />
         </div>
 
         {!isPending && session?.user && <DropdownMenuAvatar />}

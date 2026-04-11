@@ -8,57 +8,56 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowRight02Icon,
   CheckmarkCircle02Icon,
 } from "@hugeicons/core-free-icons";
 import { GridOverlay } from "../grid-overlay";
+import { Progress } from "../ui/progress";
 
 interface Stat {
   value: string;
   label: string;
 }
 
-interface Row {
+interface FileLine {
   label: string;
   value: string;
   color: string;
 }
 
-const CAPACITY = 65;
 const WHATSAPP_URL =
-  "https://wa.me/573000000000?text=Hi,%20I%20need%20a%20repair";
+  "https://wa.me/573000000000?text=Hi,%20I%20need%20a%20development%20quote";
 
 const STATS = [
-  { value: "500+", label: "Devices repaired" },
-  { value: "98%", label: "Satisfaction rate" },
-  { value: "24h", label: "Avg. turnaround" },
+  { value: "30+", label: "Projects delivered" },
+  { value: "100%", label: "On-time delivery" },
+  { value: "5★", label: "Client satisfaction" },
 ] satisfies Stat[];
 
-const ROWS = [
+const FILE_LINES = [
   {
-    label: "Device",
-    value: 'MacBook Pro 14"',
+    label: "Project",
+    value: "E-commerce platform",
     color: "bg-blue-500",
   },
   {
-    label: "Issue",
-    value: "No power / liquid damage",
-    color: "bg-amber-500",
+    label: "Stack",
+    value: "Next.js · Prisma · PostgreSQL",
+    color: "bg-violet-500",
   },
   {
     label: "Status",
-    value: "Diagnosis complete",
+    value: "Sprint 2 in progress",
     color: "bg-emerald-500",
   },
   {
-    label: "ETA",
-    value: "Ready in 24 hours",
-    color: "bg-violet-500",
+    label: "Deploy",
+    value: "Vercel · CI/CD active",
+    color: "bg-amber-500",
   },
-] satisfies Row[];
+] satisfies FileLine[];
 
 function GlowBlobs() {
   return (
@@ -70,7 +69,7 @@ function GlowBlobs() {
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-blue-500/10 blur-[120px]"
+        className="pointer-events-none absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-violet-500/10 blur-[120px]"
       />
     </>
   );
@@ -125,7 +124,7 @@ function DashboardCard() {
         <span className="h-3 w-3 rounded-full bg-yellow-400" aria-hidden />
         <span className="h-3 w-3 rounded-full bg-green-400" aria-hidden />
         <span className="ml-3 text-xs text-muted-foreground">
-          repair-diagnostics.exe
+          neotech-dev · main
         </span>
       </CardHeader>
 
@@ -134,23 +133,23 @@ function DashboardCard() {
       <CardContent className="p-5 space-y-4">
         <div className="space-y-2">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-            Active diagnosis
+            Active project
           </p>
 
           <ul className="space-y-2">
-            {ROWS.map((row) => (
+            {FILE_LINES.map((line) => (
               <li
-                key={row.label}
+                key={line.label}
                 className="bg-muted/10 px-3 py-2 flex gap-8 items-center justify-between rounded-lg border border-border"
               >
                 <div className="flex items-center gap-2">
                   <span
-                    className={`h-2 w-2 rounded-full ${row.color}`}
+                    className={`h-2 w-2 rounded-full ${line.color}`}
                     aria-hidden
                   />
 
                   <span className="text-xs text-muted-foreground">
-                    {row.label}
+                    {line.label}
                   </span>
                 </div>
 
@@ -158,7 +157,7 @@ function DashboardCard() {
                   variant="outline"
                   className="text-[10px] font-normal text-muted-foreground"
                 >
-                  {row.value}
+                  {line.value}
                 </Badge>
               </li>
             ))}
@@ -168,11 +167,11 @@ function DashboardCard() {
 
       <CardFooter className="flex-col gap-1.5">
         <div className="w-full flex justify-between text-[10px] text-muted-foreground">
-          <span>Repair progress</span>
-          <span>{CAPACITY}%</span>
+          <span>Build progress</span>
+          <span>72%</span>
         </div>
 
-        <Progress value={CAPACITY} className="h-1.5" />
+        <Progress value={72} className="h-1.5" />
       </CardFooter>
     </Card>
   );
@@ -186,10 +185,11 @@ function FloatingNotification() {
         className="text-green-500"
         aria-hidden
       />
-
       <div>
-        <p className="text-xs font-semibold">Diagnosis free of charge</p>
-        <p className="text-[10px] text-muted-foreground">No fix, no fee.</p>
+        <p className="text-xs font-semibold">Free discovery call</p>
+        <p className="text-[10px] text-muted-foreground">
+          No commitment required.
+        </p>
       </div>
     </div>
   );
@@ -211,24 +211,24 @@ export function Hero() {
               className="h-1.5 w-1.5 bg-primary rounded-full animate-pulse"
               aria-hidden
             />
-            Repair Service · Bogotá
+            Development
           </Badge>
 
           <h1
             id="hero-heading"
             className="text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]"
           >
-            Laptop & PC
+            Software built
             <br />
             <span className="relative text-primary">
-              repair experts.
+              that scales.
               <Underline />
             </span>
           </h1>
 
           <p className="text-lg text-muted-foreground text-justify sm:text-left leading-tight">
-            We diagnose and repair all laptop and desktop PC brands. Fast
-            turnaround, genuine parts, and a 3-month warranty on every job.
+            We design and build web applications, APIs, and digital products
+            from scratch. Clean code, modern stacks, and on-time delivery.
           </p>
 
           <div className="space-x-1">
@@ -238,9 +238,9 @@ export function Hero() {
                 className="group"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Request a repair on WhatsApp"
+                aria-label="Start your project on WhatsApp"
               >
-                Request a repair
+                Start your project
                 <HugeiconsIcon
                   aria-hidden
                   icon={ArrowRight02Icon}

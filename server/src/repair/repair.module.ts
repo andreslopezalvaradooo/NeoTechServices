@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { RepairResolver } from './repair.resolver.js';
-import { RepairService } from './repair.service.js';
 import { AuthModule } from '../auth/auth.module.js';
+import { RepairService } from './repair.service.js';
+import { RepairResolver } from './repair.resolver.js';
 
 @Module({
   imports:[AuthModule],

@@ -60,6 +60,16 @@ export type CreateConsultingInput = {
   size: Scalars['String']['input'];
 };
 
+export type CreateDevelopmentInput = {
+  budget: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
+  timeline: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+};
+
 export type CreateRepairInput = {
   brand: Scalars['String']['input'];
   email: Scalars['String']['input'];
@@ -71,6 +81,32 @@ export type CreateRepairInput = {
   type: Scalars['String']['input'];
 };
 
+/** Development model */
+export type Development = {
+  __typename: 'Development';
+  budget: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  description: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
+  status: DevelopmentStatus;
+  ticketCode: Scalars['String']['output'];
+  ticketNumber: Scalars['Int']['output'];
+  timeline: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Maybe<Scalars['String']['output']>;
+};
+
+/** Current status of a development */
+export enum DevelopmentStatus {
+  Completed = 'completed',
+  InProgress = 'in_progress',
+  Pending = 'pending'
+}
+
 export type FindRepairsByEmailInput = {
   email: Scalars['String']['input'];
 };
@@ -78,6 +114,7 @@ export type FindRepairsByEmailInput = {
 export type Mutation = {
   __typename: 'Mutation';
   createConsulting: Consulting;
+  createDevelopment: Development;
   createRepair: Repair;
   newRepair: Repair;
 };
@@ -85,6 +122,11 @@ export type Mutation = {
 
 export type MutationCreateConsultingArgs = {
   input: CreateConsultingInput;
+};
+
+
+export type MutationCreateDevelopmentArgs = {
+  input: CreateDevelopmentInput;
 };
 
 
@@ -195,6 +237,13 @@ export type CreateConsultingMutationVariables = Exact<{
 
 
 export type CreateConsultingMutation = { createConsulting: { __typename: 'Consulting', ticketCode: string, createdAt: string, name: string, company: string | null, phone: string, email: string, service: string, size: string, challenge: string } };
+
+export type CreateDevelopmentMutationVariables = Exact<{
+  input: CreateDevelopmentInput;
+}>;
+
+
+export type CreateDevelopmentMutation = { createDevelopment: { __typename: 'Development', ticketCode: string, createdAt: string, name: string, phone: string, email: string, type: string, budget: string, timeline: string, description: string } };
 
 export type CreateRepairMutationVariables = Exact<{
   input: CreateRepairInput;

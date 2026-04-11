@@ -218,7 +218,7 @@ export function Hero() {
 
           <div className="space-x-1">
             <Button asChild>
-              <Link href="#consulting-form" className="group">
+              <Link href="#request" className="group">
                 Book a free consultation
                 <HugeiconsIcon
                   aria-hidden

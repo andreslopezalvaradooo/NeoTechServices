@@ -9,6 +9,7 @@ import { join } from 'path';
 import { RepairModule } from './repair/repair.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { ConsultingModule } from './consulting/consulting.module.js';
+import { DevelopmentModule } from './development/development.module.js';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ConsultingModule } from './consulting/consulting.module.js';
     PrismaModule,
     RepairModule,
     ConsultingModule,
+    DevelopmentModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

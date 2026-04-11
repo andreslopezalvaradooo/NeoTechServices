@@ -68,16 +68,16 @@ function ItemCard({ item }: { item: Item }) {
 export function Cta() {
   return (
     <section
-      id="contact"
+      id="cta"
       className="bg-foreground min-h-dvh pt-16 text-background"
-      aria-labelledby="contact-heading"
+      aria-labelledby="cta-heading"
     >
       <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4 md:space-y-8">
         <div className="space-y-4 md:space-y-8">
           <Badge>Let's get started</Badge>
 
           <h2
-            id="contact-heading"
+            id="cta-heading"
             className="text-4xl font-bold tracking-tight lg:text-5xl"
           >
             Is your device

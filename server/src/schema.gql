@@ -85,6 +85,31 @@ enum ConsultingStatus {
   completed
 }
 
+"""Development model"""
+type Development {
+  id: ID!
+  ticketNumber: Int!
+  ticketCode: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  phone: String!
+  email: String!
+  type: String!
+  budget: String!
+  timeline: String!
+  description: String!
+  status: DevelopmentStatus!
+  userId: String
+}
+
+"""Current status of a development"""
+enum DevelopmentStatus {
+  pending
+  in_progress
+  completed
+}
+
 type Query {
   health: String!
   trackRepair(input: TrackRepairInput!): Repair!
@@ -106,6 +131,7 @@ type Mutation {
   createRepair(input: CreateRepairInput!): Repair!
   newRepair(input: NewRepairInput!): Repair!
   createConsulting(input: CreateConsultingInput!): Consulting!
+  createDevelopment(input: CreateDevelopmentInput!): Development!
 }
 
 input CreateRepairInput {
@@ -136,4 +162,14 @@ input CreateConsultingInput {
   service: String!
   size: String!
   challenge: String!
+}
+
+input CreateDevelopmentInput {
+  name: String!
+  phone: String!
+  email: String!
+  type: String!
+  budget: String!
+  timeline: String!
+  description: String!
 }

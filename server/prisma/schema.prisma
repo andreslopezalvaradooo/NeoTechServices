@@ -52,6 +52,7 @@ model user {
   session       session[]
   repairs       Repair[]
   consultings   Consulting[]
+  developments  Development[]
 }
 
 model verification {
@@ -91,12 +92,6 @@ enum RepairStatus {
   completed
 }
 
-enum ConsultingStatus {
-  pending
-  in_progress
-  completed
-}
-
 model RepairEvent {
   id        String      @id @default(cuid())
   type      ActivityType
@@ -105,6 +100,30 @@ model RepairEvent {
   createdAt DateTime    @default(now())
 
   @@index([repairId])
+}
+
+model Consulting{
+  id           String       @id @default(cuid())
+  ticketNumber Int          @unique @default(autoincrement())
+  name         String
+  company      String?
+  phone        String
+  email        String
+  service      String
+  size         String
+  challenge    String
+  status       ConsultingStatus @default(pending)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  userId       String?
+  user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events       ConsultingEvent[]
+}
+
+enum ConsultingStatus {
+  pending
+  in_progress
+  completed
 }
 
 model ConsultingEvent {
@@ -125,20 +144,36 @@ enum ActivityType {
   created
 }
 
-model Consulting{
+model Development{
   id           String       @id @default(cuid())
   ticketNumber Int          @unique @default(autoincrement())
   name         String
-  company      String?
   phone        String
   email        String
-  service      String
-  size         String
-  challenge    String
-  status       ConsultingStatus @default(pending)
+  type      String
+  budget         String
+  timeline    String
+  description    String
+  status       DevelopmentStatus @default(pending)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   userId       String?
   user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  events       ConsultingEvent[]
+  events       DevelopmentEvent[]
+}
+
+enum DevelopmentStatus {
+  pending
+  in_progress
+  completed
+}
+
+model DevelopmentEvent {
+  id        String      @id @default(cuid())
+  type      ActivityType
+  developmentId  String
+  development    Development      @relation(fields: [developmentId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  @@index([developmentId])
 }

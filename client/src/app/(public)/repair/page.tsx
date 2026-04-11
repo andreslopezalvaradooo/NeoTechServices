@@ -1,5 +1,5 @@
 import { Faq } from "@/components/repair/faq";
-import { Form } from "@/components/repair/form";
+import { Request } from "@/components/repair/request";
 import { Hero } from "@/components/repair/hero";
 import { Pricing } from "@/components/repair/pricing";
 import { Process } from "@/components/repair/process";
@@ -21,7 +21,7 @@ export default function Repair() {
       <Pricing />
       <Warranty />
       <Faq />
-      <Form />
+      <Request />
     </div>
   );
 }

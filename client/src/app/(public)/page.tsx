@@ -5,7 +5,7 @@ import { Testimonials } from "@/components/home/testimonials";
 import { Faq } from "@/components/home/faq";
 import { Cta } from "@/components/home/cta";
 
-export default function HomePage() {
+export default function Home() {
   return (
     <main>
       <Hero />

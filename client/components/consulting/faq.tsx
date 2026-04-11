@@ -58,61 +58,57 @@ const FAQS: readonly FAQ[] = [
 export function Faq() {
   return (
     <section
-      id="consulting-faq"
+      id="faq"
       aria-labelledby="faq-heading"
-      className="mx-auto max-w-6xl p-6 lg:p-8 space-y-8"
+      className="bg-muted/30 min-h-dvh pt-16"
     >
-      <div className="space-y-4">
-        <Badge
-          variant="outline"
-          className="border-primary/30 bg-primary/5 text-primary"
-        >
-          FAQ
-        </Badge>
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
+        <div className="space-y-4">
+          <Badge className="border-primary/30 bg-primary/5 text-primary">
+            FAQ
+          </Badge>
 
-        <h2
-          id="faq-heading"
-          className="text-4xl font-bold tracking-tight text-foreground lg:text-5xl"
-        >
-          Frequently asked questions
-        </h2>
+          <h2 id="faq-heading" className="text-4xl font-bold tracking-tight">
+            Frequently asked <span className="text-primary">questions.</span>
+          </h2>
 
-        <p className="max-w-xl text-lg text-muted-foreground">
-          Everything you need to know before getting started. Still have
-          questions?{" "}
-          <Link
-            href="#form"
-            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-          >
-            Just ask.
-          </Link>
-        </p>
-      </div>
-
-      <Accordion
-        type="single"
-        collapsible
-        className="space-y-1"
-        aria-label="Frequently asked questions"
-      >
-        {FAQS.map((faq) => {
-          return (
-            <AccordionItem
-              key={faq.question}
-              value={faq.question}
-              className="border border-border rounded-xl px-5"
+          <p className="max-w-xl text-lg text-muted-foreground">
+            Everything you need to know before getting started. Still have
+            questions?{" "}
+            <Link
+              href="#request"
+              className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
-              <AccordionTrigger className="hover:no-underline">
-                {faq.question}
-              </AccordionTrigger>
+              Just ask.
+            </Link>
+          </p>
+        </div>
 
-              <AccordionContent className="text-muted-foreground leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+        <Accordion
+          collapsible
+          type="single"
+          className="space-y-1"
+          aria-label="Frequently asked questions"
+        >
+          {FAQS.map((faq) => {
+            return (
+              <AccordionItem
+                key={faq.question}
+                value={faq.question}
+              className="border rounded-xl px-5"
+              >
+                <AccordionTrigger className="hover:no-underline">
+                  {faq.question}
+                </AccordionTrigger>
+
+                <AccordionContent className="text-muted-foreground leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </div>
     </section>
   );
 }

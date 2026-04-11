@@ -45,7 +45,7 @@ const FAQS = [
 
 export function Faq() {
   return (
-    <section id="faq" className="min-h-dvh pt-16" aria-labelledby="faq-heading">
+    <section id="faq" aria-labelledby="faq-heading" className="min-h-dvh pt-16">
       <div className="mx-auto max-w-5xl p-4 sm:p-8 md:flex md:gap-4 space-y-4">
         <div className="w-full space-y-4 md:space-y-8">
           <Badge className="border-primary/30 bg-primary/5 text-primary">

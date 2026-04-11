@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/src/lib/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
 import {
@@ -19,6 +18,8 @@ interface Step {
   title: string;
   description: string;
   duration: string;
+  accent: string;
+  color: string;
 }
 
 const STEPS: readonly Step[] = [
@@ -29,6 +30,8 @@ const STEPS: readonly Step[] = [
     description:
       "A free 30-minute session to understand your business context, current challenges, and technology goals. No commitment required.",
     duration: "30 min",
+    accent: "from-[oklch(0.87_0.12_207)]/15 to-[oklch(0.87_0.12_207)]/5",
+    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   {
     step: "02",
@@ -37,6 +40,8 @@ const STEPS: readonly Step[] = [
     description:
       "We conduct a thorough analysis of your existing systems, processes, team capabilities, and strategic objectives.",
     duration: "1–3 days",
+    accent: "from-primary/15 to-primary/5",
+    color: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
   },
   {
     step: "03",
@@ -45,6 +50,8 @@ const STEPS: readonly Step[] = [
     description:
       "You receive a detailed consulting report with findings, prioritized recommendations, and a concrete action plan tailored to your situation.",
     duration: "2–5 days",
+    accent: "from-[oklch(0.8_0.13_212)]/15 to-[oklch(0.8_0.13_212)]/5",
+    color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   },
   {
     step: "04",
@@ -53,6 +60,8 @@ const STEPS: readonly Step[] = [
     description:
       "We work alongside your team to implement the roadmap — whether hands-on delivery, architecture guidance, or embedded advisory support.",
     duration: "Ongoing",
+    accent: "from-[oklch(0.52_0.09_223)]/20 to-[oklch(0.52_0.09_223)]/5",
+    color: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
   {
     step: "05",
@@ -61,6 +70,8 @@ const STEPS: readonly Step[] = [
     description:
       "Regular check-ins, progress reviews, and strategic adjustments to ensure your technology keeps up with your business evolution.",
     duration: "Monthly",
+    accent: "from-[oklch(0.87_0.12_207)]/15 to-[oklch(0.87_0.12_207)]/5",
+    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
 ] as const;
 
@@ -75,54 +86,46 @@ function Step({ step, index }: StepProps) {
   const isLast = index === LAST_INDEX;
 
   return (
-    <li
-      className={cn(
-        "group relative flex gap-4 lg:flex-col lg:gap-0 mb-6 lg:mt-15 lg:mr-3",
-        isLast && "lg:mr-0 lg:mb-0",
-      )}
-    >
+    <li className="group relative flex gap-2 md:gap-4 md:flex-col">
       {!isLast && (
         <>
           <div
-            aria-hidden="true"
-            className="absolute left-12 right-0 lg:left-0 lg:-top-10 lg:-right-3 hidden h-0.5 bg-border lg:block"
+            aria-hidden
+            className="absolute left-12 top-6 -right-2 h-0.5 bg-border hidden md:block"
           />
 
           <div
-            aria-hidden="true"
-            className="absolute left-6 top-12 h-full w-0.5 bg-border lg:hidden"
+            aria-hidden
+            className="absolute left-6 top-12 -bottom-4 w-0.5 bg-border md:hidden"
           />
         </>
       )}
 
       <div
-        aria-hidden="true"
-        className="relative lg:absolute z-10 lg:-top-16 lg:left-0 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-border bg-background transition-colors duration-300 group-hover:border-primary"
+        aria-hidden
+        className={`bg-background ${step.color} h-12 w-12 shrink-0 flex items-center justify-center rounded-full border-2 border-border transition-colors duration-300 group-hover:border-primary`}
       >
-        <HugeiconsIcon
-          icon={step.icon}
-          className="text-muted-foreground transition-colors duration-300 group-hover:text-primary"
-        />
+        <HugeiconsIcon icon={step.icon} />
       </div>
 
-      <Card className="h-full max-w-3xs lg:pt-4">
-        <CardHeader>
-          <CardTitle>
-            <div>
-              <span className="text-xs font-bold text-primary">
-                {step.step}
-              </span>
+      <Card
+        className={`bg-linear-to-br ${step.accent} h-full max-w-3xs py-2 md:gap-2 lg:gap-4`}
+      >
+        <CardHeader className="md:px-2">
+          <CardTitle className="md:text-sm lg:text-base">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="font-bold text-primary">{step.step}</span>
 
-              <Badge variant="secondary" className="font-normal">
+              <Badge variant="secondary" className="md:text-[10px] lg:text-xs font-normal">
                 {step.duration}
               </Badge>
             </div>
 
-            <span className="font-semibold">{step.title}</span>
+            {step.title}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="leading-relaxed text-muted-foreground">
+        <CardContent className="md:px-2 md:text-xs lg:text-sm text-justify text-muted-foreground leading-relaxed md:leading-normal">
           {step.description}
         </CardContent>
       </Card>
@@ -132,8 +135,8 @@ function Step({ step, index }: StepProps) {
 
 function CTA() {
   return (
-    <Card className="border-primary/20 bg-primary/5">
-      <CardContent className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+    <Card className="bg-primary/5 md:py-2 border-primary/20">
+      <CardContent className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="space-y-1">
           <h3 className="text-xl font-semibold">Ready to get started?</h3>
 
@@ -142,8 +145,8 @@ function CTA() {
           </p>
         </div>
 
-        <Button asChild className="shrink-0">
-          <Link href="#consulting-form">Book a free call</Link>
+        <Button asChild>
+          <Link href="#request">Book a free call</Link>
         </Button>
       </CardContent>
     </Card>
@@ -155,25 +158,22 @@ export function Process() {
     <section
       id="process"
       aria-labelledby="process-heading"
-      className="min-h-[calc(100dvh-64px)]"
+      className="bg-muted/30 min-h-dvh pt-16"
     >
-      <div className="mx-auto max-w-6xl space-y-8 p-6 sm:p-8">
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-6 md:space-y-4">
         <div className="space-y-4">
-          <Badge
-            variant="outline"
-            className="border-primary/30 bg-primary/5 text-primary"
-          >
+          <Badge className="border-primary/30 bg-primary/5 text-primary">
             How It Works
           </Badge>
 
           <h2
             id="process-heading"
-            className="text-4xl font-bold tracking-tight lg:text-5xl"
+            className="text-4xl font-bold tracking-tight"
           >
-            Simple, transparent process
+            Simple, transparent <span className="text-primary">process.</span>
           </h2>
 
-          <p className="max-w-2xl text-lg text-muted-foreground">
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground text-justify md:text-left">
             We follow a proven methodology designed to minimize friction and
             maximize the value we deliver at every stage.
           </p>
@@ -181,7 +181,7 @@ export function Process() {
 
         <ol
           aria-label="Consulting process steps"
-          className="grid lg:grid-cols-5 justify-center"
+          className="grid gap-4 md:gap-2 md:grid-cols-5 justify-center"
         >
           {STEPS.map((step, index) => (
             <Step key={step.step} step={step} index={index} />

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -39,12 +39,11 @@ import {
 import { cn } from "@/src/lib/utils";
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSeparator,
-  FieldSet,
 } from "../ui/field";
 import {
   Controller,
@@ -157,12 +156,11 @@ function CreatedRepair({
       <CardHeader className="px-2 [.border-b]:pb-0 border-b border-primary">
         <CardTitle className="flex items-center justify-between">
           <span className="text-primary uppercase tracking-wider">Ticket</span>
-
           <Badge>{repair.ticketCode}</Badge>
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="px-2">
+      <CardContent className="px-2 space-y-1">
         <div>
           <div>
             <span className="text-xs text-primary font-medium uppercase tracking-wider">
@@ -175,35 +173,29 @@ function CreatedRepair({
                 Name
               </span>
 
-              <p className="pl-5 font-medium capitalize dark:bg-input/30">
-                {repair.name}
-              </p>
+              <p className="pl-5 font-medium capitalize">{repair.name}</p>
             </div>
 
             <div>
               <span className="flex gap-1 items-center leading-snug text-muted-foreground">
-                <HugeiconsIcon icon={Telephone} size={15} aria-hidden="true" />
+                <HugeiconsIcon icon={Telephone} size={15} aria-hidden />
                 Phone
               </span>
 
-              <p className="pl-5 font-medium dark:bg-input/30">
-                {repair.phone}
-              </p>
+              <p className="pl-5 font-medium">{repair.phone}</p>
             </div>
 
             <div>
               <span className="flex gap-1 items-center leading-snug text-muted-foreground">
-                <HugeiconsIcon icon={Mail} size={15} aria-hidden="true" />
+                <HugeiconsIcon icon={Mail} size={15} aria-hidden />
                 Email
               </span>
 
-              <p className="pl-5 font-medium dark:bg-input/30">
-                {repair.email}
-              </p>
+              <p className="pl-5 font-medium">{repair.email}</p>
             </div>
           </div>
 
-          <Separator className="bg-primary lg:hidden" />
+          <Separator className="bg-primary" />
 
           <div>
             <span className="text-xs text-primary font-medium uppercase tracking-wider">
@@ -216,9 +208,7 @@ function CreatedRepair({
                   Type
                 </span>
 
-                <p className="pl-5 font-medium dark:bg-input/30">
-                  {repair.type}
-                </p>
+                <p className="pl-5 font-medium">{repair.type}</p>
               </div>
 
               <div className="w-full">
@@ -226,9 +216,7 @@ function CreatedRepair({
                   Brand
                 </span>
 
-                <p className="pl-5 font-medium capitalize dark:bg-input/30">
-                  {repair.brand}
-                </p>
+                <p className="pl-5 font-medium capitalize">{repair.brand}</p>
               </div>
             </div>
 
@@ -237,9 +225,7 @@ function CreatedRepair({
                 Model
               </span>
 
-              <p className="pl-5 font-medium dark:bg-input/30">
-                {repair.model}
-              </p>
+              <p className="pl-5 font-medium">{repair.model}</p>
             </div>
           </div>
         </div>
@@ -256,10 +242,10 @@ function CreatedRepair({
               Issue
             </span>
 
-            <p className="font-medium dark:bg-input/30">{repair.issue}</p>
+            <p className="font-medium">{repair.issue}</p>
           </div>
 
-          <span className="w-full pl-5 leading-snug text-muted-foreground">
+          <span className="pl-5 leading-snug text-muted-foreground">
             Description
           </span>
 
@@ -277,7 +263,7 @@ function CreatedRepair({
         </p>
       </CardContent>
 
-      <CardFooter className="px-2 md:py-1 border-primary justify-center">
+      <CardFooter className="bg-transparent md:py-1 border-primary justify-center">
         <Button onClick={onReset}>Submit another request</Button>
       </CardFooter>
     </Card>
@@ -581,10 +567,10 @@ function FormFields() {
           <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
         </Button>
 
-        <p className="text-[10px] text-center text-muted-foreground">
+        <FieldDescription className="text-[10px] text-center">
           By submitting this form you agree to be contacted regarding your
           repair request. No spam, ever.
-        </p>
+        </FieldDescription>
       </Field>
     </>
   );
@@ -592,7 +578,7 @@ function FormFields() {
 
 interface RepairFormProps extends React.ComponentProps<"section"> {}
 
-export function Form({ className, ...props }: RepairFormProps) {
+export function Request({ className, ...props }: RepairFormProps) {
   const [repair, setRepair] = useState<CreatedRepair | null>(null);
   const client = useApolloClient();
 
@@ -682,7 +668,7 @@ export function Form({ className, ...props }: RepairFormProps) {
               </CardTitle>
 
               {repair && (
-                <CardDescription className="text-center">
+                <CardDescription className="text-balance text-center">
                   We'll reach out within 1 hour to confirm your diagnostic
                   appointment. Check your WhatsApp or email.
                 </CardDescription>

@@ -27,10 +27,10 @@ import {
   Building,
   User,
   MessageSquare,
-  AlertCircle,
   CheckmarkCircle02Icon,
   Telephone,
   ArrowRight02Icon,
+  MentoringIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -49,11 +49,8 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSeparator,
-  FieldSet,
 } from "../ui/field";
-import Link from "next/link";
 import { CreateConsultingMutation } from "@/src/types/__generated__/graphql";
 import { Separator } from "../ui/separator";
 
@@ -114,104 +111,91 @@ function CreatedConsulting({
   onReset: () => void;
 }) {
   return (
-    <Card className="p-2 gap-2">
-      <CardTitle className="flex items-center justify-between">
-        <span className="text-xs text-muted-foreground uppercase tracking-wider">
-          Ticket
-        </span>
+    <Card className="p-1 gap-2 md:gap-1 bg-linear-to-br from-[oklch(0.52_0.09_223)]/20 to-[oklch(0.52_0.09_223)]/5">
+      <CardHeader className="px-2 [.border-b]:pb-0 border-b border-primary">
+        <CardTitle className="flex items-center justify-between">
+          <span className="text-primary uppercase tracking-wider">Ticket</span>
+          <Badge>{consulting.ticketCode}</Badge>
+        </CardTitle>
+      </CardHeader>
 
-        <Badge>{consulting.ticketCode}</Badge>
-      </CardTitle>
+      <CardContent className="px-2 space-y-1">
+        <div>
+          <span className="text-xs text-primary font-medium uppercase tracking-wider">
+            Contact
+          </span>
 
-      <Separator />
-
-      <CardContent className="flex flex-col gap-2 p-0">
-        <div className="flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
-          <div className="w-full min-w-0 flex flex-col gap-1">
-            <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-              <HugeiconsIcon icon={User} size={15} aria-hidden="true" />
+          <div>
+            <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+              <HugeiconsIcon icon={User} size={15} aria-hidden />
               Name
             </span>
 
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {consulting.name}
-            </p>
+            <p className="pl-5 font-medium capitalize">{consulting.name}</p>
           </div>
 
-          <div className="w-full min-w-0 flex flex-col gap-1">
-            <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-              <HugeiconsIcon icon={Building} size={15} aria-hidden="true" />
+          <div>
+            <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+              <HugeiconsIcon icon={Building} size={15} aria-hidden />
               Company
             </span>
 
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {consulting.company}
-            </p>
+            <p className="pl-5 font-medium capitalize">{consulting.company}</p>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
-          <div className="w-full min-w-0 flex flex-col gap-1">
-            <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-              <HugeiconsIcon icon={Telephone} size={15} aria-hidden="true" />
+          <div>
+            <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+              <HugeiconsIcon icon={Telephone} size={15} aria-hidden />
               Work phone
             </span>
 
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {consulting.phone}
-            </p>
+            <p className="pl-5 font-medium">{consulting.phone}</p>
           </div>
 
-          <div className="w-full min-w-0 flex flex-col gap-1">
-            <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-              <HugeiconsIcon icon={Mail} size={15} aria-hidden="true" />
+          <div>
+            <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+              <HugeiconsIcon icon={Mail} size={15} aria-hidden />
               Work email
             </span>
 
-            <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-              {consulting.email}
-            </p>
+            <p className="pl-5 font-medium">{consulting.email}</p>
           </div>
         </div>
 
-        <Separator />
+        <Separator className="bg-primary" />
 
-        <div className="flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
-          <div className="w-full min-w-0 flex flex-col gap-1 ml-5">
-            <span className="w-full items-center leading-snug text-muted-foreground">
+        <div>
+          <span className="text-xs text-primary font-medium uppercase tracking-wider">
+            Consult
+          </span>
+
+          <div>
+            <span className="pl-5 leading-snug text-muted-foreground">
               Company size
             </span>
 
-            <p className="w-full font-medium wrap-break-word dark:bg-input/30">
-              {consulting.size}
-            </p>
+            <p className="pl-5 font-medium">{consulting.size}</p>
           </div>
 
-          <div className="w-full min-w-0 flex flex-col gap-1 ml-5">
-            <span className="w-full items-center leading-snug text-muted-foreground">
+          <div>
+            <span className="pl-5 leading-snug text-muted-foreground">
               Service of interest
             </span>
 
-            <p className="w-full font-medium wrap-break-word dark:bg-input/30">
-              {consulting.service}
-            </p>
+            <p className="pl-5 font-medium">{consulting.service}</p>
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-1">
-          <span className="w-full flex gap-1 items-center leading-snug text-muted-foreground">
-            <HugeiconsIcon icon={MessageSquare} size={15} aria-hidden="true" />
-            What&apos;s your main challenge?
-          </span>
+        <span className="flex gap-1 items-center leading-snug text-muted-foreground">
+          <HugeiconsIcon icon={MessageSquare} size={15} aria-hidden />
+          What&apos;s your main challenge?
+        </span>
 
-          <p className="w-full pl-5 font-medium wrap-break-word dark:bg-input/30">
-            {consulting.challenge}
-          </p>
-        </div>
+        <p className="pl-5 font-medium">{consulting.challenge}</p>
 
-        <Separator />
+        <Separator className="bg-primary" />
 
-        <p className="text-right text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground text-right">
           {new Date(consulting.createdAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -220,7 +204,7 @@ function CreatedConsulting({
         </p>
       </CardContent>
 
-      <CardFooter className="bg-transparent justify-center">
+      <CardFooter className="bg-transparent md:py-1 border-primary justify-center">
         <Button onClick={onReset}>Submit another request</Button>
       </CardFooter>
     </Card>
@@ -235,19 +219,23 @@ function FormFields() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
+      <span className="md:hidden text-xs text-muted-foreground font-medium uppercase tracking-wider">
+        Contact
+      </span>
+
+      <div className="space-y-2 md:space-y-1">
         <Controller
           name="name"
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <div className="flex flex-col gap-1">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
                 <FieldLabel htmlFor="name">
                   <HugeiconsIcon
                     icon={User}
                     size={15}
                     className="text-muted-foreground"
-                    aria-hidden="true"
+                    aria-hidden
                   />
                   Name
                 </FieldLabel>
@@ -258,6 +246,7 @@ function FormFields() {
                     id="name"
                     placeholder="Jane Smith"
                     aria-invalid={fieldState.invalid}
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -271,14 +260,14 @@ function FormFields() {
           name="company"
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <div className="flex flex-col gap-1">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
                 <FieldLabel htmlFor="company">
                   <HugeiconsIcon
                     icon={Building}
                     size={15}
                     className="text-muted-foreground"
-                    aria-hidden="true"
+                    aria-hidden
                   />
                   Company
                 </FieldLabel>
@@ -289,6 +278,7 @@ function FormFields() {
                     id="company"
                     placeholder="Acme Corp"
                     aria-invalid={fieldState.invalid}
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -299,19 +289,19 @@ function FormFields() {
         />
       </div>
 
-      <div className="flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
+      <div className="space-y-2 md:space-y-1">
         <Controller
           name="phone"
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <div className="flex flex-col gap-1">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
                 <FieldLabel htmlFor="phone">
                   <HugeiconsIcon
                     icon={Telephone}
                     size={15}
                     className="text-muted-foreground"
-                    aria-hidden="true"
+                    aria-hidden
                   />
                   Work phone
                 </FieldLabel>
@@ -323,6 +313,7 @@ function FormFields() {
                     type="tel"
                     placeholder="3500000000"
                     aria-invalid={fieldState.invalid}
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -336,14 +327,14 @@ function FormFields() {
           name="email"
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <div className="flex flex-col gap-1">
+            <Field data-invalid={fieldState.invalid} className="gap-1">
+              <div className="space-y-1">
                 <FieldLabel htmlFor="email">
                   <HugeiconsIcon
                     icon={Mail}
                     size={15}
                     className="text-muted-foreground"
-                    aria-hidden="true"
+                    aria-hidden
                   />
                   Work email
                 </FieldLabel>
@@ -355,6 +346,7 @@ function FormFields() {
                     type="email"
                     placeholder="jane@company.com"
                     aria-invalid={fieldState.invalid}
+                    className="h-6 text-sm"
                   />
                 </div>
               </div>
@@ -365,12 +357,18 @@ function FormFields() {
         />
       </div>
 
-      <div className="flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
+      <FieldSeparator className="md:hidden lg:block" />
+
+      <span className="md:hidden text-xs text-muted-foreground font-medium uppercase tracking-wider">
+        Consult
+      </span>
+
+      <div className="space-y-2 md:space-y-1">
         <Controller
           name="size"
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+            <Field data-invalid={fieldState.invalid} className="gap-1">
               <FieldLabel htmlFor="size" className="pl-6">
                 Company size
               </FieldLabel>
@@ -380,7 +378,7 @@ function FormFields() {
                   <SelectTrigger
                     id="size"
                     aria-invalid={fieldState.invalid}
-                    className="w-full"
+                    className="w-full data-[size=default]:h-6"
                   >
                     <SelectValue placeholder="Select a size" />
                   </SelectTrigger>
@@ -406,7 +404,7 @@ function FormFields() {
           name="service"
           control={control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+            <Field data-invalid={fieldState.invalid} className="gap-1">
               <FieldLabel htmlFor="service" className="pl-6">
                 Service of interest
               </FieldLabel>
@@ -416,7 +414,7 @@ function FormFields() {
                   <SelectTrigger
                     id="service"
                     aria-invalid={fieldState.invalid}
-                    className="w-full"
+                    className="w-full data-[size=default]:h-6"
                   >
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
@@ -443,13 +441,13 @@ function FormFields() {
         name="challenge"
         control={control}
         render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
+          <Field data-invalid={fieldState.invalid} className="gap-1">
             <FieldLabel htmlFor="challenge">
               <HugeiconsIcon
                 icon={MessageSquare}
                 size={15}
                 className="text-muted-foreground"
-                aria-hidden="true"
+                aria-hidden
               />
               What&apos;s your main challenge?
             </FieldLabel>
@@ -457,10 +455,9 @@ function FormFields() {
             <div className="pl-5">
               <Textarea
                 {...field}
-                rows={4}
                 id="challenge"
-                className="resize-none"
-                placeholder="Briefly describe your situation, the problem you're trying to solve, or the outcome you're looking for..."
+                className="text-sm min-h-12 resize-none"
+                placeholder="Describe your situation or goal..."
                 aria-invalid={fieldState.invalid}
               />
             </div>
@@ -470,36 +467,39 @@ function FormFields() {
         )}
       />
 
-      <Field className="items-center">
+      <Field className="items-center gap-1">
         {errors.root && (
           <p className="rounded-md bg-destructive/10 px-4 py-2 text-sm text-destructive text-center focus:outline-none">
             {errors.root.message}
           </p>
         )}
 
-        <Button type="submit" className="max-w-fit" disabled={isSubmitting}>
-          {isSubmitting ? "Sending…" : "Book my free call"}
-          <HugeiconsIcon icon={ArrowRight02Icon} aria-hidden />
+        <Button
+          type="submit"
+          className="group max-w-fit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending..." : "Book my free call"}
+          <HugeiconsIcon
+            aria-hidden
+            icon={ArrowRight02Icon}
+            strokeWidth={2}
+            className="transition-transform group-hover:translate-x-1"
+          />
         </Button>
 
-        <FieldDescription className="text-center">
-          By submitting you agree to our{" "}
-          <Link
-            href="/privacy"
-            className="underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
-          >
-            Privacy Policy
-          </Link>
-          . We never share your data.
+        <FieldDescription className="text-[10px] text-center">
+          By submitting this form you agree to be contacted regarding your
+          repair request. No spam, ever.
         </FieldDescription>
       </Field>
     </>
   );
 }
 
-export function Form() {
+export function Request() {
   const [consulting, setConsulting] = useState<CreatedConsulting | null>(null);
-  const client = useApolloClient();
+  // const client = useApolloClient();
 
   const methods = useForm<ConsultingValues>({
     resolver: zodResolver(consultingSchema),
@@ -510,12 +510,11 @@ export function Form() {
     onError(error) {
       methods.setError("root", { message: error.message });
     },
-    onCompleted() {
-      console.log({
-        implementar:
-          'client.cache.evict({ fieldName: "getRepairStats" }); client.cache.gc();',
-      });
-    },
+    // solo implementar si tienes alguna query en caché que deba refrescarse al crear un consulting, por ejemplo una getConsultingStats o un listado
+    // onCompleted() {
+    //   client.cache.evict({ fieldName: "getRepairStats" });
+    //   client.cache.gc();
+    // },
   });
 
   async function onSubmit(values: ConsultingValues): Promise<void> {
@@ -527,108 +526,133 @@ export function Form() {
     <section
       id="request"
       aria-labelledby="request-heading"
-      className="mx-auto max-w-6xl p-6 lg:p-8 grid gap-8 md:grid-cols-2 lg:items-start"
+      className="min-h-dvh pt-16"
     >
-      <div className="flex flex-col gap-6">
-        <div className="space-y-4">
-          <Badge
-            variant="outline"
-            className="border-primary/30 bg-primary/5 text-primary"
-          >
-            Get in Touch
-          </Badge>
+      <div className="mx-auto max-w-5xl p-4 sm:p-8 md:flex md:gap-4 space-y-4">
+        <div className="w-full space-y-4">
+          <div className="space-y-4">
+            <Badge className="border-primary/30 bg-primary/5 text-primary">
+              Get in Touch
+            </Badge>
 
-          <h2
-            id="request-heading"
-            className="text-4xl font-bold tracking-tight text-foreground lg:text-5xl"
-          >
-            Start with a
-            <br />
-            <span className="text-primary">free consultation</span>
-          </h2>
+            <h2
+              id="request-heading"
+              className="text-4xl font-bold tracking-tight"
+            >
+              Start with a
+              <br />
+              <span className="text-primary">free consultation</span>
+            </h2>
 
-          <p className="text-lg text-muted-foreground text-justify sm:text-left">
-            Tell us about your situation and goals. A senior consultant will
-            review your submission and reach out to schedule a discovery call —
-            no strings attached.
-          </p>
+            <p className="text-lg text-muted-foreground text-justify sm:text-left">
+              Tell us about your situation and goals. A senior consultant will
+              review your submission and reach out to schedule a discovery call
+              — no strings attached.
+            </p>
+          </div>
+
+          <ul className="space-y-2" aria-label="What you get">
+            {BENEFITS.map((benefit) => (
+              <li key={benefit} className="flex items-center gap-2">
+                <HugeiconsIcon
+                  icon={CheckCircle}
+                  className="text-emerald-500"
+                  aria-hidden
+                  size={18}
+                />
+                {benefit}
+              </li>
+            ))}
+          </ul>
+
+          <figure className="rounded-2xl border border-border/50 bg-background/60 p-5">
+            <div className="flex gap-2">
+              <div
+                className="h-12 w-12 shrink-0 flex items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary"
+                aria-hidden
+              >
+                S
+              </div>
+
+              <div className="space-y-2">
+                <blockquote>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    &ldquo;Within the first call they identified three critical
+                    issues we had been struggling with for months. Worth every
+                    penny.&rdquo;
+                  </p>
+                </blockquote>
+
+                <figcaption>
+                  <span className="text-sm font-semibold text-foreground">
+                    Sarah K.
+                  </span>
+
+                  <span className="block text-xs text-muted-foreground">
+                    CTO, Series A Startup
+                  </span>
+                </figcaption>
+              </div>
+            </div>
+          </figure>
         </div>
 
-        <ul className="flex flex-col gap-3" aria-label="What you get">
-          {BENEFITS.map((benefit) => (
-            <li key={benefit} className="flex items-center gap-3">
-              <HugeiconsIcon
-                icon={CheckCircle}
-                className="text-primary"
-                aria-hidden="true"
-                size={20}
-              />
-              <span>{benefit}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="w-full grid place-items-center">
+          <Card className="w-full max-w-sm md:max-w-md pt-2 pb-2 has-data-[slot=card-footer]:pb-2 gap-2 md:gap-1 shadow-lg">
+            <CardHeader className="px-2">
+              {consulting ? (
+                <>
+                  <CardTitle className="flex md:gap-2 flex-col md:flex-row items-center md:justify-center text-xl font-semibold">
+                    <HugeiconsIcon
+                      icon={CheckmarkCircle02Icon}
+                      size={35}
+                      className="text-emerald-500"
+                      aria-hidden
+                    />
+                    Request received!
+                  </CardTitle>
+                </>
+              ) : (
+                <>
+                  <CardTitle className="flex md:gap-2 flex-col md:flex-row items-center md:justify-center text-xl font-semibold">
+                    <HugeiconsIcon
+                      icon={MentoringIcon}
+                      size={35}
+                      className="text-primary"
+                      aria-hidden
+                    />
+                    Book your free discovery call
+                  </CardTitle>
 
-        <figure className="rounded-2xl border border-border/50 bg-background/60 p-6">
-          <div className="flex items-start gap-4">
-            <div
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary"
-              aria-hidden="true"
-            >
-              S
-            </div>
+                  <CardDescription className="text-balance text-center">
+                    Fill in a few details and we&apos;ll be in touch within 1
+                    business day.
+                  </CardDescription>
+                </>
+              )}
+            </CardHeader>
 
-            <div>
-              <blockquote>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  &ldquo;Within the first call they identified three critical
-                  issues we had been struggling with for months. Worth every
-                  penny.&rdquo;
-                </p>
-              </blockquote>
-
-              <figcaption className="mt-2">
-                <span className="text-sm font-semibold text-foreground">
-                  Sarah K.
-                </span>
-
-                <span className="block text-xs text-muted-foreground">
-                  CTO, Series A Startup
-                </span>
-              </figcaption>
-            </div>
-          </div>
-        </figure>
+            <CardContent className="px-2 py-1">
+              {consulting ? (
+                <CreatedConsulting
+                  consulting={consulting}
+                  onReset={() => setConsulting(null)}
+                />
+              ) : (
+                <FormProvider {...methods}>
+                  <Card className="p-1">
+                    <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+                      <FieldGroup className="gap-2 md:gap-1">
+                        <FormFields />
+                      </FieldGroup>
+                    </form>
+                  </Card>
+                </FormProvider>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
-
-      <Card className="shadow-lg">
-        <CardTitle className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Book your free discovery call</h1>
-
-          <p className="text-sm text-balance text-muted-foreground">
-            Fill in a few details and we&apos;ll be in touch within 1 business
-            day.
-          </p>
-        </CardTitle>
-
-        <CardContent>
-          {consulting ? (
-            <CreatedConsulting
-              consulting={consulting}
-              onReset={() => setConsulting(null)}
-            />
-          ) : (
-            <FormProvider {...methods}>
-              <Card className="p-2">
-                <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
-                  <FieldGroup className="gap-2">
-                    <FormFields />
-                  </FieldGroup>
-                </form>
-              </Card>
-            </FormProvider>
-          )}
-        </CardContent>
-      </Card>
     </section>
   );
 }
