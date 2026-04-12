@@ -5,9 +5,9 @@ import { cn } from "@/src/lib/utils";
 import { useSession } from "@/src/lib/auth-client";
 import { skipToken, useSuspenseQuery } from "@apollo/client/react";
 import { GET_ACTIVITY_FEED } from "@/src/lib/queries/repair";
-import { ActivityFeedItem } from "@/src/types/__generated__/graphql";
+import { ActivityType } from "@/src/types/__generated__/graphql";
 
-const dotColor: Record<ActivityFeedItem["type"], string> = {
+const dotColor: Record<ActivityType, string> = {
   assigned: "bg-blue-500",
   completed: "bg-green-600",
   waiting: "bg-amber-500",
@@ -47,7 +47,7 @@ export function ActivityFeed() {
                   className="text-sm text-foreground leading-snug"
                   dangerouslySetInnerHTML={{ __html: item.message }}
                 />
-                
+
                 <span className="text-xs text-muted-foreground">
                   {item.timestamp}
                 </span>
