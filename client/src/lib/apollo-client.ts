@@ -4,17 +4,9 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/client-integration-nextjs";
-import { cookies } from "next/headers";
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(
   async () => {
-    const cookieStore = await cookies();
-
-    const cookieHeader = cookieStore
-      .getAll()
-      .map((c) => `${c.name}=${decodeURIComponent(c.value)}`)
-      .join("; ");
-
     return new ApolloClient({
       cache: new InMemoryCache(),
       link: new HttpLink({
@@ -22,9 +14,6 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(
           process.env.NEXT_PUBLIC_GRAPHQL_URL ??
           "http://localhost:4000/graphql",
         credentials: "include",
-        headers: {
-          cookie: cookieHeader,
-        },
       }),
     });
   },

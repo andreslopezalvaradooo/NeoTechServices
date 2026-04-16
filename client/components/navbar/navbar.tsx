@@ -166,7 +166,7 @@ function DesktopNav() {
       <div className="h-16 mx-auto max-w-5xl px-4 lg:px-8 flex items-center justify-between">
         <Logo />
 
-        <NavigationMenu className="hidden lg:flex">
+        <NavigationMenu className="hidden lg:block">
           <NavigationMenuList>
             {links.map((link) => (
               <NavigationMenuItem key={link.label}>
@@ -189,34 +189,36 @@ function DesktopNav() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="hidden lg:flex items-center gap-2">
-          {isPending ? (
-            <div className={buttonVariants({ variant: "ghost" })}>
-              <Spinner />
-            </div>
-          ) : !session?.user ? (
+        <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
+            {isPending ? (
+              <div className={buttonVariants({ variant: "ghost" })}>
+                <Spinner />
+              </div>
+            ) : !session?.user ? (
+              <Link
+                href="/sign-in"
+                className={buttonVariants({ variant: "ghost" })}
+              >
+                Sign In
+              </Link>
+            ) : null}
+
             <Link
-              href="/sign-in"
-              className={buttonVariants({ variant: "ghost" })}
+              href="/store"
+              className={buttonVariants({ variant: "default" })}
             >
-              Sign In
+              View Catalog
             </Link>
-          ) : null}
 
-          <Link
-            href="/store"
-            className={buttonVariants({ variant: "default" })}
-          >
-            View Catalog
-          </Link>
+            <ModeToggle />
+          </div>
 
-          <ModeToggle />
-        </div>
+          {!isPending && session?.user && <DropdownMenuAvatar />}
 
-        {!isPending && session?.user && <DropdownMenuAvatar />}
-
-        <div className="lg:hidden">
-          <MobileNav />
+          <div className="lg:hidden">
+            <MobileNav />
+          </div>
         </div>
       </div>
     </header>

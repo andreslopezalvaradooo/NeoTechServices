@@ -15,6 +15,7 @@ import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { GridOverlay } from "../grid-overlay";
+import { GlowBlobs } from "../glow-blobs";
 
 interface DashboardStat {
   label: string;
@@ -88,22 +89,6 @@ const TECH_LOGOS = [
   { name: "YouTube", icon: YoutubeIcon },
   { name: "Instagram", icon: InstagramIcon },
 ] satisfies TechLogo[];
-
-function GlowBlobs() {
-  return (
-    <>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-0 h-2/3 w-2/3 rounded-full bg-primary/10 blur-[120px]"
-      />
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 h-1/3 w-1/3 rounded-full bg-blue-500/10 blur-[120px]"
-      />
-    </>
-  );
-}
 
 function Underline() {
   return (
@@ -258,7 +243,7 @@ export function Hero() {
 
       <div className="mx-auto max-w-5xl p-4 sm:p-8 space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-4 md:space-y-3 lg:space-y-4">
+          <div className="space-y-4 md:space-y-3 lg:space-y-4">
             <Badge className="bg-primary/5 border-primary/30 text-primary">
               <span
                 className="h-1.5 w-1.5 bg-primary rounded-full animate-pulse"

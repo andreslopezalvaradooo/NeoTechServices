@@ -10,6 +10,7 @@ import { RepairModule } from './repair/repair.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { ConsultingModule } from './consulting/consulting.module.js';
 import { DevelopmentModule } from './development/development.module.js';
+import { Request, Response } from 'express';
 
 @Module({
   imports: [
@@ -17,7 +18,10 @@ import { DevelopmentModule } from './development/development.module.js';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req }) => ({ req }),
+      context: ({ req, res }: { req: Request; res: Response }) => ({
+        req,
+        res,
+      }),
     }),
     PrismaModule,
     RepairModule,
