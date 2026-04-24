@@ -47,7 +47,7 @@ import {
 } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useApolloClient, useMutation } from "@apollo/client/react";
+import { useMutation } from "@apollo/client/react";
 import { NEW_REPAIR } from "@/src/lib/mutations/repair";
 import type { NewRepairMutation } from "@/src/types/__generated__/graphql";
 import { Separator } from "@/components/ui/separator";
@@ -448,7 +448,6 @@ function FormFields({ flexDir }: { flexDir: string }) {
 
 export default function NewPage() {
   const [repair, setRepair] = useState<CreatedRepair | null>(null);
-  const client = useApolloClient();
   const { open } = useSidebar();
   const gridCols = open ? "md:grid-cols-1 lg:grid-cols-2" : "md:grid-cols-2";
   const flexDir = open
@@ -462,7 +461,7 @@ export default function NewPage() {
 
   const [newRepair] = useMutation(NEW_REPAIR, {
     onError: (error) => methods.setError("root", { message: error.message }),
-    
+
     update(cache) {
       cache.evict({ fieldName: "myRepairs" });
       cache.evict({ fieldName: "getRepairStats" });
