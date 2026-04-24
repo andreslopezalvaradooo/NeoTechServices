@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, useSession } from "@/src/lib/auth-client";
+import { useApolloClient } from "@apollo/client/react";
 import {
   CheckmarkBadge02Icon,
   Notification01Icon,
@@ -18,10 +19,13 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function DropdownMenuAvatar() {
   const { data: session, isPending, error } = useSession();
   const user = session?.user;
+  const router = useRouter();
+  const client = useApolloClient();
 
   return (
     <DropdownMenu>
@@ -66,7 +70,13 @@ export function DropdownMenuAvatar() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={() => signOut()}>
+        <DropdownMenuItem
+          onClick={async () => {
+            await signOut();
+            await client.clearStore();
+            router.push("/sign-in");
+          }}
+        >
           <HugeiconsIcon icon={Logout01Icon} />
           Sign Out
         </DropdownMenuItem>

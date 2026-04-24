@@ -462,9 +462,12 @@ export default function NewPage() {
 
   const [newRepair] = useMutation(NEW_REPAIR, {
     onError: (error) => methods.setError("root", { message: error.message }),
-    onCompleted: () => {
-      client.cache.evict({ fieldName: "getRepairStats" });
-      client.cache.gc();
+    
+    update(cache) {
+      cache.evict({ fieldName: "myRepairs" });
+      cache.evict({ fieldName: "getRepairStats" });
+      cache.evict({ fieldName: "getRecentRepairs" });
+      cache.gc();
     },
   });
 

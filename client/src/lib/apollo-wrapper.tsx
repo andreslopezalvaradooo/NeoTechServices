@@ -10,10 +10,6 @@ import {
 function makeClient() {
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-    fetchOptions: {
-      // Optional: Next.js-specific fetch options
-      // Note: This doesn't work with `export const dynamic = "force-static"`
-    },
     credentials: "include",
   });
 

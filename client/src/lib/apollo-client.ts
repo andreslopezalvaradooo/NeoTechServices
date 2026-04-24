@@ -5,6 +5,7 @@ import {
   InMemoryCache,
 } from "@apollo/client-integration-nextjs";
 
+//no estoy usando esto en ningun lado, no quitar hasta confirmar que no se necesita
 export const { getClient, query, PreloadQuery } = registerApolloClient(
   async () => {
     return new ApolloClient({

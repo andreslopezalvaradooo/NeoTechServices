@@ -5,9 +5,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MY_REPAIRS } from "@/src/lib/queries/repair";
 import type { MyRepairsQuery } from "@/src/types/__generated__/graphql";
-import { useSuspenseQuery } from "@apollo/client/react";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
+import { useQuery } from "@apollo/client/react";
+import { MyRepairsSkeleton } from "./my-repairs-skeleton";
 
 type MyRepair = NonNullable<MyRepairsQuery["myRepairs"]>[number];
 
@@ -91,8 +92,10 @@ function RepairCard({ repair }: { repair: MyRepair }) {
 }
 
 export default function MyRepairs() {
-  const { data } = useSuspenseQuery(MY_REPAIRS);
+  const { data, loading } = useQuery(MY_REPAIRS)
   const repairs = data?.myRepairs ?? [];
+
+  if (loading) return <MyRepairsSkeleton />
 
   return (
     <>

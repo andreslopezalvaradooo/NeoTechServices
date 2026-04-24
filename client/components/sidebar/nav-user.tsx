@@ -23,8 +23,8 @@ import {
   ProfileIcon,
 } from "@hugeicons/core-free-icons";
 import { signOut } from "@/src/lib/auth-client";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
+import { useApolloClient } from "@apollo/client/react";
 
 export function NavUser({
   user,
@@ -37,6 +37,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
+  const client = useApolloClient();
 
   return (
     <SidebarMenu>
@@ -97,13 +98,11 @@ export function NavUser({
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              onClick={() =>
-                signOut({
-                  fetchOptions: {
-                    onSuccess: () => router.push("/sign-in"),
-                  },
-                })
-              }
+              onClick={async () => {
+                await signOut();
+                await client.clearStore();
+                router.push("/sign-in");
+              }}
             >
               <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
               Log out
