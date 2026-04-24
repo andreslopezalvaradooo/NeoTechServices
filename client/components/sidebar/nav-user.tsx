@@ -23,6 +23,8 @@ import {
   ProfileIcon,
 } from "@hugeicons/core-free-icons";
 import { signOut } from "@/src/lib/auth-client";
+import { Router } from "next/router";
+import { useRouter } from "next/navigation";
 
 export function NavUser({
   user,
@@ -34,6 +36,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -93,7 +96,15 @@ export function NavUser({
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem onClick={() => signOut()}>
+            <DropdownMenuItem
+              onClick={() =>
+                signOut({
+                  fetchOptions: {
+                    onSuccess: () => router.push("/sign-in"),
+                  },
+                })
+              }
+            >
               <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
               Log out
             </DropdownMenuItem>

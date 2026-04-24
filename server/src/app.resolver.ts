@@ -3,7 +3,5 @@ import { Query, Resolver } from '@nestjs/graphql';
 @Resolver()
 export class AppResolver {
   @Query(() => String)
-  health(): string {
-    return 'ok';
-  }
+  health(): string { return 'ok' }
 }
