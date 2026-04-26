@@ -16,7 +16,10 @@ export class AuthService {
       }),
     );
 
-    const raw = cookies['better-auth.session_token'];
+    const raw =
+      cookies['__Secure-better-auth.session_token'] ??
+      cookies['better-auth.session_token'];
+
     if (!raw) return null;
     const decoded = decodeURIComponent(raw);
     const token = decoded.split('.')[0];
