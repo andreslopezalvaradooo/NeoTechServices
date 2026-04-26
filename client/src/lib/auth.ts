@@ -9,6 +9,10 @@ export const auth = betterAuth({
   emailAndPassword: { enabled: true },
   trustedOrigins: [process.env.FRONTEND_URL ?? "http://localhost:3000"],
   advanced: {
+    cookiePrefix: "better-auth", // Mantiene el prefijo consistente
+    crossSubdomainCookies: {
+      enabled: false, // No son subdominios compartidos en Render
+    },
     defaultCookieAttributes: isProduction
       ? {
           secure: true,
