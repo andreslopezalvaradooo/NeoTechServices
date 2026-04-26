@@ -9,8 +9,9 @@ import { AuthService } from './auth.service.js';
 
 @Injectable()
 export class GqlAuthGuard extends AuthGuard('jwt') {
-
-  constructor(private readonly authService: AuthService) { super() }
+  constructor(private readonly authService: AuthService) {
+    super();
+  }
 
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
@@ -20,11 +21,11 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = this.getRequest(context);
     const cookieHeader = request.headers?.cookie as string | undefined;
-    if (!cookieHeader) throw new UnauthorizedException('Token required')
+    if (!cookieHeader) throw new UnauthorizedException('Token required');
     const token = this.authService.extractToken(cookieHeader);
-    if (!token) throw new UnauthorizedException('Token required')
+    if (!token) throw new UnauthorizedException('Token required');
     const user = await this.authService.validateSession(token);
-    if (!user) throw new UnauthorizedException('Invalid or expired session')
+    if (!user) throw new UnauthorizedException('Invalid or expired session');
     request.user = user;
     return true;
   }
