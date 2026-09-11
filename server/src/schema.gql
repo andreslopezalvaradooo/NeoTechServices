@@ -190,11 +190,15 @@ type ByCategory {
 
 type Filters {
   categories: [ByCategory!]!
+  minPrice: Float
+  maxPrice: Float
 }
 
 type SearchProductsResult {
   products: [Product!]!
   filters: Filters!
+  total: Int!
+  pages: Int!
 }
 
 type Query {
@@ -221,6 +225,8 @@ input SearchProductsInput {
   q: String
   categories: [String!]
   order: String! = "relevance"
+  page: Int! = 1
+  limit: Int! = 12
 }
 
 type Mutation {

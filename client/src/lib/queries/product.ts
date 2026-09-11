@@ -110,7 +110,11 @@ export const SEARCH_PRODUCTS: TypedDocumentNode<
           image
           count
         }
+        minPrice
+        maxPrice
       }
+      total
+      pages
     }
   }
 `;

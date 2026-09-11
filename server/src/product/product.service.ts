@@ -34,7 +34,7 @@ export class ProductService {
   }
 
   async searchProducts(input: SearchProductsInput) {
-    const { q, order } = input;
+    const { q, order, page, limit } = input;
 
     const where: Prisma.ProductWhereInput = {
       isActive: true,
@@ -46,40 +46,44 @@ export class ProductService {
       }),
     };
 
-    const [products, priceAggregate, categoryCounts] = await Promise.all([
-      this.prisma.product.findMany({
-        where,
-        orderBy: this.resolveOrderBy(order),
-        include: {
-          category: {
-            select: {
-              id: true,
-              name: true,
-              slug: true,
-              description: true,
-              image: true,
-              createdAt: true,
-              updatedAt: true,
+    const [products, total, priceAggregate, categoryCounts] = await Promise.all(
+      [
+        this.prisma.product.findMany({
+          where,
+          orderBy: this.resolveOrderBy(order),
+          skip: (page - 1) * limit, //quizá no sea necesario
+          take: limit, //quizá no sea necesario
+          include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                description: true,
+                image: true,
+                createdAt: true,
+                updatedAt: true,
+              },
             },
+            discounts: { include: { discount: true } },
           },
-          discounts: {
-            include: { discount: true },
-          },
-        },
-      }),
+        }),
 
-      this.prisma.product.aggregate({
-        where,
-        _min: { price: true },
-        _max: { price: true },
-      }),
+        this.prisma.product.count({ where }), //quizá no sea necesario
 
-      this.prisma.product.groupBy({
-        by: ['categoryId'],
-        where,
-        _count: { id: true },
-      }),
-    ]);
+        this.prisma.product.aggregate({
+          where,
+          _min: { price: true },
+          _max: { price: true },
+        }),
+
+        this.prisma.product.groupBy({
+          by: ['categoryId'],
+          where,
+          _count: { id: true },
+        }),
+      ],
+    );
 
     const categoryIds = categoryCounts
       .map((c) => c.categoryId)
@@ -108,7 +112,12 @@ export class ProductService {
         .sort((a, b) => a.name.localeCompare(b.name)),
     };
 
-    return { products, filters };
+    return {
+      products,
+      filters,
+      total, //quizá no sea necesario
+      pages: Math.max(1, Math.ceil(total / limit)), //quizá no sea necesario
+    };
   }
 
   async getProductReviews(productId: string) {

@@ -158,6 +158,8 @@ export enum DiscountType {
 export type Filters = {
   __typename: 'Filters';
   categories: Array<ByCategory>;
+  maxPrice: Maybe<Scalars['Float']['output']>;
+  minPrice: Maybe<Scalars['Float']['output']>;
 };
 
 export type FindRepairsByEmailInput = {
@@ -339,14 +341,18 @@ export type Review = {
 
 export type SearchProductsInput = {
   categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  limit?: Scalars['Int']['input'];
   order?: Scalars['String']['input'];
+  page?: Scalars['Int']['input'];
   q?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SearchProductsResult = {
   __typename: 'SearchProductsResult';
   filters: Filters;
+  pages: Scalars['Int']['output'];
   products: Array<Product>;
+  total: Scalars['Int']['output'];
 };
 
 export type TrackRepairInput = {
@@ -411,7 +417,7 @@ export type SearchProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductsQuery = { searchProducts: { __typename: 'SearchProductsResult', products: Array<{ __typename: 'Product', id: string, name: string, slug: string, description: string, price: number, stock: number, images: Array<string>, isActive: boolean, categoryId: string, createdAt: string, updatedAt: string, category: { __typename: 'Category', id: string, name: string, slug: string, description: string | null, image: string | null, createdAt: string, updatedAt: string } | null }>, filters: { __typename: 'Filters', categories: Array<{ __typename: 'ByCategory', name: string, slug: string, image: string | null, count: number }> } } };
+export type SearchProductsQuery = { searchProducts: { __typename: 'SearchProductsResult', total: number, pages: number, products: Array<{ __typename: 'Product', id: string, name: string, slug: string, description: string, price: number, stock: number, images: Array<string>, isActive: boolean, categoryId: string, createdAt: string, updatedAt: string, category: { __typename: 'Category', id: string, name: string, slug: string, description: string | null, image: string | null, createdAt: string, updatedAt: string } | null }>, filters: { __typename: 'Filters', minPrice: number | null, maxPrice: number | null, categories: Array<{ __typename: 'ByCategory', name: string, slug: string, image: string | null, count: number }> } } };
 
 export type TrackRepairQueryVariables = Exact<{
   input: TrackRepairInput;
