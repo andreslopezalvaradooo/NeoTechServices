@@ -13,6 +13,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   DateTime: { input: string; output: string; }
+  JSON: { input: unknown; output: unknown; }
 };
 
 /** Type of activity event on a repair */
@@ -23,6 +24,26 @@ export enum ActivityType {
   Created = 'created',
   Waiting = 'waiting'
 }
+
+export type ByCategory = {
+  __typename: 'ByCategory';
+  count: Scalars['Int']['output'];
+  image: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
+/** Category Model */
+export type Category = {
+  __typename: 'Category';
+  createdAt: Scalars['DateTime']['output'];
+  description: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  image: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
 
 /** Consulting model */
 export type Consulting = {
@@ -81,6 +102,14 @@ export type CreateRepairInput = {
   type: Scalars['String']['input'];
 };
 
+export type CreateReviewInput = {
+  author: Scalars['String']['input'];
+  body: Scalars['String']['input'];
+  productId: Scalars['String']['input'];
+  rating: Scalars['Int']['input'];
+  title: Scalars['String']['input'];
+};
+
 /** Development model */
 export type Development = {
   __typename: 'Development';
@@ -107,6 +136,30 @@ export enum DevelopmentStatus {
   Pending = 'pending'
 }
 
+/** Discount Model */
+export type Discount = {
+  __typename: 'Discount';
+  createdAt: Scalars['DateTime']['output'];
+  endsAt: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  startsAt: Maybe<Scalars['DateTime']['output']>;
+  type: DiscountType;
+  updatedAt: Scalars['DateTime']['output'];
+  value: Scalars['Float']['output'];
+};
+
+export enum DiscountType {
+  FixedAmount = 'FIXED_AMOUNT',
+  Percentage = 'PERCENTAGE'
+}
+
+export type Filters = {
+  __typename: 'Filters';
+  categories: Array<ByCategory>;
+};
+
 export type FindRepairsByEmailInput = {
   email: Scalars['String']['input'];
 };
@@ -116,6 +169,7 @@ export type Mutation = {
   createConsulting: Consulting;
   createDevelopment: Development;
   createRepair: Repair;
+  createReview: Review;
   newRepair: Repair;
 };
 
@@ -135,6 +189,11 @@ export type MutationCreateRepairArgs = {
 };
 
 
+export type MutationCreateReviewArgs = {
+  input: CreateReviewInput;
+};
+
+
 export type MutationNewRepairArgs = {
   input: NewRepairInput;
 };
@@ -148,13 +207,44 @@ export type NewRepairInput = {
   type: Scalars['String']['input'];
 };
 
+/** Product Model */
+export type Product = {
+  __typename: 'Product';
+  category: Maybe<Category>;
+  categoryId: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  description: Scalars['String']['output'];
+  discounts: Maybe<Array<ProductDiscount>>;
+  features: Maybe<Scalars['JSON']['output']>;
+  id: Scalars['ID']['output'];
+  images: Array<Scalars['String']['output']>;
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  reviews: Maybe<Array<Review>>;
+  slug: Scalars['String']['output'];
+  stock: Scalars['Float']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+/** Product Discount Model */
+export type ProductDiscount = {
+  __typename: 'ProductDiscount';
+  discount: Maybe<Discount>;
+  discountId: Scalars['ID']['output'];
+  productId: Scalars['ID']['output'];
+};
+
 export type Query = {
   __typename: 'Query';
   findRepairsByEmail: Array<Repair>;
   getActivityFeed: Array<RepairActivity>;
+  getProduct: Product;
+  getProducts: Array<Product>;
   getRepairStats: RepairStat;
   health: Scalars['String']['output'];
   myRepairs: Array<Repair>;
+  searchProducts: SearchProductsResult;
   trackRepair: Repair;
 };
 
@@ -169,8 +259,18 @@ export type QueryGetActivityFeedArgs = {
 };
 
 
+export type QueryGetProductArgs = {
+  slug: Scalars['String']['input'];
+};
+
+
 export type QueryMyRepairsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySearchProductsArgs = {
+  input: SearchProductsInput;
 };
 
 
@@ -225,9 +325,37 @@ export enum RepairStatus {
   WaitingParts = 'waiting_parts'
 }
 
+/** Product Review */
+export type Review = {
+  __typename: 'Review';
+  author: Scalars['String']['output'];
+  body: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  productId: Scalars['String']['output'];
+  rating: Scalars['Int']['output'];
+  title: Scalars['String']['output'];
+};
+
+export type SearchProductsInput = {
+  categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  order?: Scalars['String']['input'];
+  q?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SearchProductsResult = {
+  __typename: 'SearchProductsResult';
+  filters: Filters;
+  products: Array<Product>;
+};
+
 export type TrackRepairInput = {
   ticketCode: Scalars['String']['input'];
 };
+
+export type CategoryFragmentFragment = { __typename: 'Category', id: string, name: string, slug: string, description: string | null, image: string | null, createdAt: string, updatedAt: string };
+
+export type ProductFragmentFragment = { __typename: 'Product', id: string, name: string, slug: string, description: string, price: number, stock: number, images: Array<string>, isActive: boolean, categoryId: string, createdAt: string, updatedAt: string, category: { __typename: 'Category', id: string, name: string, slug: string, description: string | null, image: string | null, createdAt: string, updatedAt: string } | null };
 
 export type RepairBaseFieldsFragment = { __typename: 'Repair', ticketCode: string, status: RepairStatus, brand: string, model: string };
 
@@ -258,6 +386,32 @@ export type NewRepairMutationVariables = Exact<{
 
 
 export type NewRepairMutation = { newRepair: { __typename: 'Repair', ticketCode: string, createdAt: string, name: string, phone: string, email: string, type: string, brand: string, model: string, issue: string, problem: string } };
+
+export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetProductsQuery = { getProducts: Array<{ __typename: 'Product', id: string, name: string, slug: string, description: string, price: number, stock: number, images: Array<string>, isActive: boolean, categoryId: string, createdAt: string, updatedAt: string }> };
+
+export type GetProductQueryVariables = Exact<{
+  slug: Scalars['String']['input'];
+}>;
+
+
+export type GetProductQuery = { getProduct: { __typename: 'Product', id: string, name: string, slug: string, description: string, price: number, stock: number, images: Array<string>, isActive: boolean, categoryId: string, createdAt: string, updatedAt: string, features: unknown | null, discounts: Array<{ __typename: 'ProductDiscount', productId: string, discountId: string, discount: { __typename: 'Discount', id: string, name: string, type: DiscountType, value: number, startsAt: string | null, endsAt: string | null, isActive: boolean, createdAt: string, updatedAt: string } | null }> | null, reviews: Array<{ __typename: 'Review', id: string, rating: number, title: string, body: string, author: string, createdAt: string }> | null } };
+
+export type CreateReviewMutationVariables = Exact<{
+  input: CreateReviewInput;
+}>;
+
+
+export type CreateReviewMutation = { createReview: { __typename: 'Review', id: string, rating: number, title: string, body: string, author: string, createdAt: string } };
+
+export type SearchProductsQueryVariables = Exact<{
+  input: SearchProductsInput;
+}>;
+
+
+export type SearchProductsQuery = { searchProducts: { __typename: 'SearchProductsResult', products: Array<{ __typename: 'Product', id: string, name: string, slug: string, description: string, price: number, stock: number, images: Array<string>, isActive: boolean, categoryId: string, createdAt: string, updatedAt: string, category: { __typename: 'Category', id: string, name: string, slug: string, description: string | null, image: string | null, createdAt: string, updatedAt: string } | null }>, filters: { __typename: 'Filters', categories: Array<{ __typename: 'ByCategory', name: string, slug: string, image: string | null, count: number }> } } };
 
 export type TrackRepairQueryVariables = Exact<{
   input: TrackRepairInput;

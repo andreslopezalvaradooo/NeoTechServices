@@ -1,7 +1,5 @@
-import React from 'react'
+import { SearchProducts } from "@/components/store/sidebar/search-products";
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
+export default function Store() {
+  return <SearchProducts />;
 }

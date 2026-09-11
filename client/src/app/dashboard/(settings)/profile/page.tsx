@@ -37,7 +37,7 @@ const ALLOWED_EXTENSIONS = [
 
 const MAX_FILE_SIZE = 5;
 
-export default function ProfilePage() {
+export default function Profile() {
   const { data: session, error: sessionError, isPending } = useSession();
   const user = session?.user;
   const [imagePreview, setImagePreview] = useState<string | null>(null);

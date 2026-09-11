@@ -11,6 +11,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { ConsultingModule } from './consulting/consulting.module.js';
 import { DevelopmentModule } from './development/development.module.js';
 import type { Request, Response } from 'express';
+import { ProductModule } from './product/product.module.js';
 
 @Module({
   imports: [
@@ -18,14 +19,18 @@ import type { Request, Response } from 'express';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req, res }: { req: Request; res: Response }) => ({ req, res }),
+      context: ({ req, res }: { req: Request; res: Response }) => ({
+        req,
+        res,
+      }),
     }),
     PrismaModule,
     RepairModule,
     ConsultingModule,
     DevelopmentModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule { }
+export class AppModule {}

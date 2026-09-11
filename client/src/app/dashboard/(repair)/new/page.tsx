@@ -446,7 +446,7 @@ function FormFields({ flexDir }: { flexDir: string }) {
   );
 }
 
-export default function NewPage() {
+export default function New() {
   const [repair, setRepair] = useState<CreatedRepair | null>(null);
   const { open } = useSidebar();
   const gridCols = open ? "md:grid-cols-1 lg:grid-cols-2" : "md:grid-cols-2";

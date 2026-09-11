@@ -110,6 +110,93 @@ enum DevelopmentStatus {
   completed
 }
 
+"""Category Model"""
+type Category {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String
+  image: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Discount Model"""
+type Discount {
+  id: ID!
+  name: String!
+  type: DiscountType!
+  value: Float!
+  startsAt: DateTime
+  endsAt: DateTime
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+"""Product Discount Model"""
+type ProductDiscount {
+  productId: ID!
+  discountId: ID!
+  discount: Discount
+}
+
+"""Product Review"""
+type Review {
+  id: ID!
+  productId: String!
+  rating: Int!
+  title: String!
+  body: String!
+  author: String!
+  createdAt: DateTime!
+}
+
+"""Product Model"""
+type Product {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  slug: String!
+  description: String!
+  price: Float!
+  stock: Float!
+  images: [String!]!
+  isActive: Boolean!
+  categoryId: String!
+  features: JSON
+  category: Category
+  discounts: [ProductDiscount!]
+  reviews: [Review!]
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type ByCategory {
+  name: String!
+  slug: String!
+  image: String
+  count: Int!
+}
+
+type Filters {
+  categories: [ByCategory!]!
+}
+
+type SearchProductsResult {
+  products: [Product!]!
+  filters: Filters!
+}
+
 type Query {
   health: String!
   trackRepair(input: TrackRepairInput!): Repair!
@@ -117,6 +204,9 @@ type Query {
   myRepairs(limit: Int): [Repair!]!
   getActivityFeed(limit: Int = 4): [RepairActivity!]!
   getRepairStats: RepairStat!
+  getProducts: [Product!]!
+  getProduct(slug: String!): Product!
+  searchProducts(input: SearchProductsInput!): SearchProductsResult!
 }
 
 input TrackRepairInput {
@@ -127,11 +217,18 @@ input FindRepairsByEmailInput {
   email: String!
 }
 
+input SearchProductsInput {
+  q: String
+  categories: [String!]
+  order: String! = "relevance"
+}
+
 type Mutation {
   createRepair(input: CreateRepairInput!): Repair!
   newRepair(input: NewRepairInput!): Repair!
   createConsulting(input: CreateConsultingInput!): Consulting!
   createDevelopment(input: CreateDevelopmentInput!): Development!
+  createReview(input: CreateReviewInput!): Review!
 }
 
 input CreateRepairInput {
@@ -172,4 +269,12 @@ input CreateDevelopmentInput {
   budget: String!
   timeline: String!
   description: String!
+}
+
+input CreateReviewInput {
+  productId: String!
+  rating: Int!
+  title: String!
+  body: String!
+  author: String!
 }

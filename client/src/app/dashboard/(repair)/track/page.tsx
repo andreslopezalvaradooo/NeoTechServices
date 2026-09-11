@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function TrackPage() {
+export default function Track() {
   return (
     <Card>
       <CardContent className="grid place-items-center min-h-40">

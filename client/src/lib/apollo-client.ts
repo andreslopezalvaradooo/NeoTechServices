@@ -11,8 +11,12 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(
     return new ApolloClient({
       cache: new InMemoryCache(),
       link: new HttpLink({
-        uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-        credentials: "same-origin",
+        uri:
+          typeof window === "undefined"
+            ? (process.env.NEXT_PUBLIC_GRAPHQL_URL ??
+              "http://localhost:4000/graphql")
+            : "/api/graphql",
+        credentials: "include",
       }),
     });
   },

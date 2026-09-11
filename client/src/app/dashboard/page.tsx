@@ -8,9 +8,9 @@ import { RecentRepairsSkeleton } from "@/components/dashboard/recent-repairs-ske
 import { KpiStatsSkeleton } from "@/components/dashboard/kpi-stats-skeleton";
 import { ActivityFeedSkeleton } from "@/components/dashboard/activity-feed-skeleton";
 
-export default function DashboardPage() {
+export default function Dashboard() {
   return (
-    <section className="h-full mx-auto max-w-6xl p-4 md:p-8 flex flex-col gap-4">
+    <main className="h-full mx-auto max-w-6xl p-4 md:p-8 flex flex-col gap-4">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <Greeting />
         <QuickActions />
@@ -29,6 +29,6 @@ export default function DashboardPage() {
           <ActivityFeed />
         </Suspense>
       </div>
-    </section>
+    </main>
   );
 }

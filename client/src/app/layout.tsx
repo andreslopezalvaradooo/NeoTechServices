@@ -4,6 +4,7 @@ import { Outfit } from "next/font/google";
 import { ApolloWrapper } from "../lib/apollo-wrapper";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,7 +32,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ApolloWrapper>
-            <TooltipProvider>{children}</TooltipProvider>
+            <NuqsAdapter>
+              <TooltipProvider>{children}</TooltipProvider>
+            </NuqsAdapter>
           </ApolloWrapper>
         </ThemeProvider>
       </body>

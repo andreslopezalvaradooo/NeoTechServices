@@ -6,7 +6,7 @@ import { TRACK_REPAIR } from "@/src/lib/queries/repair";
 import { useSuspenseQuery } from "@apollo/client/react";
 import { use } from "react";
 
-export default function TrackResultPage({
+export default function TrackResult({
   params,
 }: {
   params: Promise<{ ticketCode: string }>;

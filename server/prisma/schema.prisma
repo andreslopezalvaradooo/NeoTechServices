@@ -41,18 +41,20 @@ model session {
 }
 
 model user {
-  id            String    @id
+  id            String        @id
   name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String        @unique
+  emailVerified Boolean       @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime      @default(now())
   updatedAt     DateTime
-  account       account[]
-  session       session[]
-  repairs       Repair[]
+  cart          Cart?
   consultings   Consulting[]
   developments  Development[]
+  orders        Order[]
+  repairs       Repair[]
+  account       account[]
+  session       session[]
 }
 
 model verification {
@@ -67,8 +69,7 @@ model verification {
 }
 
 model Repair {
-  id           String       @id @default(cuid())
-  ticketNumber Int          @unique @default(autoincrement())
+  id           String        @id @default(cuid())
   name         String
   phone        String
   email        String
@@ -77,12 +78,178 @@ model Repair {
   model        String
   issue        String
   problem      String
-  status       RepairStatus @default(pending)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   userId       String?
-  user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  ticketNumber Int           @unique @default(autoincrement())
+  status       RepairStatus  @default(pending)
+  user         user?         @relation(fields: [userId], references: [id])
   events       RepairEvent[]
+}
+
+model RepairEvent {
+  id        String       @id @default(cuid())
+  type      ActivityType
+  repairId  String
+  createdAt DateTime     @default(now())
+  repair    Repair       @relation(fields: [repairId], references: [id], onDelete: Cascade)
+
+  @@index([repairId])
+}
+
+model Consulting {
+  id           String            @id @default(cuid())
+  ticketNumber Int               @unique @default(autoincrement())
+  name         String
+  company      String?
+  phone        String
+  email        String
+  service      String
+  size         String
+  challenge    String
+  status       ConsultingStatus  @default(pending)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  userId       String?
+  user         user?             @relation(fields: [userId], references: [id])
+  events       ConsultingEvent[]
+}
+
+model ConsultingEvent {
+  id           String       @id @default(cuid())
+  type         ActivityType
+  consultingId String
+  createdAt    DateTime     @default(now())
+  consulting   Consulting   @relation(fields: [consultingId], references: [id], onDelete: Cascade)
+
+  @@index([consultingId])
+}
+
+model Development {
+  id           String             @id @default(cuid())
+  ticketNumber Int                @unique @default(autoincrement())
+  name         String
+  phone        String
+  email        String
+  type         String
+  budget       String
+  timeline     String
+  description  String
+  status       DevelopmentStatus  @default(pending)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  userId       String?
+  user         user?              @relation(fields: [userId], references: [id])
+  events       DevelopmentEvent[]
+}
+
+model DevelopmentEvent {
+  id            String       @id @default(cuid())
+  type          ActivityType
+  developmentId String
+  createdAt     DateTime     @default(now())
+  development   Development  @relation(fields: [developmentId], references: [id], onDelete: Cascade)
+
+  @@index([developmentId])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+  discounts CategoryDiscount[]
+
+  @@index([slug])
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String
+  price       Decimal     @db.Decimal(10, 2)
+  stock       Int         @default(0)
+  images      String[]
+  isActive    Boolean     @default(true)
+  categoryId  String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  category    Category    @relation(fields: [categoryId], references: [id])
+  discounts   ProductDiscount[]
+  features    Json?                // ← NUEVO
+  reviews     Review[]             // ← NUEVO
+
+  @@index([slug])
+  @@index([isActive])
+  @@index([price])
+  @@index([name])
+  @@index([createdAt])
+  @@index([categoryId, isActive])
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      user       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+}
+
+model CartItem {
+  id            String  @id @default(cuid())
+  cartId        String
+  productId     String
+  quantity      Int
+  priceSnapshot Decimal @db.Decimal(10, 2)
+  cart          Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product       Product @relation(fields: [productId], references: [id])
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  status          OrderStatus @default(PENDING)
+  total           Decimal     @db.Decimal(10, 2)
+  shippingAddress Json
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  user            user        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  payment         Payment?
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+  subtotal  Decimal @db.Decimal(10, 2)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  orderId        String        @unique
+  wompiPaymentId String?       @unique
+  amount         Decimal       @db.Decimal(10, 2)
+  status         PaymentStatus @default(PENDING)
+  method         String?
+  createdAt      DateTime      @default(now())
+  order          Order         @relation(fields: [orderId], references: [id])
 }
 
 enum RepairStatus {
@@ -92,48 +259,10 @@ enum RepairStatus {
   completed
 }
 
-model RepairEvent {
-  id        String      @id @default(cuid())
-  type      ActivityType
-  repairId  String
-  repair    Repair      @relation(fields: [repairId], references: [id], onDelete: Cascade)
-  createdAt DateTime    @default(now())
-
-  @@index([repairId])
-}
-
-model Consulting{
-  id           String       @id @default(cuid())
-  ticketNumber Int          @unique @default(autoincrement())
-  name         String
-  company      String?
-  phone        String
-  email        String
-  service      String
-  size         String
-  challenge    String
-  status       ConsultingStatus @default(pending)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  userId       String?
-  user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  events       ConsultingEvent[]
-}
-
 enum ConsultingStatus {
   pending
   in_progress
   completed
-}
-
-model ConsultingEvent {
-  id        String      @id @default(cuid())
-  type      ActivityType
-  consultingId  String
-  consulting    Consulting      @relation(fields: [consultingId], references: [id], onDelete: Cascade)
-  createdAt DateTime    @default(now())
-
-  @@index([consultingId])
 }
 
 enum ActivityType {
@@ -144,36 +273,82 @@ enum ActivityType {
   created
 }
 
-model Development{
-  id           String       @id @default(cuid())
-  ticketNumber Int          @unique @default(autoincrement())
-  name         String
-  phone        String
-  email        String
-  type      String
-  budget         String
-  timeline    String
-  description    String
-  status       DevelopmentStatus @default(pending)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  userId       String?
-  user         user?        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  events       DevelopmentEvent[]
-}
-
 enum DevelopmentStatus {
   pending
   in_progress
   completed
 }
 
-model DevelopmentEvent {
-  id        String      @id @default(cuid())
-  type      ActivityType
-  developmentId  String
-  development    Development      @relation(fields: [developmentId], references: [id], onDelete: Cascade)
-  createdAt DateTime    @default(now())
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
 
-  @@index([developmentId])
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+model Discount {
+  id        String       @id @default(cuid())
+  name      String
+  type      DiscountType
+  value     Decimal      @db.Decimal(10, 2)
+  startsAt  DateTime?
+  endsAt    DateTime?
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  products   ProductDiscount[]
+  categories CategoryDiscount[]
+
+  // Índices para queries de descuentos activos por fecha
+  @@index([isActive])
+  @@index([startsAt, endsAt])
+}
+
+// Tabla de unión explícita para poder agregar campos después
+model ProductDiscount {
+  productId   String
+  discountId  String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  discount    Discount @relation(fields: [discountId], references: [id], onDelete: Cascade)
+
+  @@id([productId, discountId])
+}
+
+model CategoryDiscount {
+  categoryId  String
+  discountId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  discount    Discount @relation(fields: [discountId], references: [id], onDelete: Cascade)
+
+  @@id([categoryId, discountId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  rating    Int      // 1–5
+  title     String
+  body      String
+  author    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([productId, rating])
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
 }
