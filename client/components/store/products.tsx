@@ -6,16 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Product } from "@/src/types/__generated__/graphql";
+import { ProductFragmentFragment } from "@/src/types/__generated__/graphql";
 import { Button } from "../ui/button";
 import { useSidebar } from "../ui/sidebar";
 import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 
-export function Products({ products }: { products: Product[] }) {
+export function Products({
+  products,
+}: {
+  products: ProductFragmentFragment[];
+}) {
   const { open } = useSidebar();
 
-  function CardProduct({ product }: { product: Product }) {
+  function CardProduct({ product }: { product: ProductFragmentFragment }) {
     return (
       <li>
         <Link href={`/store/${product.slug}`}>
