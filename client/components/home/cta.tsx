@@ -108,7 +108,7 @@ export function Cta() {
             </Button>
 
             <Button variant="ghost" asChild>
-              <Link href="/catalog">View catalog</Link>
+              <Link href="/store">View catalog</Link>
             </Button>
           </div>
         </div>
