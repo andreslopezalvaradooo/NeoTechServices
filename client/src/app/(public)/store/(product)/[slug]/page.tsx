@@ -35,7 +35,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Star } from "@hugeicons/core-free-icons";
+import { ArrowDown, ArrowUp, Star } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -453,513 +453,207 @@ export default function Slug({
 
   return (
     <section className="mx-auto max-w-5xl h-[calc(100dvh-64px)] p-4 sm:p-8">
-      <ScrollArea className="h-[calc(100dvh-128px)] pr-2.5">
-        <div className="flex mb-4">
-          {/* Images */}
-          <div className="w-2/3 flex gap-6 justify-center">
-            <div className="flex items-center">
-              <Carousel
-                setApi={setThumbApi}
-                orientation="vertical"
-                opts={{
-                  align: "start",
-                  containScroll: "keepSnaps",
-                  dragFree: true,
-                }}
-              >
-                <CarouselContent>
-                  {images.map((i, index) => (
-                    <CarouselItem key={i}>
-                      <button
-                        type="button"
-                        onClick={() => onThumbClick(index)}
-                        className={cn(
-                          "relative size-20 rounded-lg overflow-hidden ring-offset-2 transition-all",
-                          index === selectedIndex && "ring-2 ring-primary",
-                        )}
+      <ScrollArea className="h-[calc(100dvh-128px)] pr-2 md:pr-2.5">
+        <div className="space-y-4">
+          <div className="w-full max-w-xs md:max-w-full flex gap-4 flex-col md:flex-row items-center justify-center">
+            {/* Images */}
+            <div className="w-full max-w-xs md:max-w-xl md:flex md:gap-4">
+              <div className="hidden md:flex md:items-center">
+                <Carousel
+                  setApi={setThumbApi}
+                  orientation="vertical"
+                  opts={{
+                    align: "start",
+                    containScroll: "keepSnaps",
+                    dragFree: true,
+                  }}
+                >
+                  <CarouselContent className="p-1">
+                    {images.map((i, index) => (
+                      <CarouselItem key={i}>
+                        <button
+                          type="button"
+                          onClick={() => onThumbClick(index)}
+                          className={cn(
+                            "relative size-20 rounded-lg overflow-hidden transition-all",
+                            index === selectedIndex && "ring-1 ring-primary",
+                          )}
+                        >
+                          <Image
+                            src={i}
+                            alt={i}
+                            fill
+                            loading="eager"
+                            sizes="80px"
+                            className="object-contain"
+                          />
+                        </button>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </div>
+
+              <div className="w-full flex items-center overflow-hidden">
+                <Carousel
+                  setApi={setMainApi}
+                  opts={{ align: "start" }}
+                  className="w-full"
+                >
+                  <CarouselContent className="ml-0">
+                    {images.map((i) => (
+                      <CarouselItem
+                        key={i}
+                        className="pl-0 flex justify-center"
                       >
-                        <Image
-                          src={i}
-                          alt={i}
-                          fill
-                          loading="eager"
-                          sizes="80px"
-                        />
-                      </button>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
+                        <div className="relative size-52 md:size-70 rounded-lg overflow-hidden">
+                          <Image
+                            src={i}
+                            alt={i}
+                            fill
+                            loading="eager"
+                            sizes="(max-width: 768px) 208px, 280px"
+                            className="object-contain"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+
+                  <div className="absolute top-1/2 left-2 -translate-y-1/2">
+                    <CarouselPrevious className="relative left-0 translate-x-0" />
+                  </div>
+
+                  <div className="absolute top-1/2 right-2 -translate-y-1/2">
+                    <CarouselNext className="relative right-0 translate-x-0" />
+                  </div>
+                </Carousel>
+              </div>
             </div>
 
-            <div className="px-16 flex justify-center items-center">
-              <Carousel
-                setApi={setMainApi}
-                opts={{ align: "start" }}
-                className="h-fit w-full max-w-xs"
-              >
-                <CarouselContent className="bg-indigo-500">
-                  {images.map((i) => (
-                    <CarouselItem key={i} className="flex justify-center">
-                      <div className="relative size-70 rounded-lg overflow-hidden">
-                        <Image
-                          src={i}
-                          alt={i}
-                          fill
-                          loading="eager"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                        />
+            {/* Product card */}
+            <div className="pt-3">
+              <div className="relative">
+                <Badge className="absolute -top-3 right-0">{product?.id}</Badge>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{product?.name}</CardTitle>
+                    <CardDescription>{product?.description}</CardDescription>
+                  </CardHeader>
+
+                  <CardContent className="flex-1 space-y-1">
+                    {hasDiscount && activeDiscount ? (
+                      <div className="w-full px-4 pt-4 pb-6 flex-1 flex flex-col gap-1 items-start justify-center">
+                        <div className="flex gap-3 items-center">
+                          <span className="text-green-800 text-3xl font-bold">
+                            $ {finalPrice}
+                          </span>
+                          <Badge variant="destructive" className="text-sm">
+                            {activeDiscount.type === DiscountType.Percentage
+                              ? `-${activeDiscount.value}%`
+                              : `-$${activeDiscount.value}`}
+                          </Badge>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          <span className="text-muted-foreground line-through">
+                            $ {Number(product?.price).toFixed(2)}
+                          </span>
+                          <Badge variant="outline">{activeDiscount.name}</Badge>
+                        </div>
                       </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-          </div>
-
-          {/* Product card */}
-          <div className="w-1/3 pt-3 flex items-center justify-center">
-            <div className="relative">
-              <Badge className="absolute -top-3 right-0">{product?.id}</Badge>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>{product?.name}</CardTitle>
-                  <CardDescription>{product?.description}</CardDescription>
-                </CardHeader>
-
-                <CardContent className="flex-1 space-y-1">
-                  {hasDiscount && activeDiscount ? (
-                    <div className="w-full px-4 pt-4 pb-6 flex-1 flex flex-col gap-1 items-start justify-center">
-                      <div className="flex gap-3 items-center">
-                        <span className="text-green-800 text-3xl font-bold">
-                          $ {finalPrice}
-                        </span>
-                        <Badge variant="destructive" className="text-sm">
-                          {activeDiscount.type === DiscountType.Percentage
-                            ? `-${activeDiscount.value}%`
-                            : `-$${activeDiscount.value}`}
-                        </Badge>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <span className="text-muted-foreground line-through">
+                    ) : (
+                      <div className="p-5">
+                        <span className="text-3xl font-bold">
                           $ {Number(product?.price).toFixed(2)}
                         </span>
-                        <Badge variant="outline">{activeDiscount.name}</Badge>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="p-5">
-                      <span className="text-3xl font-bold">
-                        $ {Number(product?.price).toFixed(2)}
+                    )}
+
+                    <div className="flex gap-1 items-center justify-end">
+                      <div
+                        className={cn(
+                          "size-2 rounded-full",
+                          (product?.stock ?? 0) > 10
+                            ? "bg-green-500"
+                            : "bg-yellow-500",
+                        )}
+                      />
+                      <span className="text-muted-foreground text-xs">
+                        {(product?.stock ?? 0) > 10
+                          ? `${product?.stock} units available`
+                          : `Only ${product?.stock} left in stock`}
                       </span>
                     </div>
-                  )}
+                  </CardContent>
 
-                  <div className="flex gap-1 items-center justify-end">
-                    <div
-                      className={cn(
-                        "size-2 rounded-full",
-                        (product?.stock ?? 0) > 10
-                          ? "bg-green-500"
-                          : "bg-yellow-500",
-                      )}
-                    />
-                    <span className="text-muted-foreground text-xs">
-                      {(product?.stock ?? 0) > 10
-                        ? `${product?.stock} units available`
-                        : `Only ${product?.stock} left in stock`}
-                    </span>
-                  </div>
-                </CardContent>
-
-                <CardFooter className="gap-2 justify-center">
-                  <Button>Add to Cart</Button>
-                  <Button>Buy Now</Button>
-                </CardFooter>
-              </Card>
+                  <CardFooter className="gap-2 justify-center">
+                    <Button>Add to Cart</Button>
+                    <Button>Buy Now</Button>
+                  </CardFooter>
+                </Card>
+              </div>
             </div>
           </div>
+
+          <Collapsible
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            className="bg-muted/30 border rounded-lg overflow-hidden"
+          >
+            <Tabs defaultValue="description" className="px-2 sm:px-4 py-2">
+              <div className="flex items-center justify-between">
+                <TabsList>
+                  <TabsTrigger value="description">Description</TabsTrigger>
+                  <TabsTrigger value="features">Features</TabsTrigger>
+                  <TabsTrigger value="reviews">
+                    Reviews
+                    {reviews.length > 0 && (
+                      <Badge variant="secondary">{reviews.length}</Badge>
+                    )}
+                  </TabsTrigger>
+                </TabsList>
+
+                <CollapsibleTrigger asChild className="hidden md:block">
+                  <Button variant="ghost" size="sm">
+                    {isOpen ? "Hide details" : "Show details"}
+                  </Button>
+                </CollapsibleTrigger>
+
+                <CollapsibleTrigger asChild className="md:hidden">
+                  <Button variant="ghost" size="sm">
+                    {isOpen ? (
+                      <HugeiconsIcon icon={ArrowUp} />
+                    ) : (
+                      <HugeiconsIcon icon={ArrowDown} />
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
+
+              <CollapsibleContent>
+                <TabsContent value="description">
+                  <DescriptionTab
+                    description={product?.description ?? ""}
+                    images={images}
+                  />
+                </TabsContent>
+
+                <TabsContent value="features">
+                  <FeaturesTab features={features} />
+                </TabsContent>
+
+                <TabsContent value="reviews">
+                  <ReviewsTab reviews={reviews} productId={product?.id ?? ""} />
+                </TabsContent>
+              </CollapsibleContent>
+            </Tabs>
+          </Collapsible>
         </div>
-
-        <Collapsible
-          open={isOpen}
-          onOpenChange={setIsOpen}
-          className="bg-muted/30 rounded-lg border overflow-hidden"
-        >
-          <Tabs defaultValue="description" className="w-full px-4 py-2">
-            <div className="flex items-center justify-between">
-              <TabsList>
-                <TabsTrigger value="description">Description</TabsTrigger>
-                <TabsTrigger value="features">Features</TabsTrigger>
-                <TabsTrigger value="reviews">
-                  Reviews
-                  {reviews.length > 0 && (
-                    <Badge variant="secondary" className="ml-1.5 text-xs">
-                      {reviews.length}
-                    </Badge>
-                  )}
-                </TabsTrigger>
-              </TabsList>
-
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  {isOpen ? "Hide details" : "Show details"}
-                </Button>
-              </CollapsibleTrigger>
-            </div>
-
-            <CollapsibleContent>
-              <TabsContent value="description">
-                <DescriptionTab
-                  description={product?.description ?? ""}
-                  images={images}
-                />
-              </TabsContent>
-
-              <TabsContent value="features">
-                <FeaturesTab features={features} />
-              </TabsContent>
-
-              <TabsContent value="reviews">
-                <ReviewsTab reviews={reviews} productId={product?.id ?? ""} />
-              </TabsContent>
-            </CollapsibleContent>
-          </Tabs>
-        </Collapsible>
       </ScrollArea>
     </section>
   );
 }
-
-// "use client";
-
-// import { Badge } from "@/components/ui/badge";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import {
-//   Carousel,
-//   CarouselApi,
-//   CarouselContent,
-//   CarouselItem,
-//   CarouselNext,
-//   CarouselPrevious,
-// } from "@/components/ui/carousel";
-// import { GET_PRODUCT } from "@/src/lib/queries/product";
-// import { useQuery } from "@apollo/client/react";
-// import Image from "next/image";
-// import { use, useCallback, useEffect, useMemo, useState } from "react";
-// import { DiscountType } from "@/src/types/__generated__/graphql";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Accordion,
-//   AccordionContent,
-//   AccordionItem,
-//   AccordionTrigger,
-// } from "@/components/ui/accordion";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { cn } from "@/src/lib/utils";
-
-// const items = [
-//   {
-//     value: "overview",
-//     trigger: "How does billing work?",
-//     content:
-//       "We offer monthly and annual subscription plans. Billing is charged at the beginning of each cycle, and you can cancel anytime. All plans include automatic backups, 24/7 support, and unlimited team members.",
-//   },
-//   {
-//     value: "analytics",
-//     trigger: "Is my data secure?",
-//     content:
-//       "Yes. We use end-to-end encryption, SOC 2 Type II compliance, and regular third-party security audits. All data is encrypted at rest and in transit using industry-standard protocols.",
-//   },
-//   {
-//     value: "reports",
-//     trigger: "What integrations do you support?",
-//     content:
-//       "We integrate with 500+ popular tools including Slack, Zapier, Salesforce, HubSpot, and more. You can also build custom integrations using our REST API and webhooks.",
-//   },
-// ];
-
-// export default function Slug({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) {
-//   const { slug } = use(params);
-//   const { data } = useQuery(GET_PRODUCT, { variables: { slug } });
-//   const product = data?.getProduct;
-//   const images = product?.images;
-//   const discounts = product?.discounts;
-
-//   // --- Sincronización de carousels ---
-//   const [mainApi, setMainApi] = useState<CarouselApi>();
-//   const [thumbApi, setThumbApi] = useState<CarouselApi>();
-//   const [selectedIndex, setSelectedIndex] = useState(0);
-
-//   // Click en una miniatura -> mueve el carousel principal
-//   const onThumbClick = useCallback(
-//     (index: number) => {
-//       if (!mainApi || !thumbApi) return;
-//       mainApi.scrollTo(index);
-//     },
-//     [mainApi, thumbApi],
-//   );
-
-//   // El carousel principal informa el índice activo al de miniaturas
-//   const onSelect = useCallback(() => {
-//     if (!mainApi || !thumbApi) return;
-//     const index = mainApi.selectedScrollSnap();
-//     setSelectedIndex(index);
-//     thumbApi.scrollTo(index);
-//   }, [mainApi, thumbApi]);
-
-//   useEffect(() => {
-//     if (!mainApi || !thumbApi) return;
-
-//     onSelect();
-//     mainApi.on("select", onSelect);
-//     mainApi.on("reInit", onSelect);
-
-//     return () => {
-//       mainApi.off("select", onSelect);
-//       mainApi.off("reInit", onSelect);
-//     };
-//   }, [mainApi, thumbApi, onSelect]);
-//   // --- Fin sincronización ---
-
-//   const { activeDiscount, finalPrice, hasDiscount } = useMemo(() => {
-//     const basePrice = product?.price;
-
-//     const fallback = {
-//       activeDiscount: null,
-//       finalPrice: basePrice != null ? Number(basePrice).toFixed(2) : null,
-//       hasDiscount: false,
-//     };
-
-//     if (!discounts?.length || basePrice == null) return fallback;
-
-//     const now = new Date();
-//     const numericPrice = Number(basePrice); // Decimal de Prisma → number
-
-//     const activeDiscounts = discounts
-//       .map((pd) => pd.discount)
-//       .filter((d): d is NonNullable<typeof d> => d !== null && d.isActive)
-//       .filter((d) => {
-//         // Sin fechas = descuento permanente → siempre activo ✅
-//         if (!d.startsAt && !d.endsAt) return true;
-//         // Con fechas = verificar rango
-//         if (!d.startsAt || !d.endsAt) return false; // Incompleto → inválido
-//         return new Date(d.startsAt) <= now && new Date(d.endsAt) >= now;
-//       });
-
-//     if (!activeDiscounts.length) return fallback;
-
-//     // "Highest discount wins" — espejo de resolveEffectivePrice del backend
-//     const bestDiscount = activeDiscounts.reduce((best, current) => {
-//       const saving = (d: typeof current) =>
-//         d.type === DiscountType.Percentage
-//           ? numericPrice * (Number(d.value) / 100)
-//           : Number(d.value);
-
-//       return saving(current) > saving(best) ? current : best;
-//     });
-
-//     let computed: number;
-
-//     if (bestDiscount.type === DiscountType.Percentage) {
-//       computed = numericPrice * (1 - Number(bestDiscount.value) / 100);
-//     } else if (bestDiscount.type === DiscountType.FixedAmount) {
-//       computed = numericPrice - Number(bestDiscount.value);
-//     } else {
-//       computed = numericPrice;
-//     }
-
-//     const finalPrice = Math.max(0, computed).toFixed(2);
-
-//     return {
-//       activeDiscount: {
-//         value: Number(bestDiscount.value),
-//         type: bestDiscount.type,
-//         name: bestDiscount.name,
-//       },
-//       finalPrice,
-//       // Comparación numérica para evitar errores de floating point
-//       hasDiscount: Math.abs(computed - numericPrice) > 0.001,
-//     };
-//   }, [discounts, product?.price]);
-
-//   return (
-//     <section className="mx-auto max-w-5xl h-[calc(100dvh-64px)] p-4 sm:p-8 space-y-4">
-//       <div className="flex gap-4">
-//         <div className="w-2/3 py-20 flex justify-center">
-//           <div className="flex items-center">
-//             <Carousel
-//               setApi={setThumbApi}
-//               orientation="vertical"
-//               opts={{
-//                 align: "start",
-//                 containScroll: "keepSnaps",
-//                 dragFree: true,
-//               }}
-//             >
-//               <CarouselContent>
-//                 {images?.map((i, index) => (
-//                   <CarouselItem key={i}>
-//                     <button
-//                       type="button"
-//                       onClick={() => onThumbClick(index)}
-//                       className={cn(
-//                         "relative size-20 rounded-lg overflow-hidden ring-offset-2 transition-all",
-//                         index === selectedIndex && "ring-2 ring-primary",
-//                       )}
-//                     >
-//                       <Image
-//                         src={i}
-//                         alt={i}
-//                         fill={true}
-//                         loading="eager"
-//                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-//                       />
-//                     </button>
-//                   </CarouselItem>
-//                 ))}
-//               </CarouselContent>
-
-//               <CarouselPrevious />
-//               <CarouselNext />
-//             </Carousel>
-//           </div>
-
-//           <div className="px-16 flex justify-center">
-//             <Carousel
-//               setApi={setMainApi}
-//               opts={{ align: "start" }}
-//               className="w-full max-w-xs"
-//             >
-//               <CarouselContent>
-//                 {images?.map((i) => (
-//                   <CarouselItem key={i} className="flex justify-center">
-//                     <div className="relative size-70 rounded-lg overflow-hidden">
-//                       <Image
-//                         src={i}
-//                         alt={i}
-//                         fill={true}
-//                         loading="eager"
-//                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-//                       />
-//                     </div>
-//                   </CarouselItem>
-//                 ))}
-//               </CarouselContent>
-
-//               <CarouselPrevious />
-//               <CarouselNext />
-//             </Carousel>
-//           </div>
-//         </div>
-
-//         <div className="w-1/3 flex items-center justify-center">
-//           <div className="relative">
-//             <Badge className="absolute -top-3 right-0">{product?.id}</Badge>
-
-//             <Card>
-//               <CardHeader>
-//                 <CardTitle>{product?.name}</CardTitle>
-//                 <CardDescription>{product?.description}</CardDescription>
-//               </CardHeader>
-
-//               <CardContent className="flex-1 space-y-1">
-//                 {hasDiscount && activeDiscount ? (
-//                   <div className="w-full px-4 pt-4 pb-6 flex-1 flex flex-col gap-1 items-start justify-center">
-//                     <div className="flex gap-3 items-center">
-//                       <span className="text-green-800 text-3xl font-bold">
-//                         $ {finalPrice}
-//                       </span>
-
-//                       <Badge variant="destructive" className="text-sm">
-//                         {activeDiscount.type === DiscountType.Percentage
-//                           ? `-${activeDiscount.value}%`
-//                           : `-$${activeDiscount.value}`}
-//                       </Badge>
-//                     </div>
-
-//                     <div className="flex gap-2 items-center">
-//                       <span className="text-muted-foreground line-through">
-//                         $ {product?.price?.toFixed(2)}
-//                       </span>
-
-//                       <Badge variant="outline">{activeDiscount.name}</Badge>
-//                     </div>
-//                   </div>
-//                 ) : (
-//                   <div className="p-5">
-//                     <span className="text-3xl font-bold">
-//                       $ {product?.price?.toFixed(2)}
-//                     </span>
-//                   </div>
-//                 )}
-
-//                 <div className="flex gap-1 items-center justify-end">
-//                   <div
-//                     className={`size-2 rounded-full ${
-//                       (product?.stock ?? 0) > 10
-//                         ? "bg-green-500"
-//                         : "bg-yellow-500"
-//                     }`}
-//                   />
-
-//                   <span className="text-muted-foreground text-xs">
-//                     {(product?.stock ?? 0) > 10
-//                       ? `${product?.stock} units available`
-//                       : `Only ${product?.stock} left in stock`}
-//                   </span>
-//                 </div>
-//               </CardContent>
-
-//               <CardFooter className="gap-2 justify-center">
-//                 <Button>Add to Cart</Button>
-//                 <Button>Buy Now</Button>
-//               </CardFooter>
-//             </Card>
-//           </div>
-//         </div>
-//       </div>
-
-//       <Accordion type="single" collapsible className="rounded-lg border">
-//         <AccordionItem value="info" className="border-b px-4 last:border-b-0">
-//           <Tabs defaultValue="description">
-//             <div className="py-1 flex items-center justify-between">
-//               <TabsList>
-//                 <TabsTrigger value="description">Description</TabsTrigger>
-//                 <TabsTrigger value="features">Features</TabsTrigger>
-//                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
-//               </TabsList>
-
-//               <AccordionTrigger />
-//             </div>
-
-//             <AccordionContent>
-//               {items.map((item) => (
-//                 <TabsContent key={item.value} value={String(item.value)}>
-//                   {item.content}
-//                 </TabsContent>
-//               ))}
-//             </AccordionContent>
-//           </Tabs>
-//         </AccordionItem>
-//       </Accordion>
-//     </section>
-//   );
-// }
